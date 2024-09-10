@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Types } from "mongoose";
 import { UserDocument, UserRepository } from "src/modules/data";
 import { CreateUserBodyDTO } from "./body_dto";
 
@@ -11,6 +12,7 @@ export class CreateUserService {
   async handle(data: CreateUserBodyDTO): Promise<UserDocument> {
     const users = await this.repository.model.create([
       {
+        _id: new Types.ObjectId(),
         name: data.name,
         username: data.username,
         email: data.email,

@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { Types } from "mongoose";
-import { ChannelRepository, ChannelType } from "src/modules/data";
+import { ChannelDocument, ChannelRepository, ChannelType } from "src/modules/data";
 import { CreateChannelBodyDTO } from ".";
 
 @Injectable()
@@ -9,12 +9,13 @@ export class CreateChannelService {
     private readonly repository: ChannelRepository,
   ) { }
 
-  async handle(data: CreateChannelBodyDTO): Promise<unknown> {
+  async handle(data: CreateChannelBodyDTO): Promise<ChannelDocument> {
     if (data.member_id) {
       const channels = await this.repository.model.create([
         {
+          _id: new Types.ObjectId(),
           type: ChannelType.PRIVATE,
-          name: '',
+          name: `private_with_${data.member_id}`,
           members: [
             new Types.ObjectId(data.member_id),
             //TODO: set current user id
@@ -33,6 +34,7 @@ export class CreateChannelService {
 
     const channels = await this.repository.model.create([
       {
+        _id: new Types.ObjectId(),
         type: ChannelType.GUILD_TEXT_CHANNEL,
         name: data.name ?? '',
         members: [],
@@ -40,6 +42,6 @@ export class CreateChannelService {
       }
     ], {});
 
-    return
+    return channels.at(0);
   }
 }

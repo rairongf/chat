@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument } from "mongoose";
-import { AbstractDocument, Guild, User } from ".";
+import { AbstractDocument } from "./base_document";
+import { Guild } from './guild';
+import { User } from './user';
 
 export enum ChannelType {
   PRIVATE = 'private',
@@ -34,7 +36,7 @@ export class Channel extends AbstractDocument {
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: User.name, autopopulate: true }])
   members: User[];
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Guild.name }])
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Guild.name })
   guild_id?: Guild;
 }
 

@@ -1,0 +1,1 @@
+export type BaseContextProps<P = unknown> = React.PropsWithChildren<P>;

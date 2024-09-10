@@ -1,18 +1,17 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model, Types } from "mongoose";
-import { Channel, ChannelDocument, ChannelType } from "src/modules/data";
+import { Types } from "mongoose";
+import { ChannelRepository, ChannelType } from "src/modules/data";
 import { CreateChannelBodyDTO } from ".";
 
 @Injectable()
 export class CreateChannelService {
   constructor(
-    @InjectModel(Channel.name) private readonly model: Model<ChannelDocument>,
+    private readonly repository: ChannelRepository,
   ) { }
 
   async handle(data: CreateChannelBodyDTO): Promise<unknown> {
     if (data.member_id) {
-      const channels = await this.model.create([
+      const channels = await this.repository.model.create([
         {
           type: ChannelType.PRIVATE,
           name: '',
@@ -32,7 +31,7 @@ export class CreateChannelService {
       throw new BadRequestException('Neither `guild_id` or `member_id` were provided.');
     }
 
-    const channels = await this.model.create([
+    const channels = await this.repository.model.create([
       {
         type: ChannelType.GUILD_TEXT_CHANNEL,
         name: data.name ?? '',

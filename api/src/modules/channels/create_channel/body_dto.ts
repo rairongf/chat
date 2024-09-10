@@ -1,9 +1,9 @@
 import { Type } from "class-transformer";
 import { IsMongoId, IsNotEmpty, IsOptional, IsString, ValidateIf } from "class-validator";
 import { Types } from "mongoose";
-import { ChannelDocument } from "src/modules/data";
+import { Channel } from "src/modules/data";
 
-export class CreateChannelBodyDTO implements Omit<ChannelDocument, '_id' | 'name' | 'type' | 'members' | 'guild_id'> {
+export class CreateChannelBodyDTO implements Omit<Channel, '_id' | 'type' | 'name' | 'members' | 'guild_id' | 'createdAt' | 'updatedAt' | 'deletedAt'> {
   @ValidateIf((obj: CreateChannelBodyDTO) => Boolean(!obj.member_id))
   @IsString()
   @IsOptional()

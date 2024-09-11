@@ -1,0 +1,1 @@
+export const UserGuildRoutePathMask = '@me';

@@ -1,4 +1,3 @@
-export * from './chat_scrollable_container';
-export * from './message_item';
-export * from './send_message_button';
+export * from './active_chat/view';
+export * from './recent_chats/tab';
 

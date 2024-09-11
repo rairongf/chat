@@ -1,4 +1,4 @@
-import { Button, Icon, Row } from "@/modules/common";
+import { Button, Icon, Input, Row } from "@/modules/common";
 import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
 
@@ -13,7 +13,7 @@ export function SendMessageButton() {
           theme.backgroundSecondary
         )}
       >
-        <input className="grow shrink basis-auto bg-transparent outline-none" />
+        <Input className="bg-transparent grow shrink basis-auto" />
         <Button className="flex justify-center items-center shrink-0">
           <Icon name={"send"} />
         </Button>

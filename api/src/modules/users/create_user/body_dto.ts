@@ -1,7 +1,7 @@
-import { IsDate, IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { User } from "src/modules/data";
 
-export class CreateUserBodyDTO implements Omit<User, '_id' | 'about' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'guilds'> {
+export class CreateUserBodyDTO implements Omit<User, '_id' | 'about' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'guilds' | 'picture'> {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -20,4 +20,8 @@ export class CreateUserBodyDTO implements Omit<User, '_id' | 'about' | 'createdA
 
   @IsDate()
   birthday: Date;
+
+  @IsString()
+  @IsOptional()
+  picture?: string;
 }

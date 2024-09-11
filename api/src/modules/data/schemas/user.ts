@@ -23,6 +23,11 @@ export class User extends AbstractDocument {
 
   @Prop({
     required: true,
+  })
+  picture: string;
+
+  @Prop({
+    required: true,
     unique: true,
   })
   email: string;

@@ -19,6 +19,7 @@ export class CreateUserService {
         password: data.password,
         about: '',
         birthday: data.birthday,
+        picture: data.picture ?? `https://eu.ui-avatars.com/api/?name=${data.name.split(' ').join('+')}&size=128`,
       }
     ], {});
 

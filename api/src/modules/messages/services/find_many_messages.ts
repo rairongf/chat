@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { MessageRepository } from "src/modules/data";
-import { Types } from "mongoose";
+import { FilterQuery, Types } from "mongoose";
+import { ChatPaginatedResponse } from "src/interfaces";
+import { MessageDocument, MessageRepository } from "src/modules/data";
 import { FindManyMessagesQueryParamsDTO } from "../dtos";
 
 @Injectable()
@@ -9,10 +10,14 @@ export class FindManyMessagesService {
     private readonly repository: MessageRepository,
   ) { }
 
-  async handle(userId: Types.ObjectId, query: FindManyMessagesQueryParamsDTO) {
-    const channels = await this.repository.model.find({
+  async handle(userId: Types.ObjectId, query: FindManyMessagesQueryParamsDTO): Promise<ChatPaginatedResponse<MessageDocument>> {
+    const filter: FilterQuery<MessageDocument> = {
       channel_id: query.channel_id,
-    }, {
+    };
+
+    const count = await this.repository.model.countDocuments(filter);
+
+    const messages = await this.repository.model.find(filter, {
       _id: 1,
       sender_id: 1,
       channel_id: 1,
@@ -24,6 +29,11 @@ export class FindManyMessagesService {
       limit: query.limit,
     }).exec();
 
-    return channels;
+    return {
+      elements: messages,
+      currentPage: query.page,
+      totalElements: count,
+      totalPages: Math.ceil(count / query.limit),
+    };
   }
 }

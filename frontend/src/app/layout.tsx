@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/modules/auth/context";
 import { ThemeProvider } from "@/modules/theme";
 import { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
@@ -26,12 +27,9 @@ export default function RootLayout({
       <body
         className={`${nunitoSans.className} w-screen h-screen overflow-hidden`}
       >
-        <ThemeProvider>
-          <div className="flex md:flex-row w-full h-full">
-            {/* <LeftNavigationBar /> */}
-            {children}
-          </div>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

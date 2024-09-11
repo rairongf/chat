@@ -3,8 +3,8 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '../config/module';
-import { ChannelRepository, GuildRepository, UserRepository } from './repositories';
-import { Channel, ChannelSchema, Guild, GuildSchema, Message, MessageSchema, User, UserSchema } from './schemas';
+import { ChannelRepository, GuildRepository, TokenRepository, UserRepository } from './repositories';
+import { Channel, ChannelSchema, Guild, GuildSchema, Message, MessageSchema, Token, TokenSchema, User, UserSchema } from './schemas';
 
 @Global()
 @Module({
@@ -18,6 +18,7 @@ import { Channel, ChannelSchema, Guild, GuildSchema, Message, MessageSchema, Use
     }),
     // Register schemas
     MongooseModule.forFeature([
+      { name: Token.name, schema: TokenSchema },
       { name: Channel.name, schema: ChannelSchema },
       { name: User.name, schema: UserSchema },
       { name: Guild.name, schema: GuildSchema },
@@ -25,13 +26,15 @@ import { Channel, ChannelSchema, Guild, GuildSchema, Message, MessageSchema, Use
     ]),
   ],
   providers: [
-    ChannelRepository,
+    TokenRepository,
     UserRepository,
+    ChannelRepository,
     GuildRepository,
   ],
   exports: [
-    ChannelRepository,
+    TokenRepository,
     UserRepository,
+    ChannelRepository,
     GuildRepository,
   ],
 })

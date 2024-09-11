@@ -1,2 +1,7 @@
+import { BaseUsecase } from "@/modules/common";
 
-export type ISendDirectMessageUsecase = (args?: unknown) => Promise<unknown>;
+export type ISendDirectMessageUsecaseArguments = {
+  content: string;
+};
+
+export type ISendDirectMessageUsecase = BaseUsecase<void, ISendDirectMessageUsecaseArguments>;

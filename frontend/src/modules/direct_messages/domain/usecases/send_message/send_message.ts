@@ -1,17 +1,15 @@
 
+import { useWebsocket } from '@/modules/websocket';
 import { ISendDirectMessageUsecase } from './interface';
 
 export function useSendDirectMessage() {
-  const sendMessage: ISendDirectMessageUsecase = async () => {
+  const {emit} = useWebsocket();
+  
+  const sendMessage: ISendDirectMessageUsecase = async ({content}) => {
     try {
-      const { data, didSucceed, error } = await ();
-
-      if (!didSucceed) {
-        return;
-      }
-
-      return data;
+      emit(content);
     } catch (err) {
+      console.log('Caught error:', err);
     }
   };
 

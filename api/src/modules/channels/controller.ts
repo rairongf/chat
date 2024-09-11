@@ -2,6 +2,8 @@ import { Body, Controller, Get, Param, Patch, Post, Query } from "@nestjs/common
 import { CreateChannelBodyDTO, CreateChannelService } from "./create_channel";
 import { FindManyChannelsQueryParamsDTO, FindManyChannelsService } from "./find_many_channels";
 import { ChannelIdParam } from "./id_param_dto";
+import { User } from "src/decorators";
+import { UserPayload } from "src/interfaces";
 
 @Controller('channels')
 export class ChannelsController {
@@ -12,16 +14,18 @@ export class ChannelsController {
 
   @Post()
   async create(
+    @User() user: UserPayload,
     @Body() body: CreateChannelBodyDTO,
   ) {
-    return this.createService.handle(body);
+    return this.createService.handle(user.userId, body);
   }
 
   @Get()
   async findMany(
+    @User() user: UserPayload,
     @Query() query: FindManyChannelsQueryParamsDTO,
   ) {
-    return this.findManyService.handle(query);
+    return this.findManyService.handle(user.userId, query);
   }
 
   @Get(':id')

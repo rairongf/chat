@@ -9,7 +9,7 @@ export class CreateChannelService {
     private readonly repository: ChannelRepository,
   ) { }
 
-  async handle(data: CreateChannelBodyDTO): Promise<ChannelDocument> {
+  async handle(userId: Types.ObjectId, data: CreateChannelBodyDTO): Promise<ChannelDocument> {
     if (data.member_id) {
       const channels = await this.repository.model.create([
         {
@@ -18,8 +18,7 @@ export class CreateChannelService {
           name: `private_with_${data.member_id}`,
           members: [
             new Types.ObjectId(data.member_id),
-            //TODO: set current user id
-            new Types.ObjectId(data.member_id),
+            userId,
           ],
           guild_id: null,
         }

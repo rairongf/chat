@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ChannelDocument, ChannelRepository } from "src/modules/data";
 import { FindManyChannelsQueryParamsDTO } from "./query_params_dto";
+import { Types } from "mongoose";
 
 @Injectable()
 export class FindManyChannelsService {
@@ -8,10 +9,9 @@ export class FindManyChannelsService {
     private readonly repository: ChannelRepository,
   ) { }
 
-  async handle(query: FindManyChannelsQueryParamsDTO): Promise<ChannelDocument[]> {
+  async handle(userId: Types.ObjectId, query: FindManyChannelsQueryParamsDTO): Promise<ChannelDocument[]> {
     const channels = await this.repository.model.find({
-      //TODO: include current user id
-      //members: new Types.ObjectId(''),
+      members: userId,
       guild_id: query.guild_id,
     }, {
       _id: 1,

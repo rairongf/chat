@@ -1,3 +1,4 @@
+import { useAuth } from "@/modules/auth/context";
 import { BaseContextProps } from "@/modules/common";
 import { createContext, useContext, useEffect } from "react";
 
@@ -8,7 +9,18 @@ export const DirectMessagesContext = createContext<DirectMessagesContextData>(
 );
 
 export function DirectMessagesProvider({ children }: BaseContextProps) {
-  useEffect(() => {}, []);
+  const { keepSignIn, setIsAuthenticated } = useAuth();
+
+  async function init() {
+    const didSucceed = await keepSignIn({});
+    setIsAuthenticated(didSucceed);
+    if (!didSucceed) return;
+  }
+
+  useEffect(() => {
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <DirectMessagesContext.Provider value={{}}>

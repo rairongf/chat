@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Query } from "@nestjs/common";
 import { CreateChannelBodyDTO, CreateChannelService } from "./create_channel";
-import { FindManyChannelsService } from "./find_many_channels";
+import { FindManyChannelsQueryParamsDTO, FindManyChannelsService } from "./find_many_channels";
+import { ChannelIdParam } from "./id_param_dto";
 
 @Controller('channels')
 export class ChannelsController {
@@ -17,13 +18,19 @@ export class ChannelsController {
   }
 
   @Get()
-  async findMany() {
-    return this.findManyService.handle();
+  async findMany(
+    @Query() query: FindManyChannelsQueryParamsDTO,
+  ) {
+    return this.findManyService.handle(query);
   }
 
   @Get(':id')
-  async findOne() { }
+  async findOne(
+    @Param() param: ChannelIdParam,
+  ) { }
 
   @Patch(':id')
-  async update() { }
+  async update(
+    @Param() param: ChannelIdParam,
+  ) { }
 }

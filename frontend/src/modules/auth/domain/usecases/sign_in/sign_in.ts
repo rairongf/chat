@@ -27,7 +27,7 @@ export function useSignIn() {
         path: '/'
       });
 
-      router.push('/dashboard/home');
+      router.push('/channels/@me');
       await new Promise((r) => setTimeout(r, 600));
       return didSucceed;
     } catch (err) {

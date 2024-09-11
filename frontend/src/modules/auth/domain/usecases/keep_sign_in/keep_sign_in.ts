@@ -10,13 +10,13 @@ export function useKeepSignIn() {
 
   const navigateWhenAuthenticated = () => {
     if (pathname === '/' || pathname === '/login') {
-      router.push('/dashboard/home');
+      router.push('/channels/@me');
     }
   };
 
   const keepSignIn: IKeepSignInUsecase = async () => {
     try {
-      
+
       const {
         [CookiesKeys.accessToken]: accessToken,
         [CookiesKeys.refreshToken]: refreshTokenData,

@@ -1,20 +1,43 @@
 import { Injectable } from "@nestjs/common";
-import { UserDocument, UserRepository } from "src/modules/data";
+import { GuildRepository, UserDocument, UserRepository } from "src/modules/data";
 import { Types } from "mongoose";
 import { FindManyUsersQueryParamsDTO } from "./query_params_dto";
 
 @Injectable()
 export class FindManyUsersService {
   constructor(
-    private readonly repository: UserRepository,
+    private readonly guildRepository: GuildRepository,
+    private readonly userRepository: UserRepository,
   ) { }
 
   async handle(userId: Types.ObjectId, query: FindManyUsersQueryParamsDTO): Promise<UserDocument[]> {
-    const users = await this.repository.model.find({
+    if (query.guild_id) {
+      const guildUsersIds = await this.guildRepository.model.findOne({
+        _id: query.guild_id,
+      }, {
+        members: 1,
+      });
+
+      const users = await this.userRepository.model.find({
+        _id: {
+          $in: [...guildUsersIds.members],
+        },
+      }, {
+        _id: 1,
+        name: 1,
+        username: 1,
+      }, {
+        skip: query.limit * (query.page - 1),
+        limit: query.limit,
+      }).exec();
+
+      return users;
+    }
+
+    const users = await this.userRepository.model.find({
       _id: {
         $ne: userId,
       },
-      guilds: query.guild_id,
     }, {
       _id: 1,
       name: 1,

@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose from "mongoose";
-import { AbstractDocument, Guild } from ".";
+import { AbstractDocument } from "./base_document";
 
 export type UserDocument = mongoose.HydratedDocument<User>;
 
@@ -41,9 +41,6 @@ export class User extends AbstractDocument {
 
   @Prop()
   birthday: Date;
-
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Guild.name, autopopulate: true }])
-  guilds: Guild[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

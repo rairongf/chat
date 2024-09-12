@@ -1,3 +1,5 @@
+"use client";
+
 import { UserGuildRoutePathMask } from "@/modules/direct_messages";
 import { usePathname } from "next/navigation";
 

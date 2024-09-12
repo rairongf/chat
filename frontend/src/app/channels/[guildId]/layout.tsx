@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DirectMessagesPageContent,
   DirectMessagesProvider,
@@ -18,7 +20,7 @@ export default function GuildLayout({
 
   const showDirectMessagesPage = serverIdOrAlias == UserGuildRoutePathMask;
 
-  console.log("Guild id or alias:", serverIdOrAlias);
+  console.log("[GuildLayout] Guild id or alias:", serverIdOrAlias);
 
   return (
     <>

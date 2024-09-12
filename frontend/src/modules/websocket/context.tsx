@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "../auth/context";
 import { BaseContextProps } from "../common";
 import { socket } from "./infra/socket_client";
 
 type WebsocketContextData = {
-  connectTo: (channelId: string) => void;
+  connectTo: (channelId: string) => string | undefined;
   emit: (content: string) => void;
   activeChannelId: string | undefined;
 };
@@ -13,16 +14,19 @@ export const WebsocketContext = createContext<WebsocketContextData>(
 );
 
 export function WebsocketProvider({ children }: BaseContextProps) {
+  const { user } = useAuth();
   const [activeChannelId, setActiveChannelId] = useState<string>();
 
   function emit(content: string) {
     console.log(`Emitting ${content} to ${activeChannelId}...`);
-    socket.emit(activeChannelId!, {
+    socket.emit("events", {
+      channelId: activeChannelId,
+      senderId: user?._id,
       content: content,
     });
   }
 
-  function connectTo(channelId: string) {
+  function connectTo(channelId: string): string | undefined {
     if (activeChannelId) {
       console.log(
         `Socket disconnecting from previous active channel ${channelId}...`
@@ -37,6 +41,11 @@ export function WebsocketProvider({ children }: BaseContextProps) {
     }
     socket.on(channelId, onEvents);
     setActiveChannelId(channelId);
+    socket.emit("join_channel", {
+      channelId: channelId,
+      senderId: user?._id,
+    });
+    return channelId;
   }
 
   function onConnect() {

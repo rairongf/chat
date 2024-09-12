@@ -1,10 +1,14 @@
-import { login } from '@/modules/auth/infra/repositories';
-import { CookiesKeys } from '@/modules/common';
+
+import { ILoginRepository } from '@/modules/auth/infra/repositories';
+import { CookiesKeys, IFindUserRepository } from '@/modules/common';
 import { useRouter } from 'next/navigation';
 import { destroyCookie, setCookie } from 'nookies';
 import { ISignInUsecase, ISignInUsecaseArguments } from './interface';
 
-export function useSignIn() {
+export function useSignIn(
+  login: ILoginRepository,
+  findUser: IFindUserRepository,
+) {
   const router = useRouter();
 
   const signIn: ISignInUsecase = async ({ email, password }: ISignInUsecaseArguments) => {
@@ -12,7 +16,8 @@ export function useSignIn() {
       const { data, didSucceed } = await login({ email, password });
 
       if (!didSucceed) {
-        return didSucceed;
+        console.log('Could not authenticate');
+        return {didSucceed};
       }
 
       const now = new Date();
@@ -27,16 +32,24 @@ export function useSignIn() {
         path: '/'
       });
 
+      const response = await findUser({});
+      if (!response.didSucceed) {
+        console.log('Could not find user');
+        return {didSucceed: response.didSucceed};
+      }
+      
+
       router.push('/channels/@me');
       await new Promise((r) => setTimeout(r, 600));
-      return didSucceed;
+      return {didSucceed: true, user: response.data};
     } catch (err) {
+      console.log('Caught error:', err);
       destroyCookie(undefined, CookiesKeys.accessToken);
       destroyCookie(undefined, CookiesKeys.refreshToken);
 
       router.push('/login');
 
-      return false;
+      return {didSucceed: false};
     }
   };
 

@@ -1,9 +1,11 @@
 import { useAuth } from "@/modules/auth/context";
+import { useKeepSignIn } from "@/modules/auth/domain/usecases";
 import {
   BaseContextProps,
   Channel,
   findManyChannels,
   findManyMessages,
+  findUser,
   Message,
   User,
 } from "@/modules/common";
@@ -30,7 +32,8 @@ export const DirectMessagesContext = createContext<DirectMessagesContextData>(
 );
 
 export function DirectMessagesProvider({ children }: BaseContextProps) {
-  const { keepSignIn, setIsAuthenticated } = useAuth();
+  const { setIsAuthenticated, setUser, user } = useAuth();
+  const { keepSignIn } = useKeepSignIn();
   const {
     channelsState: [channels],
     usersState: [users],
@@ -50,6 +53,11 @@ export function DirectMessagesProvider({ children }: BaseContextProps) {
     if (!didSucceed) return;
 
     await initializeDirectMessagesState({});
+    if (user) return;
+
+    const response = await findUser({});
+    if (!response.didSucceed) return;
+    setUser(response.data);
   }
 
   useEffect(() => {

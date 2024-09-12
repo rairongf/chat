@@ -8,12 +8,12 @@ export function useConnectToChannel(
   findManyMessages: IFindManyMessagesRepository,
 ) {
   const router = useRouter();
-  const {activeChannelId, connectTo} = useWebsocket();
+  const { connectTo} = useWebsocket();
   const { messagesState: [, setMessages] } = useDirectMessagesState();
 
   const connectToChannel: IConnectToChannelUsecase = async ({channelId}) => {
     try {
-      connectTo(channelId);
+      const activeChannelId = connectTo(channelId);
 
       const didConnect = activeChannelId == channelId;
       if(!didConnect){

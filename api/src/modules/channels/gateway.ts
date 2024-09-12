@@ -8,7 +8,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Events } from 'src/constants';
 
 /**
  * `namespace` defaults to `'/'`
@@ -17,8 +16,8 @@ import { Events } from 'src/constants';
  */
 @WebSocketGateway(80, {
   cors: { origin: '*' },
-  namespace: 'channel',
-  path: '/socket.io',
+  //namespace: '/^\/channels\/[a-zA-Z0-9]+$/',
+  //path: '/socket.io',
 })
 export class ChannelsGateway
   implements OnGatewayConnection, OnGatewayDisconnect {
@@ -27,36 +26,39 @@ export class ChannelsGateway
 
   handleConnection(client: Socket, ...args: any[]) {
     console.log('New user connected...', client.id);
-
-    client.emit(Events.userJoined, {
-      message: 'You joined the channel',
-    });
-
-    client.broadcast.emit(Events.userJoined, {
-      message: `New User joined the channel: ${client.id}`,
-    });
   }
 
   handleDisconnect(client: Socket) {
     console.log('User disconnected...', client.id);
-
-    //TODO: this wont work
-    client.emit(Events.userLeft, {
-      message: 'You left the channel',
-    });
-
-    client.broadcast.emit(Events.userLeft, {
-      message: `User left the channel: ${client.id}`,
-    });
   }
 
   @SubscribeMessage('events')
   handleEvent(
-    @MessageBody() message: string,
+    @MessageBody() payload: {
+      channelId: string;
+      content: string;
+      senderId: string;
+    },
     @ConnectedSocket() client: Socket,
   ) {
-    console.log(`${client.id}: ${message}`);
+    console.log(`[events] ${client.id}: ${payload}`);
 
-    this.server.emit(Events.messages, message);
+    this.server.emit(payload.channelId, `${payload.senderId}: ${payload.content}`);
+  }
+
+  @SubscribeMessage('join_channel')
+  async handleJoinChannel(
+    @MessageBody()
+    payload: {
+      channelId: string;
+      senderId: string;
+    },
+    @ConnectedSocket() client: Socket,
+  ) {
+    console.log(`[join_channel] ${client.id}:`, payload);
+    if (!payload.channelId) return;
+
+    client.emit(payload.channelId, 'You joined the channel');
+    client.broadcast.emit(payload.channelId, `New User joined the channel: ${client.id}`);
   }
 }

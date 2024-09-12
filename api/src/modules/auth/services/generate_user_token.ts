@@ -43,10 +43,11 @@ export class GenerateUserTokenService {
     accessToken: string,
     refreshToken: string,
   ): Promise<TokenDocument> {
-    const oldToken = await this.tokenRepository.model.findOne({ _id: user._id });
+    const oldToken = await this.tokenRepository.model.findOne({ _id: user._id }).lean({ getters: true });
 
     if (!oldToken) {
       const token = await this.tokenRepository.model.create({
+        _id: new Types.ObjectId(),
         userId: new Types.ObjectId(user._id),
         refreshToken,
         accessToken,
@@ -57,6 +58,6 @@ export class GenerateUserTokenService {
     return await this.tokenRepository.model.findOneAndUpdate(
       { _id: oldToken._id },
       { refreshToken, accessToken },
-    );
+    ).lean({ getters: true });
   }
 }

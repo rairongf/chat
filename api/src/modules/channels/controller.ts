@@ -1,9 +1,9 @@
 import { Body, Controller, Get, Param, Patch, Post, Query } from "@nestjs/common";
+import { User } from "src/decorators/user";
+import { UserPayload } from "src/interfaces";
 import { CreateChannelBodyDTO, CreateChannelService } from "./create_channel";
 import { FindManyChannelsQueryParamsDTO, FindManyChannelsService } from "./find_many_channels";
 import { ChannelIdParam } from "./id_param_dto";
-import { User } from "src/decorators";
-import { UserPayload } from "src/interfaces";
 
 @Controller('channels')
 export class ChannelsController {

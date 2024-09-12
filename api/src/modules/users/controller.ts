@@ -1,14 +1,16 @@
 import { Body, Controller, Get, Patch, Post, Query } from "@nestjs/common";
-import { CreateUserBodyDTO, CreateUserService } from "./create_user";
 import { Public, User } from "src/decorators";
-import { FindManyUsersQueryParamsDTO, FindManyUsersService } from "./find_many_users";
 import { UserPayload } from "src/interfaces";
+import { CreateUserBodyDTO, CreateUserService } from "./create_user";
+import { FindManyUsersQueryParamsDTO, FindManyUsersService } from "./find_many_users";
+import { FindMeService } from "./find_me";
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly createService: CreateUserService,
     private readonly findManyUsersService: FindManyUsersService,
+    private readonly findMeService: FindMeService,
   ) { }
 
   @Public()
@@ -31,7 +33,11 @@ export class UsersController {
   async findOne() { }
 
   @Get('/me')
-  async me() { }
+  async me(
+    @User() user: UserPayload,
+  ) {
+    return this.findMeService.handle(user.userId);
+  }
 
   @Patch(':id')
   async update() { }

@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import * as bcrypt from 'bcrypt';
-import { UserDocument, UserRepository } from "src/modules/data";
+import { User, UserDocument, UserRepository } from "src/modules/data";
 
 
 @Injectable()
@@ -12,18 +11,34 @@ export class ValidateUserService {
   async handle(
     email: string,
     password: string,
-  ): Promise<Pick<UserDocument, 'email' | '_id'>> {
-    const user = await this.userRepository.model.findOne({
-      email,
-    }, undefined, undefined);
+  ): Promise<Pick<User, 'email' | '_id'>> {
+    const user = await this.userRepository.model.findOne<UserDocument>({
+      email: email,
+    }, {
+      password: 1,
+      _id: 1,
+      email: 1,
+    }, {
+    }).lean({ getters: true });
 
-    if (!user) throw new UnauthorizedException();
+    if (!user) {
+      console.log('Could not find user');
+      throw new UnauthorizedException();
+    }
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    /* if (user && (await bcrypt.compare(password, user.password))) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...result } = user;
+      return { ...result };
+    } */
+
+    if (user && password == user.password) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return { ...result };
     }
+
+    console.log('Passwords did not match');
     return null;
   }
 }

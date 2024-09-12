@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LoggingInterceptor } from './interceptors';
+import { LoggingInterceptor, TransformResponseInterceptor } from './interceptors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -9,7 +9,10 @@ async function bootstrap() {
     },
     //bufferLogs: true,
   });
-  app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(
+    new TransformResponseInterceptor(),
+    new LoggingInterceptor(),
+  );
   await app.listen(process.env.PORT || 3008);
 }
 bootstrap();

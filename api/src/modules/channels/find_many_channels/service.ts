@@ -24,10 +24,12 @@ export class FindManyChannelsService {
       members: 1,
       name: 1,
       type: 1,
+      createdAt: 1,
+      updatedAt: 1,
     }, {
       skip: query.limit * (query.page - 1),
       limit: query.limit,
-    }).exec();
+    }).lean({ getters: true }).exec();
 
     return {
       elements: channels,

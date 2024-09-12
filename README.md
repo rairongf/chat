@@ -82,6 +82,34 @@ npm i
 npm run dev
 ```
 
+### Como testar a comunicação em tempo real
+
+Existem três contas disponíveis para testes no momento:
+
+#### Conta 1 (e-mail e senha)
+- rairon.ferreira@email.com
+- 123456
+
+#### Conta 2 (e-mail e senha)
+- noriar.goncalves@email.com
+- 123456
+
+#### Conta 3 (e-mail e senha)
+- user3@email.com
+- 123456
+
+Acessando as três contas simultaneamente, é possível visualizar **até dois canais de conversa disponíveis**.
+
+> Abra o Console do navegador para acompanhar as mensagens.
+
+Ao tocar em um canal:
+1. uma conexão via WebSocket é estabelecida;
+2. uma caixa para entrada de texto surje na parte superior.
+
+Ao preencher o campo e enviar uma mensagem:
+1. o usuário autenticado envia uma mensagem ao canal via WebSocket;
+2. todos os usuários conectados neste mesmo canal receberão a mensagem (🚨 acompanhe pelo Console do navegador).
+
 ### Autor
 
 <a href="https://www.linkedin.com/in/raironferreira/">

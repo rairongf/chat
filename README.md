@@ -37,6 +37,17 @@ $ cd chat
 
 ### 🌐 Rodando o Back End (servidor)
 
+Crie o arquivo `.env.development.local` no diretório raiz do projeto (`/api/.env.development.local`)
+com o conteúdo abaixo:
+
+```env
+MONGO_URI=mongodb+srv://admin:admin@chat-app-dev.ztsiw.mongodb.net/?retryWrites=true&w=majority&appName=chat-app-dev
+PORT=3008
+NODE_ENV=development
+```
+
+Depois, siga as instruções abaixo:
+
 ```bash
 # Acesse o diretório raiz da aplicação
 cd api
@@ -49,6 +60,15 @@ npm run start:dev
 ```
 
 ### 💻 Rodando a aplicação web (Front End)
+
+Crie o arquivo `.env.development.local` no diretório raiz do projeto (`/frontend/.env.development.local`)
+com o conteúdo abaixo:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3008
+```
+
+Depois, siga as instruções abaixo utilizando um 🚨 terminal diferente:
 
 ```bash
 # Acesse o diretório raiz da aplicação

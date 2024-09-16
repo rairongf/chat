@@ -7,5 +7,5 @@ export class FindManyMessagesQueryParamsDTO extends PaginationQueryParamsDTO {
   @IsOptional()
   @Type(() => Types.ObjectId)
   @IsMongoId()
-  channel_id?: Types.ObjectId;
+  channelId?: Types.ObjectId;
 }

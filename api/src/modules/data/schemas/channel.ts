@@ -37,7 +37,7 @@ export class Channel extends AbstractDocument {
   members: User[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Guild.name })
-  guild_id?: Guild;
+  guildId?: Guild;
 }
 
 export const ChannelSchema = SchemaFactory.createForClass(Channel);

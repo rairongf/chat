@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { CreateMessageBodyDTO } from "../dtos";
 import { Types } from "mongoose";
 import { MessageDocument, MessageRepository } from "src/modules/data";
+import { CreateMessageBodyDTO } from "../dtos";
 
 @Injectable()
 export class CreateMessageService {
@@ -14,7 +14,7 @@ export class CreateMessageService {
       _id: new Types.ObjectId(),
       content: data.content,
       sender_id: userId,
-      channel_id: data.channel_id,
+      channelId: data.channelId,
     });
 
     return message;

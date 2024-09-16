@@ -12,15 +12,15 @@ export class FindManyMessagesService {
 
   async handle(userId: Types.ObjectId, query: FindManyMessagesQueryParamsDTO): Promise<ChatPaginatedResponse<MessageDocument>> {
     const filter: FilterQuery<MessageDocument> = {
-      channel_id: query.channel_id,
+      channelId: query.channelId,
     };
 
     const count = await this.repository.model.countDocuments(filter);
 
     const messages = await this.repository.model.find(filter, {
       _id: 1,
-      sender_id: 1,
-      channel_id: 1,
+      senderId: 1,
+      channelId: 1,
       content: 1,
       createdAt: 1,
       updatedAt: 1,

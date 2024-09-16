@@ -16,10 +16,10 @@ export class Message extends AbstractDocument {
   content: string;
 
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: User.name, autopopulate: true })
-  sender_id: User;
+  senderId: User;
 
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: Channel.name })
-  channel_id: Channel;
+  channelId: Channel;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

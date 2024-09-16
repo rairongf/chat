@@ -12,7 +12,7 @@ export class FindManyUsersService {
   ) { }
 
   async handle(userId: Types.ObjectId, query: FindManyUsersQueryParamsDTO): Promise<ChatPaginatedResponse<UserDocument>> {
-    if (query.guild_id) {
+    if (query.guildId) {
       return this.queryGuildMembers(userId, query);
     }
 
@@ -43,7 +43,7 @@ export class FindManyUsersService {
 
   private async queryGuildMembers(userId: Types.ObjectId, query: FindManyUsersQueryParamsDTO) {
     const guildUsersIds = await this.guildRepository.model.findOne({
-      _id: query.guild_id,
+      _id: query.guildId,
     }, {
       members: 1,
     });

@@ -7,5 +7,5 @@ export class FindManyChannelsQueryParamsDTO extends PaginationQueryParamsDTO {
   @IsOptional()
   @Type(() => Types.ObjectId)
   @IsMongoId()
-  guild_id?: Types.ObjectId;
+  guildId?: Types.ObjectId;
 }

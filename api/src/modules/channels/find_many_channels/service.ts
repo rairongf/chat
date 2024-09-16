@@ -13,14 +13,14 @@ export class FindManyChannelsService {
   async handle(userId: Types.ObjectId, query: FindManyChannelsQueryParamsDTO): Promise<ChatPaginatedResponse<ChannelDocument>> {
     const filter: FilterQuery<ChannelDocument> = {
       members: userId,
-      guild_id: query.guild_id,
+      guildId: query.guildId,
     };
 
     const count = await this.repository.model.countDocuments(filter);
 
     const channels = await this.repository.model.find(filter, {
       _id: 1,
-      guild_id: 1,
+      guildId: 1,
       members: 1,
       name: 1,
       type: 1,

@@ -10,24 +10,24 @@ export class CreateChannelService {
   ) { }
 
   async handle(userId: Types.ObjectId, data: CreateChannelBodyDTO): Promise<ChannelDocument> {
-    if (data.member_id) {
+    if (data.memberId) {
       const channels = await this.repository.model.create([
         {
           _id: new Types.ObjectId(),
           type: ChannelType.PRIVATE,
-          name: `private_with_${data.member_id}`,
+          name: `private_with_${data.memberId}`,
           members: [
-            new Types.ObjectId(data.member_id),
+            new Types.ObjectId(data.memberId),
             userId,
           ],
-          guild_id: null,
+          guildId: null,
         }
       ], {})
 
       return channels.at(0);
     }
 
-    if (!data.guild_id) {
+    if (!data.guildId) {
       throw new BadRequestException('Neither `guild_id` or `member_id` were provided.');
     }
 
@@ -37,7 +37,7 @@ export class CreateChannelService {
         type: ChannelType.GUILD_TEXT_CHANNEL,
         name: data.name ?? '',
         members: [],
-        guild_id: new Types.ObjectId(data.guild_id),
+        guildId: new Types.ObjectId(data.guildId),
       }
     ], {});
 

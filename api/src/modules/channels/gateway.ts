@@ -7,7 +7,10 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
+import { Types } from 'mongoose';
 import { Server, Socket } from 'socket.io';
+import { Message } from '../data';
+import { CreateMessageService } from '../messages/services';
 
 /**
  * `namespace` defaults to `'/'`
@@ -21,6 +24,10 @@ import { Server, Socket } from 'socket.io';
 })
 export class ChannelsGateway
   implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(
+    private readonly createMessageService: CreateMessageService,
+  ) { }
+
   @WebSocketServer()
   server: Server;
 
@@ -33,17 +40,23 @@ export class ChannelsGateway
   }
 
   @SubscribeMessage('events')
-  handleEvent(
+  async handleEvent(
     @MessageBody() payload: {
       channelId: string;
       content: string;
       senderId: string;
     },
-    @ConnectedSocket() client: Socket,
+    //@ConnectedSocket() client: Socket,
   ) {
-    console.log(`[events] ${client.id}:`, payload);
+    console.log(`[events] ${payload.senderId}:`, payload);
+    if (!payload.channelId) return;
 
-    this.server.emit(payload.channelId, `${payload.senderId}: ${payload.content}`);
+    const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
+      channelId: new Types.ObjectId(payload.channelId),
+      content: payload.content,
+    });
+
+    this.serverEmitTo<Message>(payload.channelId, message);
   }
 
   @SubscribeMessage('join_channel')
@@ -55,10 +68,30 @@ export class ChannelsGateway
     },
     @ConnectedSocket() client: Socket,
   ) {
-    console.log(`[join_channel] ${client.id}:`, payload);
+    console.log(`[join_channel] ${payload.senderId}:`, payload);
     if (!payload.channelId) return;
 
     client.emit(payload.channelId, 'You joined the channel');
-    client.broadcast.emit(payload.channelId, `New User joined the channel: ${client.id}`);
+    client.broadcast.emit(payload.channelId, `User joined the channel: ${payload.senderId}`);
+  }
+
+  @SubscribeMessage('leave_channel')
+  async handleLeaveChannel(
+    @MessageBody()
+    payload: {
+      channelId: string;
+      senderId: string;
+    },
+    @ConnectedSocket() client: Socket,
+  ) {
+    console.log(`[leave_channel] ${payload.senderId}:`, payload);
+    if (!payload.channelId) return;
+
+    client.emit(payload.channelId, 'You left the channel');
+    client.broadcast.emit(payload.channelId, `User left the channel: ${payload.senderId}`);
+  }
+
+  private serverEmitTo<T extends object>(event: string, data: T) {
+    this.server.emit(event, data);
   }
 }

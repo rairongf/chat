@@ -5,7 +5,9 @@ import { FindManyUsersService } from './find_many_users';
 import { FindMeService } from './find_me';
 
 @Module({
-  providers: [CreateUserService, FindManyUsersService, FindMeService],
+  providers: [
+    CreateUserService, FindManyUsersService, FindMeService
+  ],
   controllers: [UsersController],
 })
 export class UsersModule { }

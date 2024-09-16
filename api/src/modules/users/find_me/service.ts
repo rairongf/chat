@@ -1,15 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { Types } from "mongoose";
-import { UserRepository } from "src/modules/data";
+import { User, UserRepository } from "src/modules/data";
 
 @Injectable()
 export class FindMeService {
   constructor(
-    private readonly userRepository: UserRepository,
+    private readonly repository: UserRepository,
   ) { }
 
-  async handle(userId: Types.ObjectId) {
-    const user = await this.userRepository.model.find({
+  async handle(userId: Types.ObjectId): Promise<Omit<User, 'password'>> {
+    const user = await this.repository.model.findOne({
       _id: userId,
     }, {
       _id: 1,
@@ -20,8 +20,17 @@ export class FindMeService {
       createdAt: 1,
       birthday: 1,
       email: 1,
-    }).lean({ getters: true }).exec();
+    }).lean({ getters: true });
 
-    return user;
+    return {
+      _id: user._id,
+      name: user.name,
+      username: user.username,
+      picture: user.picture,
+      about: user.about,
+      createdAt: user.createdAt,
+      birthday: user.birthday,
+      email: user.email,
+    };
   }
 }

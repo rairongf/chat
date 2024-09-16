@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Patch, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { Public, User } from "src/decorators";
 import { UserPayload } from "src/interfaces";
+import * as data from 'src/modules/data';
 import { CreateUserBodyDTO, CreateUserService } from "./create_user";
 import { FindManyUsersQueryParamsDTO, FindManyUsersService } from "./find_many_users";
 import { FindMeService } from "./find_me";
@@ -29,16 +30,10 @@ export class UsersController {
     return this.findManyUsersService.handle(user.userId, query);
   }
 
-  @Get(':id')
-  async findOne() { }
-
-  @Get('/me')
-  async me(
+  @Get('me')
+  async findUser(
     @User() user: UserPayload,
-  ) {
+  ): Promise<Omit<data.User, 'password'>> {
     return this.findMeService.handle(user.userId);
   }
-
-  @Patch(':id')
-  async update() { }
 }

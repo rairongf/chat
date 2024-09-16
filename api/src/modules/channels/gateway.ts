@@ -41,7 +41,7 @@ export class ChannelsGateway
     },
     @ConnectedSocket() client: Socket,
   ) {
-    console.log(`[events] ${client.id}: ${payload}`);
+    console.log(`[events] ${client.id}:`, payload);
 
     this.server.emit(payload.channelId, `${payload.senderId}: ${payload.content}`);
   }

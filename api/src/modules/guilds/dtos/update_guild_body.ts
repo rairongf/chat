@@ -5,10 +5,10 @@ export class UpdateGuildBodyDTO
   implements
   Omit<
     Guild,
-    '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'members'
+    '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'members' | 'name'
   > {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 }

@@ -5,6 +5,7 @@ import { AuthModule } from './modules/auth/module';
 import { ChannelsModule } from './modules/channels/module';
 import { ConfigModule } from './modules/config/module';
 import { DataModule } from './modules/data/module';
+import { GuildsModule } from './modules/guilds/module';
 import { MessagesModule } from './modules/messages/module';
 import { UploadModule } from './modules/upload/module';
 import { UsersModule } from './modules/users/module';
@@ -18,6 +19,7 @@ import { UsersModule } from './modules/users/module';
     ChannelsModule,
     UsersModule,
     MessagesModule,
+    GuildsModule,
   ],
   controllers: [],
   providers: [
@@ -27,4 +29,4 @@ import { UsersModule } from './modules/users/module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

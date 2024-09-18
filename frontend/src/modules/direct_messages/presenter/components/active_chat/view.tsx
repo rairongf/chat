@@ -15,7 +15,7 @@ export function ActiveChatView() {
 
       <Row className="justify-stretch items-stretch h-full">
         {/* Main chat */}
-        <main className="flex flex-col justify-start items-stretch w-full pt-4 pb-2">
+        <main className="flex flex-col justify-start items-stretch w-full max-w-full h-full pt-4 pb-2">
           <ChatScrollableContainer />
           <SendMessageButton />
         </main>

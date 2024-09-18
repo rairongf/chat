@@ -12,9 +12,11 @@ export class DeleteGuildService {
     guildId: Types.ObjectId,
   ): Promise<Guild> {
     try {
-      const guild = await this.repository.model.findOneAndDelete(
-        { _id: guildId, members: userId }
-      );
+      const guild = await this.repository.model.findOneAndUpdate(
+        { _id: guildId, members: userId },
+        { $set: { deletedAt: new Date() } },
+        { returnDocument: 'after' }
+      ).lean({ getters: true });
 
       if (!guild) {
         throw new NotFoundException('Could not delete guild');

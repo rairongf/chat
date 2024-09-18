@@ -3,7 +3,7 @@ import { api } from '../../../common/infra/services/server/api';
 import { Channel, PaginatedData } from '../../domain';
 
 export type IFindManyChannelsRepository = PaginatedRepository<Channel, {
-  guild_id?: string;
+  guildId?: string;
 }>;
 
 export const findManyChannels: IFindManyChannelsRepository = ({page = 1, limit = 50, ...args}) => {

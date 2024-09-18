@@ -1,13 +1,11 @@
-import { PaginatedRepository } from '@/modules/common/infra/models';
-import { api } from '../../../common/infra/services/server/api';
-import { Channel, Message } from '../../domain';
+import { api, Channel, Message, PaginatedRepository } from '@/modules/common';
 
 export type IFindManyMessagesRepository = PaginatedRepository<Message, {
-  channel_id: Channel['_id']; 
+  channelId: Channel['_id']; 
 }>;
 
-export const findManyMessages: IFindManyMessagesRepository = ({page = 1, limit = 50, channel_id}) => {
+export const findManyMessages: IFindManyMessagesRepository = ({page = 1, limit = 50, channelId}) => {
   return api.get(`/messages`, {
-    params: {page, limit, channel_id}
+    params: {page, limit, channelId}
   });
 };

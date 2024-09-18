@@ -13,7 +13,7 @@ export class CreateMessageService {
     const message = await this.repository.model.create({
       _id: new Types.ObjectId(),
       content: data.content,
-      sender_id: userId,
+      senderId: userId,
       channelId: data.channelId,
     });
 

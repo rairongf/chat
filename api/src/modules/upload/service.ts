@@ -5,6 +5,10 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 export class UploadImageService {
   async handle({ filename, file, bucket }: Params) {
     try {
+      if (!process.env.S3_ACCESS_KEY_ID || !process.env.S3_SECRET_ACCESS_KEY) {
+        throw new InternalServerErrorException('Missing upload credentials');
+      }
+
       const s3Client = new S3Client({
         forcePathStyle: true,
         region: 'sa-east-1',

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { add, getUnixTime } from 'date-fns';
 import { Types } from 'mongoose';
@@ -9,7 +9,7 @@ export class GenerateUserTokenService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly tokenRepository: TokenRepository,
-  ) {}
+  ) { }
 
   async handle(user: Pick<UserDocument, 'email' | '_id'>) {
     const refreshTokenExpiresAt = add(new Date(), { hours: 24 });
@@ -57,8 +57,14 @@ export class GenerateUserTokenService {
       return token;
     }
 
-    return await this.tokenRepository.model
-      .findOneAndUpdate({ _id: oldToken._id }, { refreshToken, accessToken })
+    const token = await this.tokenRepository.model
+      .findOneAndUpdate({ _id: oldToken._id }, { refreshToken, accessToken }, { returnDocument: 'after' })
       .lean({ getters: true });
+
+    if (!token) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    return token;
   }
 }

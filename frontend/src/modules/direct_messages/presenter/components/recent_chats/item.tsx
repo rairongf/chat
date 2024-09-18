@@ -1,4 +1,5 @@
 import { Avatar, Button, Column, Row } from "@/modules/common";
+import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
 
@@ -12,6 +13,7 @@ export function RecentChatsTabItem({
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const { theme } = useTheme();
+  const { formatDate } = useLanguage();
 
   return (
     <Button
@@ -36,12 +38,11 @@ export function RecentChatsTabItem({
             alt: "Sender Profile Picture",
           }}
         />
-        <Column className="justify-center items-start gap-0.5">
+        <Column className="justify-center items-start gap-0.5 text-start">
           <span className="font-semibold leading-none">{name}</span>
           <span className="text-xs leading-none">
-            Criado em{" "}
             <span className="font-semibold">
-              {date.toLocaleString("pt-BR", {
+              {formatDate(date, {
                 dateStyle: "short",
                 timeStyle: "short",
               })}

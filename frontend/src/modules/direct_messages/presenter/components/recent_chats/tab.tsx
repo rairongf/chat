@@ -1,16 +1,38 @@
-import { Button, Column, Icon, Row } from "@/modules/common";
+import { Button, Column, Dialog, Icon, Row, useDialog } from "@/modules/common";
+import { useLanguage } from "@/modules/language";
+import { useTheme } from "@/modules/theme";
+import { twJoin } from "tailwind-merge";
 import { useDirectMessages } from "../../context";
 import { RecentChatsTabItem } from "./item";
 
 export function RecentChatsTab() {
+  const { theme } = useTheme();
+  const { show, removeAny } = useDialog();
+  const { resource } = useLanguage();
   const { channels, connectToChannel } = useDirectMessages();
 
   return (
-    <aside className={`min-w-60 w-60 max-w-60 h-full p-2`}>
+    <aside
+      className={twJoin(
+        "min-w-60 w-60 max-w-60 h-full p-2",
+        theme.backgroundSecondary
+      )}
+    >
       <Column className="gap-1">
         <Row className="w-full justify-between items-center mb-2 pl-2.5 pr-2">
-          <span className="uppercase text-xs font-bold">Mensages diretas</span>
-          <Button>
+          <span className="uppercase text-xs font-bold">
+            {resource.directMessages.recentChatsTabTitle}
+          </span>
+          <Button
+            onClick={() => {
+              show(
+                <Dialog.Container onClose={removeAny}>
+                  Test Dialog
+                </Dialog.Container>,
+                { key: "add_direct_message" }
+              );
+            }}
+          >
             <Icon className="text-base font-medium" name="add" />
           </Button>
         </Row>

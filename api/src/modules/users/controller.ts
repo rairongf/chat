@@ -1,7 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { Public, User } from 'src/decorators';
-import { UserPayload } from 'src/interfaces';
 import * as data from 'src/modules/data';
+import { Public, UserJWT, UserPayload } from '../common';
 import { CreateUserBodyDTO, CreateUserService } from './create_user';
 import {
   FindManyUsersQueryParamsDTO,
@@ -15,7 +14,7 @@ export class UsersController {
     private readonly createService: CreateUserService,
     private readonly findManyUsersService: FindManyUsersService,
     private readonly findMeService: FindMeService,
-  ) {}
+  ) { }
 
   @Public()
   @Post()
@@ -25,7 +24,7 @@ export class UsersController {
 
   @Get()
   async findMany(
-    @User() user: UserPayload,
+    @UserJWT() user: UserPayload,
     @Query() query: FindManyUsersQueryParamsDTO,
   ) {
     return this.findManyUsersService.handle(user.userId, query);
@@ -33,7 +32,7 @@ export class UsersController {
 
   @Get('me')
   async findUser(
-    @User() user: UserPayload,
+    @UserJWT() user: UserPayload,
   ): Promise<Omit<data.User, 'password'>> {
     return this.findMeService.handle(user.userId);
   }

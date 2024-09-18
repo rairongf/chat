@@ -7,38 +7,36 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { User } from 'src/decorators/user';
-import { UserPayload } from 'src/interfaces';
+import { MongoIdParam, UserJWT, UserPayload } from '../common';
 import { CreateChannelBodyDTO, CreateChannelService } from './create_channel';
 import {
   FindManyChannelsQueryParamsDTO,
   FindManyChannelsService,
 } from './find_many_channels';
-import { ChannelIdParam } from './id_param_dto';
 
 @Controller('channels')
 export class ChannelsController {
   constructor(
     private readonly createService: CreateChannelService,
     private readonly findManyService: FindManyChannelsService,
-  ) {}
+  ) { }
 
   @Post()
-  async create(@User() user: UserPayload, @Body() body: CreateChannelBodyDTO) {
+  async create(@UserJWT() user: UserPayload, @Body() body: CreateChannelBodyDTO) {
     return this.createService.handle(user.userId, body);
   }
 
   @Get()
   async findMany(
-    @User() user: UserPayload,
+    @UserJWT() user: UserPayload,
     @Query() query: FindManyChannelsQueryParamsDTO,
   ) {
     return this.findManyService.handle(user.userId, query);
   }
 
   @Get(':id')
-  async findOne(@Param() param: ChannelIdParam) {}
+  async findOne(@Param() param: MongoIdParam) { }
 
   @Patch(':id')
-  async update(@Param() param: ChannelIdParam) {}
+  async update(@Param() param: MongoIdParam) { }
 }

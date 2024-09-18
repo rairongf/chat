@@ -1,4 +1,6 @@
 import { AuthProvider } from "@/modules/auth/context";
+import { DialogProvider } from "@/modules/common";
+import { LanguageProvider } from "@/modules/language";
 import { ThemeProvider } from "@/modules/theme";
 import { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
@@ -27,9 +29,13 @@ export default function RootLayout({
       <body
         className={`${nunitoSans.className} w-screen h-screen overflow-hidden`}
       >
-        <AuthProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <DialogProvider>{children}</DialogProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

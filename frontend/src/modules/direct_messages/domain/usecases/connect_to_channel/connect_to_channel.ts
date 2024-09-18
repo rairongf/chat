@@ -8,27 +8,31 @@ export function useConnectToChannel(
   findManyMessages: IFindManyMessagesRepository,
 ) {
   const router = useRouter();
-  const { connectTo} = useWebsocket();
+  const { activeChannelId, connectTo } = useWebsocket();
   const { messagesState: [, setMessages] } = useDirectMessagesState();
 
-  const connectToChannel: IConnectToChannelUsecase = async ({channelId}) => {
+  const connectToChannel: IConnectToChannelUsecase = async ({ channelId }) => {
     try {
-      const activeChannelId = connectTo(channelId);
+      if(activeChannelId == channelId) return;
+      const newActiveChannelId = connectTo(channelId);
 
-      const didConnect = activeChannelId == channelId;
-      if(!didConnect){
+      const didConnect = newActiveChannelId == channelId;
+      if (!didConnect) {
         console.log(`Could not connect to ${channelId}.`);
         return;
       }
 
-      const messagesResponse = await findManyMessages({ page: 1, limit: 50, channel_id: channelId });
+      const messagesResponse = await findManyMessages({ page: 1, limit: 50, channelId });
 
       if (!messagesResponse.didSucceed) {
         console.log('Error:', messagesResponse.error);
         return;
       }
 
-      setMessages(messagesResponse.data.elements);
+      setMessages([...messagesResponse.data.elements.map((e) => ({
+        ...e,
+        createdAt: new Date(e.createdAt),
+      }))]);
 
       router.push(`/channels/@me/${channelId}`);
     } catch (err) {

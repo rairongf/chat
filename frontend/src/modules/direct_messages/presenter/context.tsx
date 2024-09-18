@@ -1,20 +1,19 @@
-import { useAuth } from "@/modules/auth/context";
-import { useKeepSignIn } from "@/modules/auth/domain/usecases";
 import {
   BaseContextProps,
   Channel,
   findManyChannels,
   findManyMessages,
-  findUser,
   Message,
   User,
 } from "@/modules/common";
+import { useWebsocket } from "@/modules/websocket";
 import { createContext, useContext, useEffect } from "react";
 import {
   IConnectToChannelUsecase,
   ISendDirectMessageUsecase,
   useConnectToChannel,
   useInitializeDirectMessagesState,
+  useOnEventReceived,
   useSendDirectMessage,
 } from "../domain/usecases";
 import { useDirectMessagesState } from "./state";
@@ -32,13 +31,14 @@ export const DirectMessagesContext = createContext<DirectMessagesContextData>(
 );
 
 export function DirectMessagesProvider({ children }: BaseContextProps) {
-  const { setIsAuthenticated, setUser, user } = useAuth();
-  const { keepSignIn } = useKeepSignIn();
   const {
     channelsState: [channels],
     usersState: [users],
     messagesState: [messages],
   } = useDirectMessagesState();
+  const { receivedEvents } = useWebsocket();
+
+  const onEventReceived = useOnEventReceived();
 
   const { initializeDirectMessagesState } =
     useInitializeDirectMessagesState(findManyChannels);
@@ -48,22 +48,19 @@ export function DirectMessagesProvider({ children }: BaseContextProps) {
   const { sendMessage } = useSendDirectMessage();
 
   async function init() {
-    const didSucceed = await keepSignIn({});
-    setIsAuthenticated(didSucceed);
-    if (!didSucceed) return;
-
     await initializeDirectMessagesState({});
-    if (user) return;
-
-    const response = await findUser({});
-    if (!response.didSucceed) return;
-    setUser(response.data);
   }
 
   useEffect(() => {
     init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const lastEvent = receivedEvents.at(receivedEvents.length - 1);
+    if (!lastEvent) return;
+
+    onEventReceived(lastEvent);
+  }, [receivedEvents]);
 
   return (
     <DirectMessagesContext.Provider

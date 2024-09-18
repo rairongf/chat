@@ -21,7 +21,6 @@ export function useInitializeDirectMessagesState(
         return;
       }
 
-      console.log('Found channels:', data.elements);
       setChannels(data.elements);
 
       return;

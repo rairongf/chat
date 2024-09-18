@@ -9,7 +9,8 @@ import { ChatResponse } from '../interfaces';
 
 @Injectable()
 export class TransformResponseInterceptor<T>
-  implements NestInterceptor<T, ChatResponse<T>> {
+  implements NestInterceptor<T, ChatResponse<T>>
+{
   intercept(
     context: ExecutionContext,
     next: CallHandler,

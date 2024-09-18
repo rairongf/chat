@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { FilterQuery, Types } from 'mongoose';
-import { ChatPaginatedResponse } from 'src/interfaces';
+import { ChatPaginatedResponse } from 'src/modules/common';
 import { MessageDocument, MessageRepository } from 'src/modules/data';
 import { FindManyMessagesQueryParamsDTO } from '../dtos';
 
 @Injectable()
 export class FindManyMessagesService {
-  constructor(private readonly repository: MessageRepository) {}
+  constructor(private readonly repository: MessageRepository) { }
 
   async handle(
     userId: Types.ObjectId,
@@ -33,7 +33,7 @@ export class FindManyMessagesService {
           skip: query.limit * (query.page - 1),
           limit: query.limit,
         },
-      )
+      ).lean({ getters: true })
       .exec();
 
     return {

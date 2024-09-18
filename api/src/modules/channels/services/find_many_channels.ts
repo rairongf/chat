@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { FilterQuery, Types } from 'mongoose';
-import { ChatPaginatedResponse } from 'src/interfaces';
+import { ChatPaginatedResponse } from 'src/modules/common';
 import { ChannelDocument, ChannelRepository } from 'src/modules/data';
-import { FindManyChannelsQueryParamsDTO } from './query_params_dto';
+import { FindManyChannelsQueryParamsDTO } from '../dtos';
 
 @Injectable()
 export class FindManyChannelsService {
-  constructor(private readonly repository: ChannelRepository) {}
+  constructor(private readonly repository: ChannelRepository) { }
 
   async handle(
     userId: Types.ObjectId,

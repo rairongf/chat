@@ -8,11 +8,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { MongoIdParam, UserJWT, UserPayload } from '../common';
-import { CreateChannelBodyDTO, CreateChannelService } from './create_channel';
-import {
-  FindManyChannelsQueryParamsDTO,
-  FindManyChannelsService,
-} from './find_many_channels';
+import { CreateChannelBodyDTO, FindManyChannelsQueryParamsDTO } from './dtos';
+import { CreateChannelService, FindManyChannelsService } from './services';
 
 @Controller('channels')
 export class ChannelsController {

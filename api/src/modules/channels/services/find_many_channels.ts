@@ -15,6 +15,7 @@ export class FindManyChannelsService {
     const filter: FilterQuery<ChannelDocument> = {
       members: userId,
       guildId: query.guildId,
+      deletedAt: null,
     };
 
     const count = await this.repository.model.countDocuments(filter);

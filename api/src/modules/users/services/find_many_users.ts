@@ -29,6 +29,7 @@ export class FindManyUsersService {
         _id: {
           $ne: userId,
         },
+        deletedAt: null,
       };
 
       const count = await this.userRepository.model.countDocuments(filter);
@@ -67,7 +68,8 @@ export class FindManyUsersService {
     try {
       const guildUsersIds = await this.guildRepository.model.findOne(
         {
-          _id: query.guildId
+          _id: query.guildId,
+          deletedAt: null,
         },
         {
           members: 1

@@ -14,6 +14,7 @@ export class FindManyMessagesService {
   ): Promise<ChatPaginatedResponse<MessageDocument>> {
     const filter: FilterQuery<MessageDocument> = {
       channelId: query.channelId,
+      deletedAt: null,
     };
 
     const count = await this.repository.model.countDocuments(filter);

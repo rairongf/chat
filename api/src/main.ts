@@ -13,7 +13,9 @@ async function bootstrap() {
     },
     //bufferLogs: true,
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+  }));
   app.useGlobalInterceptors(
     new TransformResponseInterceptor(),
     new LoggingInterceptor(),

@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsMongoId, IsOptional } from 'class-validator';
+import { IsMongoId, IsNotEmpty } from 'class-validator';
 import { Types } from 'mongoose';
 import { PaginationQueryParamsDTO } from 'src/modules/common';
 
 export class FindManyMessagesQueryParamsDTO extends PaginationQueryParamsDTO {
-  @IsOptional()
   @Type(() => Types.ObjectId)
   @IsMongoId()
-  channelId?: Types.ObjectId;
+  @IsNotEmpty()
+  channelId: Types.ObjectId;
 }

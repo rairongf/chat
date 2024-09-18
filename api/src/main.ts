@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import {
@@ -12,6 +13,7 @@ async function bootstrap() {
     },
     //bufferLogs: true,
   });
+  app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(
     new TransformResponseInterceptor(),
     new LoggingInterceptor(),

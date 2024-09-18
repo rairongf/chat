@@ -1,20 +1,19 @@
 import { useAuth } from "@/modules/auth/context";
 import { Button, Column, Input } from "@/modules/common";
+import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { FormEvent, useState } from "react";
 import { twJoin } from "tailwind-merge";
 
 export function LoginPageContent() {
   const { signIn } = useAuth();
+  const { resource } = useLanguage();
   const { theme } = useTheme();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-
-    console.log("E-mail:", email);
-    console.log("Password:", password);
 
     const didSucceed = await signIn({
       email: email,
@@ -38,15 +37,15 @@ export function LoginPageContent() {
           <Column className="justify-start items-stretch w-full gap-5">
             <Column className="items-stretch gap-1">
               <span className="text-center font-bold text-2xl">
-                Boas-vindas de volta!
+                {resource.login.title}
               </span>
               <span className="text-center font-semibold">
-                Estamos muito animados em te ver novamente!
+                {resource.login.subtitle}
               </span>
             </Column>
             <Column className="items-stretch gap-1">
               <span className="text-start uppercase font-bold text-xs">
-                E-mail *
+                {resource.login.emailInputLabel}
               </span>
               <Input
                 className={twJoin(theme.foreground, "text-white p-2")}
@@ -55,7 +54,7 @@ export function LoginPageContent() {
             </Column>
             <Column className="items-stretch gap-0.5">
               <span className="text-start uppercase font-bold text-xs">
-                Senha *
+                {resource.login.passwordInputLabel}
               </span>
               <Input
                 className={twJoin(theme.foreground, "text-white p-2 mt-0.5")}
@@ -65,7 +64,9 @@ export function LoginPageContent() {
                 className="text-start text-blue-600 hover:underline"
                 type="button"
               >
-                <span className="text-sm font-semibold">Esqueceu a senha?</span>
+                <span className="text-sm font-semibold">
+                  {resource.login.forgotPasswordButtonLabel}
+                </span>
               </Button>
             </Column>
 
@@ -75,15 +76,19 @@ export function LoginPageContent() {
                 type="submit"
                 className={twJoin("text-center p-2.5 rounded", "bg-blue-800")}
               >
-                <span className="font-bold text-white">Entrar</span>
+                <span className="font-bold text-white">
+                  {resource.login.logInButtonLabel}
+                </span>
               </Button>
               <span className="text-sm mt-1.5">
-                Precisando de uma conta?
+                {resource.login.dontHaveAnAccount}
                 <Button
                   className="ml-2 text-blue-600 hover:underline"
                   type="button"
                 >
-                  <span className="text-sm font-semibold">Registre-se</span>
+                  <span className="text-sm font-semibold">
+                    {resource.login.signUpButtonLabel}
+                  </span>
                 </Button>
               </span>
             </Column>

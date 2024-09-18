@@ -71,8 +71,20 @@ export class ChannelsGateway
     console.log(`[join_channel] ${payload.senderId}:`, payload);
     if (!payload.channelId) return;
 
-    client.emit(payload.channelId, 'You joined the channel');
-    client.broadcast.emit(payload.channelId, `User joined the channel: ${payload.senderId}`);
+    /* const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
+      channelId: new Types.ObjectId(payload.channelId),
+      content: `${payload.senderId} joined the channel`,
+    }); */
+    const message = {
+      _id: new Types.ObjectId(),
+      channelId: payload.channelId,
+      content: `${payload.senderId} joined the channel`,
+      senderId: payload.senderId,
+      createdAt: new Date(),
+    };
+
+    this.emitWithClientTo(payload.channelId, client, { ...message, content: 'You joined the channel' });
+    this.emitWithClientTo(payload.channelId, client, message, true);
   }
 
   @SubscribeMessage('leave_channel')
@@ -87,11 +99,32 @@ export class ChannelsGateway
     console.log(`[leave_channel] ${payload.senderId}:`, payload);
     if (!payload.channelId) return;
 
-    client.emit(payload.channelId, 'You left the channel');
-    client.broadcast.emit(payload.channelId, `User left the channel: ${payload.senderId}`);
+    /* const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
+      channelId: new Types.ObjectId(payload.channelId),
+      content: `${payload.senderId} left the channel`,
+    }); */
+    const message = {
+      _id: new Types.ObjectId(),
+      channelId: payload.channelId,
+      content: `${payload.senderId} left the channel`,
+      senderId: payload.senderId,
+      createdAt: new Date(),
+    };
+
+    this.emitWithClientTo(payload.channelId, client, { ...message, content: 'You left the channel' });
+    this.emitWithClientTo(payload.channelId, client, message, true);
   }
 
   private serverEmitTo<T extends object>(event: string, data: T) {
     this.server.emit(event, data);
+  }
+
+  private emitWithClientTo<T extends object>(event: string, client: Socket, data: T, broadcast: boolean = false) {
+    if (broadcast) {
+      client.broadcast.emit(event, data);
+      return;
+    }
+
+    client.emit(event, data);
   }
 }

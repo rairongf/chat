@@ -1,10 +1,10 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Types } from "mongoose";
-import { AbstractDocument } from "./base_document";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { HydratedDocument, Types } from 'mongoose';
+import { AbstractDocument } from './base_document';
 
 export type TokenDocument = HydratedDocument<Token>;
 
-@Schema({ timestamps: true, versionKey: false, })
+@Schema({ timestamps: true, versionKey: false })
 export class Token extends AbstractDocument {
   @Prop({ type: Types.ObjectId, required: true })
   userId: Types.ObjectId;

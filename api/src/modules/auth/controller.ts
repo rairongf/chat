@@ -9,7 +9,7 @@ export class AuthController {
   constructor(
     private readonly loginService: LoginService,
     private readonly refreshTokenService: RefreshTokenService,
-  ) { }
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')

@@ -1,10 +1,26 @@
-
 import { Global, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ModelDefinition, MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '../config/module';
-import { ChannelRepository, GuildRepository, MessageRepository, TokenRepository, UserRepository } from './repositories';
-import { Channel, ChannelSchema, Guild, GuildSchema, Message, MessageSchema, Token, TokenSchema, User, UserSchema } from './schemas';
+import {
+  ChannelRepository,
+  GuildRepository,
+  MessageRepository,
+  TokenRepository,
+  UserRepository,
+} from './repositories';
+import {
+  Channel,
+  ChannelSchema,
+  Guild,
+  GuildSchema,
+  Message,
+  MessageSchema,
+  Token,
+  TokenSchema,
+  User,
+  UserSchema,
+} from './schemas';
 
 @Global()
 @Module({
@@ -37,7 +53,7 @@ import { Channel, ChannelSchema, Guild, GuildSchema, Message, MessageSchema, Tok
     UserRepository,
     ChannelRepository,
     GuildRepository,
-    MessageRepository
+    MessageRepository,
   ],
 })
 export class DataModule {

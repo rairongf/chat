@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
-import { AbstractDocument } from "./base_document";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { AbstractDocument } from './base_document';
 import { User } from './user';
 
 export type GuildDocument = HydratedDocument<Guild>;
@@ -10,14 +10,19 @@ export type GuildDocument = HydratedDocument<Guild>;
   versionKey: false,
 })
 export class Guild extends AbstractDocument {
-
   @Prop({
-    required: true
+    required: true,
   })
   name: string;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: User.name, autopopulate: true }])
-  members: User[]
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User.name,
+      autopopulate: true,
+    },
+  ])
+  members: User[];
 }
 
 export const GuildSchema = SchemaFactory.createForClass(Guild);

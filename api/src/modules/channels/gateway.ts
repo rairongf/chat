@@ -23,10 +23,9 @@ import { CreateMessageService } from '../messages/services';
   //path: '/socket.io',
 })
 export class ChannelsGateway
-  implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(
-    private readonly createMessageService: CreateMessageService,
-  ) { }
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
+  constructor(private readonly createMessageService: CreateMessageService) {}
 
   @WebSocketServer()
   server: Server;
@@ -41,7 +40,8 @@ export class ChannelsGateway
 
   @SubscribeMessage('events')
   async handleEvent(
-    @MessageBody() payload: {
+    @MessageBody()
+    payload: {
       channelId: string;
       content: string;
       senderId: string;
@@ -51,10 +51,13 @@ export class ChannelsGateway
     console.log(`[events] ${payload.senderId}:`, payload);
     if (!payload.channelId) return;
 
-    const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
-      channelId: new Types.ObjectId(payload.channelId),
-      content: payload.content,
-    });
+    const message = await this.createMessageService.handle(
+      new Types.ObjectId(payload.senderId),
+      {
+        channelId: new Types.ObjectId(payload.channelId),
+        content: payload.content,
+      },
+    );
 
     this.serverEmitTo<Message>(payload.channelId, message);
   }
@@ -83,7 +86,10 @@ export class ChannelsGateway
       createdAt: new Date(),
     };
 
-    this.emitWithClientTo(payload.channelId, client, { ...message, content: 'You joined the channel' });
+    this.emitWithClientTo(payload.channelId, client, {
+      ...message,
+      content: 'You joined the channel',
+    });
     this.emitWithClientTo(payload.channelId, client, message, true);
   }
 
@@ -111,7 +117,10 @@ export class ChannelsGateway
       createdAt: new Date(),
     };
 
-    this.emitWithClientTo(payload.channelId, client, { ...message, content: 'You left the channel' });
+    this.emitWithClientTo(payload.channelId, client, {
+      ...message,
+      content: 'You left the channel',
+    });
     this.emitWithClientTo(payload.channelId, client, message, true);
   }
 
@@ -119,7 +128,12 @@ export class ChannelsGateway
     this.server.emit(event, data);
   }
 
-  private emitWithClientTo<T extends object>(event: string, client: Socket, data: T, broadcast: boolean = false) {
+  private emitWithClientTo<T extends object>(
+    event: string,
+    client: Socket,
+    data: T,
+    broadcast: boolean = false,
+  ) {
     if (broadcast) {
       client.broadcast.emit(event, data);
       return;

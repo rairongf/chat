@@ -1,11 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LoggingInterceptor, TransformResponseInterceptor } from './interceptors';
+import {
+  LoggingInterceptor,
+  TransformResponseInterceptor,
+} from './interceptors';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: '*'
+      origin: '*',
     },
     //bufferLogs: true,
   });

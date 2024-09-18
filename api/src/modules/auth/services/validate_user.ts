@@ -1,25 +1,27 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { User, UserDocument, UserRepository } from "src/modules/data";
-
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { User, UserDocument, UserRepository } from 'src/modules/data';
 
 @Injectable()
 export class ValidateUserService {
-  constructor(
-    private readonly userRepository: UserRepository,
-  ) { }
+  constructor(private readonly userRepository: UserRepository) {}
 
   async handle(
     email: string,
     password: string,
   ): Promise<Pick<User, 'email' | '_id'>> {
-    const user = await this.userRepository.model.findOne<UserDocument>({
-      email: email,
-    }, {
-      password: 1,
-      _id: 1,
-      email: 1,
-    }, {
-    }).lean({ getters: true });
+    const user = await this.userRepository.model
+      .findOne<UserDocument>(
+        {
+          email: email,
+        },
+        {
+          password: 1,
+          _id: 1,
+          email: 1,
+        },
+        {},
+      )
+      .lean({ getters: true });
 
     if (!user) {
       console.log('Could not find user');

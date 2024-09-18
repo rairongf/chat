@@ -6,4 +6,4 @@ import { UploadImageService } from './service';
   providers: [UploadImageService],
   exports: [UploadImageService],
 })
-export class UploadModule { }
+export class UploadModule {}

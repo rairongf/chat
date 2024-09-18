@@ -1,5 +1,5 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import { AbstractDocument } from './base_document';
 import { Channel } from './channel';
 import { User } from './user';
@@ -11,14 +11,22 @@ export type MessageDocument = HydratedDocument<Message>;
   versionKey: false,
 })
 export class Message extends AbstractDocument {
-
   @Prop({ required: true })
   content: string;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: User.name, autopopulate: true })
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: User.name,
+    autopopulate: true,
+  })
   senderId: User;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: Channel.name })
+  @Prop({
+    required: true,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Channel.name,
+  })
   channelId: Channel;
 }
 

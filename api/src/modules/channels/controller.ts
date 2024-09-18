@@ -1,22 +1,30 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from "@nestjs/common";
-import { User } from "src/decorators/user";
-import { UserPayload } from "src/interfaces";
-import { CreateChannelBodyDTO, CreateChannelService } from "./create_channel";
-import { FindManyChannelsQueryParamsDTO, FindManyChannelsService } from "./find_many_channels";
-import { ChannelIdParam } from "./id_param_dto";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
+import { User } from 'src/decorators/user';
+import { UserPayload } from 'src/interfaces';
+import { CreateChannelBodyDTO, CreateChannelService } from './create_channel';
+import {
+  FindManyChannelsQueryParamsDTO,
+  FindManyChannelsService,
+} from './find_many_channels';
+import { ChannelIdParam } from './id_param_dto';
 
 @Controller('channels')
 export class ChannelsController {
   constructor(
     private readonly createService: CreateChannelService,
     private readonly findManyService: FindManyChannelsService,
-  ) { }
+  ) {}
 
   @Post()
-  async create(
-    @User() user: UserPayload,
-    @Body() body: CreateChannelBodyDTO,
-  ) {
+  async create(@User() user: UserPayload, @Body() body: CreateChannelBodyDTO) {
     return this.createService.handle(user.userId, body);
   }
 
@@ -29,12 +37,8 @@ export class ChannelsController {
   }
 
   @Get(':id')
-  async findOne(
-    @Param() param: ChannelIdParam,
-  ) { }
+  async findOne(@Param() param: ChannelIdParam) {}
 
   @Patch(':id')
-  async update(
-    @Param() param: ChannelIdParam,
-  ) { }
+  async update(@Param() param: ChannelIdParam) {}
 }

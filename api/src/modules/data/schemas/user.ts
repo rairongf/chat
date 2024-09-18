@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
-import { AbstractDocument } from "./base_document";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
+import { AbstractDocument } from './base_document';
 
 export type UserDocument = mongoose.HydratedDocument<User>;
 
@@ -9,9 +9,8 @@ export type UserDocument = mongoose.HydratedDocument<User>;
   versionKey: false,
 })
 export class User extends AbstractDocument {
-
   @Prop({
-    required: true
+    required: true,
   })
   name: string;
 

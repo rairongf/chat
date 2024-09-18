@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { TokenRepository, UserRepository } from "src/modules/data";
-import { GenerateUserTokenService } from "./generate_user_token";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { TokenRepository, UserRepository } from 'src/modules/data';
+import { GenerateUserTokenService } from './generate_user_token';
 
 @Injectable()
 export class RefreshTokenService {
@@ -10,7 +10,7 @@ export class RefreshTokenService {
     private readonly tokenRepository: TokenRepository,
     private readonly userRepository: UserRepository,
     private readonly generateUserTokenService: GenerateUserTokenService,
-  ) { }
+  ) {}
 
   async handle(refreshToken: string) {
     try {

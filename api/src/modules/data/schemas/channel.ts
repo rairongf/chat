@@ -1,6 +1,6 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { HydratedDocument } from "mongoose";
-import { AbstractDocument } from "./base_document";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { AbstractDocument } from './base_document';
 import { Guild } from './guild';
 import { User } from './user';
 
@@ -14,26 +14,36 @@ export type ChannelDocument = HydratedDocument<Channel>;
 @Schema({
   timestamps: true,
   versionKey: false,
-  toJSON: ({
+  toJSON: {
     transform(_, ret: Partial<ChannelDocument>, __) {
-      const name = ret.type == ChannelType.PRIVATE ? ret.members.find((member: any) => member._id.toString() !== ret._id.toString()).name : ret.name;
+      const name =
+        ret.type == ChannelType.PRIVATE
+          ? ret.members.find(
+              (member: any) => member._id.toString() !== ret._id.toString(),
+            ).name
+          : ret.name;
 
       return {
         ...ret,
-        name: name
+        name: name,
       };
     },
-  })
+  },
 })
 export class Channel extends AbstractDocument {
-
   @Prop({ required: true })
   name: string;
 
   @Prop({ enum: ChannelType, default: ChannelType.PRIVATE })
   type: ChannelType;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: User.name, autopopulate: true }])
+  @Prop([
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User.name,
+      autopopulate: true,
+    },
+  ])
   members: User[];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Guild.name })

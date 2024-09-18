@@ -1,15 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { add, getUnixTime } from "date-fns";
-import { Types } from "mongoose";
-import { TokenDocument, TokenRepository, UserDocument } from "src/modules/data";
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { add, getUnixTime } from 'date-fns';
+import { Types } from 'mongoose';
+import { TokenDocument, TokenRepository, UserDocument } from 'src/modules/data';
 
 @Injectable()
 export class GenerateUserTokenService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly tokenRepository: TokenRepository,
-  ) { }
+  ) {}
 
   async handle(user: Pick<UserDocument, 'email' | '_id'>) {
     const refreshTokenExpiresAt = add(new Date(), { hours: 24 });
@@ -43,7 +43,9 @@ export class GenerateUserTokenService {
     accessToken: string,
     refreshToken: string,
   ): Promise<TokenDocument> {
-    const oldToken = await this.tokenRepository.model.findOne({ _id: user._id }).lean({ getters: true });
+    const oldToken = await this.tokenRepository.model
+      .findOne({ _id: user._id })
+      .lean({ getters: true });
 
     if (!oldToken) {
       const token = await this.tokenRepository.model.create({
@@ -55,9 +57,8 @@ export class GenerateUserTokenService {
       return token;
     }
 
-    return await this.tokenRepository.model.findOneAndUpdate(
-      { _id: oldToken._id },
-      { refreshToken, accessToken },
-    ).lean({ getters: true });
+    return await this.tokenRepository.model
+      .findOneAndUpdate({ _id: oldToken._id }, { refreshToken, accessToken })
+      .lean({ getters: true });
   }
 }

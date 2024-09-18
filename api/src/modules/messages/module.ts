@@ -7,4 +7,4 @@ import { CreateMessageService, FindManyMessagesService } from './services';
   exports: [CreateMessageService],
   controllers: [MessagesController],
 })
-export class MessagesModule { }
+export class MessagesModule {}

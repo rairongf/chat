@@ -3,7 +3,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './controller';
 import { JwtStrategy, LocalStrategy } from './strategies';
-import { GenerateUserTokenService, LoginService, RefreshTokenService, ValidateUserService } from './services';
+import {
+  GenerateUserTokenService,
+  LoginService,
+  RefreshTokenService,
+  ValidateUserService,
+} from './services';
 
 @Module({
   imports: [
@@ -23,4 +28,4 @@ import { GenerateUserTokenService, LoginService, RefreshTokenService, ValidateUs
   ],
   controllers: [AuthController],
 })
-export class AuthModule { }
+export class AuthModule {}

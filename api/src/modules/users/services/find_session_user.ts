@@ -1,10 +1,14 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Types } from 'mongoose';
 import { User, UserRepository } from 'src/modules/data';
 
 @Injectable()
 export class FindSessionUserService {
-  constructor(private readonly repository: UserRepository) { }
+  constructor(private readonly repository: UserRepository) {}
 
   async handle(userId: Types.ObjectId): Promise<Omit<User, 'password'>> {
     try {
@@ -42,7 +46,9 @@ export class FindSessionUserService {
       };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);
-      throw new InternalServerErrorException('Unknown error while finding session user');
+      throw new InternalServerErrorException(
+        'Unknown error while finding session user',
+      );
     }
   }
 }

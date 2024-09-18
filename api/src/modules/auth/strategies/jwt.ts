@@ -2,8 +2,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Types } from 'mongoose';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { AccessTokenPayloadDto } from 'src/dtos';
-import { UserPayload } from 'src/interfaces';
+import { AccessTokenPayloadDto, UserPayload } from 'src/modules/common';
 import { UserRepository } from 'src/modules/data';
 
 @Injectable()

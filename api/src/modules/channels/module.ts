@@ -9,4 +9,4 @@ import { CreateChannelService, FindManyChannelsService } from './services';
   providers: [ChannelsGateway, CreateChannelService, FindManyChannelsService],
   controllers: [ChannelsController],
 })
-export class ChannelsModule { }
+export class ChannelsModule {}

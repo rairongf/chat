@@ -5,7 +5,7 @@ import { CreateUserBodyDTO } from '../dtos/create_user_body_dto';
 
 @Injectable()
 export class CreateUserService {
-  constructor(private readonly repository: UserRepository) { }
+  constructor(private readonly repository: UserRepository) {}
 
   async handle(data: CreateUserBodyDTO): Promise<User> {
     try {
@@ -25,7 +25,9 @@ export class CreateUserService {
       return { ...user };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);
-      throw new InternalServerErrorException('Unknown error while creating user');
+      throw new InternalServerErrorException(
+        'Unknown error while creating user',
+      );
     }
   }
 }

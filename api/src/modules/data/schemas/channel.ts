@@ -14,21 +14,21 @@ export type ChannelDocument = HydratedDocument<Channel>;
 @Schema({
   timestamps: true,
   versionKey: false,
-  toJSON: {
-    transform(_, ret: Partial<ChannelDocument>, __) {
+  /* toJSON: {
+    transform(_, ret: Partial<ChannelDocument>) {
       const name =
         ret.type == ChannelType.PRIVATE
-          ? ret.members.find(
-              (member: any) => member._id.toString() !== ret._id.toString(),
-            ).name
+          ? ret.members?.find(
+            (member: any) => member.toString() !== ret._id!.toString(),
+          )?.name
           : ret.name;
 
       return {
         ...ret,
-        name: name,
+        name: name ?? ret.name,
       };
     },
-  },
+  }, */
 })
 export class Channel extends AbstractDocument {
   @Prop({ required: true })
@@ -44,7 +44,7 @@ export class Channel extends AbstractDocument {
       autopopulate: true,
     },
   ])
-  members: User[];
+  members: User[] = [];
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Guild.name })
   guildId?: Guild;

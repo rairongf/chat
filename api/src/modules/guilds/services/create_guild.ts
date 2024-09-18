@@ -1,12 +1,15 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Types } from 'mongoose';
 import { Guild, GuildRepository } from 'src/modules/data';
 import { CreateGuildBodyDTO } from '../dtos';
 
 @Injectable()
 export class CreateGuildService {
-  constructor(private readonly repository: GuildRepository) {
-  }
+  constructor(private readonly repository: GuildRepository) {}
 
   async handle(
     userId: Types.ObjectId,
@@ -24,11 +27,13 @@ export class CreateGuildService {
       }
 
       return {
-        ...guild
+        ...guild,
       };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);
-      throw new InternalServerErrorException('Unknown error while creating guild.');
+      throw new InternalServerErrorException(
+        'Unknown error while creating guild.',
+      );
     }
   }
 }

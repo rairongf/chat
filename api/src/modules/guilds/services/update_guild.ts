@@ -1,12 +1,16 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { Types } from 'mongoose';
 import { Guild, GuildRepository } from 'src/modules/data';
 import { UpdateGuildBodyDTO } from '../dtos';
 
 @Injectable()
 export class UpdateGuildService {
-  constructor(private readonly repository: GuildRepository) {
-  }
+  constructor(private readonly repository: GuildRepository) {}
 
   async handle(
     userId: Types.ObjectId,
@@ -18,11 +22,14 @@ export class UpdateGuildService {
         throw new BadRequestException('Update body must not be empty');
       }
 
-      const guild = await this.repository.model.findOneAndUpdate(
-        { _id: guildId, members: userId },
-        { name: data.name },
-        { returnDocument: 'after' })
-        .lean({ getters: true }).exec();
+      const guild = await this.repository.model
+        .findOneAndUpdate(
+          { _id: guildId, members: userId },
+          { name: data.name },
+          { returnDocument: 'after' },
+        )
+        .lean({ getters: true })
+        .exec();
 
       if (!guild) {
         throw new NotFoundException('Could not update guild');
@@ -31,7 +38,9 @@ export class UpdateGuildService {
       return { ...guild };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);
-      throw new InternalServerErrorException('Unknown error while updating guild');
+      throw new InternalServerErrorException(
+        'Unknown error while updating guild',
+      );
     }
   }
 }

@@ -1,7 +1,21 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { MongoIdParam, UserJWT, UserPayload } from '../common';
 import { CreateGuildBodyDTO, UpdateGuildBodyDTO } from './dtos';
-import { CreateGuildService, DeleteGuildService, FindManyGuildsService, FindOneGuildService, UpdateGuildService } from './services';
+import {
+  CreateGuildService,
+  DeleteGuildService,
+  FindManyGuildsService,
+  FindOneGuildService,
+  UpdateGuildService,
+} from './services';
 
 @Controller('guilds')
 export class GuildsController {
@@ -11,13 +25,10 @@ export class GuildsController {
     private readonly findManyGuildsService: FindManyGuildsService,
     private readonly findOneGuildService: FindOneGuildService,
     private readonly updateGuildService: UpdateGuildService,
-  ) { }
+  ) {}
 
   @Post()
-  async create(
-    @UserJWT() user: UserPayload,
-    @Body() data: CreateGuildBodyDTO,
-  ) {
+  async create(@UserJWT() user: UserPayload, @Body() data: CreateGuildBodyDTO) {
     return this.createGuildService.handle(user.userId, data);
   }
 
@@ -27,10 +38,7 @@ export class GuildsController {
   }
 
   @Get(':id')
-  async findOne(
-    @UserJWT() user: UserPayload,
-    @Param() param: MongoIdParam,
-  ) {
+  async findOne(@UserJWT() user: UserPayload, @Param() param: MongoIdParam) {
     return this.findOneGuildService.handle(user.userId, param.id);
   }
 
@@ -44,10 +52,7 @@ export class GuildsController {
   }
 
   @Delete(':id')
-  async delete(
-    @UserJWT() user: UserPayload,
-    @Param() param: MongoIdParam,
-  ) {
+  async delete(@UserJWT() user: UserPayload, @Param() param: MongoIdParam) {
     return this.deleteGuildService.handle(user.userId, param.id);
   }
 }

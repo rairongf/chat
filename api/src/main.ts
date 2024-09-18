@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import {
   LoggingInterceptor,
   TransformResponseInterceptor,
-} from './interceptors';
+} from './modules/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

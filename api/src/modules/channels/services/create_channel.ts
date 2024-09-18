@@ -1,15 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
-import {
-  Channel,
-  ChannelRepository,
-  ChannelType
-} from 'src/modules/data';
+import { Channel, ChannelRepository, ChannelType } from 'src/modules/data';
 import { CreateChannelBodyDTO } from '../dtos';
 
 @Injectable()
 export class CreateChannelService {
-  constructor(private readonly repository: ChannelRepository) { }
+  constructor(private readonly repository: ChannelRepository) {}
 
   async handle(
     userId: Types.ObjectId,

@@ -6,7 +6,7 @@ import { FindManyMessagesQueryParamsDTO } from '../dtos';
 
 @Injectable()
 export class FindManyMessagesService {
-  constructor(private readonly repository: MessageRepository) { }
+  constructor(private readonly repository: MessageRepository) {}
 
   async handle(
     userId: Types.ObjectId,
@@ -34,7 +34,8 @@ export class FindManyMessagesService {
           skip: query.limit * (query.page - 1),
           limit: query.limit,
         },
-      ).lean({ getters: true })
+      )
+      .lean({ getters: true })
       .exec();
 
     return {

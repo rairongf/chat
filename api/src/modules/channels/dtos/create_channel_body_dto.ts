@@ -11,17 +11,18 @@ import { Channel } from 'src/modules/data';
 
 export class CreateChannelBodyDTO
   implements
-  Omit<
-    Channel,
-    | '_id'
-    | 'type'
-    | 'name'
-    | 'members'
-    | 'guildId'
-    | 'createdAt'
-    | 'updatedAt'
-    | 'deletedAt'
-  > {
+    Omit<
+      Channel,
+      | '_id'
+      | 'type'
+      | 'name'
+      | 'members'
+      | 'guildId'
+      | 'createdAt'
+      | 'updatedAt'
+      | 'deletedAt'
+    >
+{
   @ValidateIf((obj: CreateChannelBodyDTO) => Boolean(!obj.memberId))
   @IsString()
   @IsOptional()

@@ -15,11 +15,11 @@ export class LoggingInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const now = Date.now();
-    const request = context.switchToHttp().getRequest();
+    //const request = context.switchToHttp().getRequest();
     const response = context.switchToHttp().getResponse<Response>();
     //const user: UserPayload = request.user ? request.user : null;
 
-    if (context.getArgs()[0].url === '/healthz') return;
+    //if (context.getArgs()[0].url === '/healthz') return;
 
     return next.handle().pipe(
       tap(() => {

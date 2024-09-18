@@ -16,10 +16,13 @@ export class ChannelsController {
   constructor(
     private readonly createService: CreateChannelService,
     private readonly findManyService: FindManyChannelsService,
-  ) { }
+  ) {}
 
   @Post()
-  async create(@UserJWT() user: UserPayload, @Body() body: CreateChannelBodyDTO) {
+  async create(
+    @UserJWT() user: UserPayload,
+    @Body() body: CreateChannelBodyDTO,
+  ) {
     return this.createService.handle(user.userId, body);
   }
 
@@ -32,8 +35,8 @@ export class ChannelsController {
   }
 
   @Get(':id')
-  async findOne(@Param() param: MongoIdParam) { }
+  async findOne(@Param() param: MongoIdParam) {}
 
   @Patch(':id')
-  async update(@Param() param: MongoIdParam) { }
+  async update(@Param() param: MongoIdParam) {}
 }

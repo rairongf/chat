@@ -41,6 +41,6 @@ export class ValidateUserService {
     }
 
     console.log('Passwords did not match');
-    return null;
+    throw new UnauthorizedException();
   }
 }

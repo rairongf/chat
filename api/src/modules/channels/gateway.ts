@@ -30,7 +30,7 @@ export class ChannelsGateway
   @WebSocketServer()
   server: Server;
 
-  handleConnection(client: Socket, ...args: any[]) {
+  handleConnection(client: Socket) {
     console.log('New user connected...', client.id);
   }
 

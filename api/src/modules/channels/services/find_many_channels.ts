@@ -6,7 +6,7 @@ import { FindManyChannelsQueryParamsDTO } from '../dtos';
 
 @Injectable()
 export class FindManyChannelsService {
-  constructor(private readonly repository: ChannelRepository) { }
+  constructor(private readonly repository: ChannelRepository) {}
 
   async handle(
     userId: Types.ObjectId,

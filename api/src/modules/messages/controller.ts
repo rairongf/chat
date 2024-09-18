@@ -8,10 +8,13 @@ export class MessagesController {
   constructor(
     private readonly createMessageService: CreateMessageService,
     private readonly findManyMessagesService: FindManyMessagesService,
-  ) { }
+  ) {}
 
   @Post()
-  async create(@UserJWT() user: UserPayload, @Body() body: CreateMessageBodyDTO) {
+  async create(
+    @UserJWT() user: UserPayload,
+    @Body() body: CreateMessageBodyDTO,
+  ) {
     return this.createMessageService.handle(user.userId, body);
   }
 

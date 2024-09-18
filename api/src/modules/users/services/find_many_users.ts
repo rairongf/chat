@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { FilterQuery, Types } from 'mongoose';
 import { ChatPaginatedResponse } from 'src/modules/common';
 import {
@@ -14,7 +18,7 @@ export class FindManyUsersService {
   constructor(
     private readonly guildRepository: GuildRepository,
     private readonly userRepository: UserRepository,
-  ) { }
+  ) {}
 
   async handle(
     userId: Types.ObjectId,
@@ -57,7 +61,9 @@ export class FindManyUsersService {
       };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);
-      throw new InternalServerErrorException('Unknown error while finding users');
+      throw new InternalServerErrorException(
+        'Unknown error while finding users',
+      );
     }
   }
 
@@ -66,15 +72,18 @@ export class FindManyUsersService {
     query: FindManyUsersQueryParamsDTO,
   ): Promise<ChatPaginatedResponse<User>> {
     try {
-      const guildUsersIds = await this.guildRepository.model.findOne(
-        {
-          _id: query.guildId,
-          deletedAt: null,
-        },
-        {
-          members: 1
-        },
-      ).lean({ getters: true }).exec();
+      const guildUsersIds = await this.guildRepository.model
+        .findOne(
+          {
+            _id: query.guildId,
+            deletedAt: null,
+          },
+          {
+            members: 1,
+          },
+        )
+        .lean({ getters: true })
+        .exec();
 
       if (!guildUsersIds) {
         throw new NotFoundException('Could not find guild');
@@ -118,7 +127,9 @@ export class FindManyUsersService {
       };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);
-      throw new InternalServerErrorException('Unknown error while finding guild members');
+      throw new InternalServerErrorException(
+        'Unknown error while finding guild members',
+      );
     }
   }
 }

@@ -1,5 +1,5 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { Public } from 'src/decorators';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Public } from '../common';
 import { LocalAuthGuard } from './guards';
 import { LoginService, RefreshTokenService } from './services';
 
@@ -13,7 +13,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Request() req) {
+  async login(@Req() req: any) {
     return await this.loginService.handle({
       _id: req.user.userId,
       email: req.user.email,

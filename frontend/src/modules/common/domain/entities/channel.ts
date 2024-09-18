@@ -10,6 +10,6 @@ export interface Channel {
   name: string;
   type: ChannelType;
   members: (User['_id'])[];
-  guild_id: string;
+  guildId: string;
   createdAt: Date;
 }

@@ -3,8 +3,8 @@ import { User } from "./user";
 
 export interface Message {
   _id: string;
-  sender_id: User['_id'];
-  channel_id: Channel['_id'];
+  senderId: User['_id'];
+  channelId: Channel['_id'];
   content: string;
   createdAt: Date;
 }

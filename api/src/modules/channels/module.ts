@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { MessagesModule } from '../messages/module';
 import { ChannelsController } from './controller';
 import { ChannelsGateway } from './gateway';
-import { CreateChannelService, FindManyChannelsService } from './services';
+import { CreateChannelService, DeleteChannelService, FindManyChannelsService } from './services';
 
 @Module({
   imports: [MessagesModule],
-  providers: [ChannelsGateway, CreateChannelService, FindManyChannelsService],
+  providers: [ChannelsGateway, CreateChannelService, FindManyChannelsService, DeleteChannelService],
   controllers: [ChannelsController],
 })
-export class ChannelsModule {}
+export class ChannelsModule { }

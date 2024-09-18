@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -9,14 +10,15 @@ import {
 } from '@nestjs/common';
 import { MongoIdParam, UserJWT, UserPayload } from '../common';
 import { CreateChannelBodyDTO, FindManyChannelsQueryParamsDTO } from './dtos';
-import { CreateChannelService, FindManyChannelsService } from './services';
+import { CreateChannelService, DeleteChannelService, FindManyChannelsService } from './services';
 
 @Controller('channels')
 export class ChannelsController {
   constructor(
     private readonly createService: CreateChannelService,
     private readonly findManyService: FindManyChannelsService,
-  ) {}
+    private readonly deleteService: DeleteChannelService,
+  ) { }
 
   @Post()
   async create(
@@ -35,8 +37,16 @@ export class ChannelsController {
   }
 
   @Get(':id')
-  async findOne(@Param() param: MongoIdParam) {}
+  async findOne(@Param() param: MongoIdParam) { }
+
+  @Delete(':id')
+  async delete(
+    @UserJWT() user: UserPayload,
+    @Param() param: MongoIdParam,
+  ) {
+    return this.deleteService.handle(user.userId, param.id);
+  }
 
   @Patch(':id')
-  async update(@Param() param: MongoIdParam) {}
+  async update(@Param() param: MongoIdParam) { }
 }

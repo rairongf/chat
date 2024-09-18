@@ -1,12 +1,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "../auth/context";
 import { BaseContextProps } from "../common";
+import { EventPayload } from "./domain";
 import { socket } from "./infra/socket_client";
 
 type WebsocketContextData = {
   connectTo: (channelId: string) => string | undefined;
   emit: (content: string) => void;
   activeChannelId: string | undefined;
+  receivedEvents: EventPayload[];
 };
 
 export const WebsocketContext = createContext<WebsocketContextData>(
@@ -16,6 +18,7 @@ export const WebsocketContext = createContext<WebsocketContextData>(
 export function WebsocketProvider({ children }: BaseContextProps) {
   const { user } = useAuth();
   const [activeChannelId, setActiveChannelId] = useState<string>();
+  const [receivedEvents, setReceivedEvents] = useState<EventPayload[]>([]);
 
   function emit(content: string) {
     console.log(`Emitting ${content} to ${activeChannelId}...`);
@@ -27,6 +30,11 @@ export function WebsocketProvider({ children }: BaseContextProps) {
   }
 
   function connectTo(channelId: string): string | undefined {
+    if (channelId == activeChannelId) {
+      console.log(`User is already connected to channel ${channelId}`);
+      return channelId;
+    }
+
     if (activeChannelId) {
       console.log(
         `Socket disconnecting from previous active channel ${channelId}...`
@@ -39,12 +47,9 @@ export function WebsocketProvider({ children }: BaseContextProps) {
     if (!socket.connected) {
       socket.connect();
     }
-    socket.on(channelId, onEvents);
+
     setActiveChannelId(channelId);
-    socket.emit("join_channel", {
-      channelId: channelId,
-      senderId: user?._id,
-    });
+    socket.on(channelId, onEvents);
     return channelId;
   }
 
@@ -56,8 +61,12 @@ export function WebsocketProvider({ children }: BaseContextProps) {
     console.log("Socket disconnected.");
   }
 
-  function onEvents(data) {
-    console.log(`Channel ${activeChannelId} received event: ${data}`);
+  function onEvents(data: EventPayload) {
+    console.log(
+      `[WebsocketProvider] Channel ${activeChannelId} received event:`,
+      data
+    );
+    setReceivedEvents([...receivedEvents, data]);
   }
 
   useEffect(() => {
@@ -71,8 +80,10 @@ export function WebsocketProvider({ children }: BaseContextProps) {
     };
   }, []);
 
+  const value = { connectTo, emit, activeChannelId, receivedEvents };
+
   return (
-    <WebsocketContext.Provider value={{ connectTo, emit, activeChannelId }}>
+    <WebsocketContext.Provider value={value}>
       {children}
     </WebsocketContext.Provider>
   );

@@ -1,6 +1,6 @@
 export * from './avatar';
 export * from './buttons';
-export * from './dialog';
+export * from './dialogs';
 export * from './divider';
 export * from './icon';
 export * from './inputs';

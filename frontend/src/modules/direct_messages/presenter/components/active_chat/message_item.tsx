@@ -21,7 +21,7 @@ export function MessageItem({
     <div
       className={twJoin(
         "relative group pl-[4.5rem] mr-1.5",
-        theme.colors.hoverMessageBackground,
+        theme.colors.background.primaryHover,
         senderPicture ? "py-1" : "py-0.5",
         senderPicture ? "mt-4" : ""
       )}

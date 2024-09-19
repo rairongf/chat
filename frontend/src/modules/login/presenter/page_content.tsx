@@ -30,7 +30,7 @@ export function LoginPageContent() {
       <div
         className={twJoin(
           "md:w-3/5 h-min p-8 rounded-md",
-          theme.colors.focusBackground
+          theme.colors.background.focus
         )}
       >
         <form onSubmit={handleSubmit}>
@@ -48,7 +48,10 @@ export function LoginPageContent() {
                 {resource.login.emailInputLabel}
               </span>
               <Input
-                className={twJoin(theme.colors.foreground, "text-white p-2")}
+                className={twJoin(
+                  theme.colors.background.focus,
+                  "text-white p-2"
+                )}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Column>
@@ -58,7 +61,7 @@ export function LoginPageContent() {
               </span>
               <Input
                 className={twJoin(
-                  theme.colors.foreground,
+                  theme.colors.background.focus,
                   "text-white p-2 mt-0.5"
                 )}
                 onChange={(e) => setPassword(e.target.value)}

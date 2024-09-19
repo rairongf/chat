@@ -11,7 +11,11 @@ export function Divider({ className, ...props }: DividerProps) {
   return (
     <>
       <span
-        className={twJoin("rounded", theme.colors.divider, className)}
+        className={twJoin(
+          "rounded",
+          theme.colors.background.divider,
+          className
+        )}
         {...props}
       ></span>
     </>

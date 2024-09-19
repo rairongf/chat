@@ -19,7 +19,7 @@ export function RecentChatsTabItem({
     <Button
       className={twJoin(
         "w-full h-12 py-1.5 px-2.5 rounded-md",
-        theme.colors.hoverMessageBackground
+        theme.colors.background.primaryHover
       )}
       type="button"
       onClick={onClick}

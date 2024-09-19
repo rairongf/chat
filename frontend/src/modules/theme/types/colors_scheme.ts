@@ -10,12 +10,15 @@ export interface ColorsScheme {
     focus: string;
     primaryHover: string;
     primaryHoverHighlighted: string;
+    hoverBlurple: string;
     divider: string;
   };
   text: {
     base: string;
     black: string;
+    white: string;
     highlighted: string;
     highlightedHover: string;
+    hoverWhite: string;
   };
 }

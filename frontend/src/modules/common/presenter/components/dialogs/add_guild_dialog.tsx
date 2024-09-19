@@ -53,8 +53,14 @@ export function AddGuildDialog({ onClose, onSave }: AddGuildDialogProps) {
     <Dialog.Container onClose={onClose}>
       <form onSubmit={handleSubmit}>
         <Column className="justify-start items-stretch gap-4 text-center">
-          <span className="">{resource.addGuildDialog.title}</span>
-          <span className="">{resource.addGuildDialog.subtitle}</span>
+          <span
+            className={twJoin(theme.colors.text.black, "font-bold text-xl")}
+          >
+            {resource.addGuildDialog.title}
+          </span>
+          <span className={twJoin(theme.colors.text.base, "text-xs")}>
+            {resource.addGuildDialog.subtitle}
+          </span>
           <UploadPictureAvatar
             onPictureUpload={(file) => setGuildPicture(file)}
             file={guildPicture}

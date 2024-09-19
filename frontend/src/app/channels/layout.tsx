@@ -1,3 +1,5 @@
+import { LeftNavigationBar } from "@/modules/common";
+
 export default function ChannelsLayout({
   children,
 }: Readonly<{
@@ -5,7 +7,7 @@ export default function ChannelsLayout({
 }>) {
   return (
     <div className="flex md:flex-row w-full h-full">
-      {/* <LeftNavigationBar /> */}
+      <LeftNavigationBar />
       {children}
     </div>
   );

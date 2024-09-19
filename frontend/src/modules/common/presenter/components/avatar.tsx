@@ -9,6 +9,7 @@ type ImgProps = Omit<
 > & {
   src: string | StaticImport;
   alt: string;
+  unoptimized?: boolean;
 };
 type InitialsProps = DetailedHTMLProps<
   HTMLAttributes<HTMLSpanElement>,
@@ -35,11 +36,11 @@ export function Avatar({
   initialsProps,
   statusIndicatorProps,
 }: AvatarProps) {
-  const placeholderInitials = (
+  /* const placeholderInitials = (
     <div className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
       <span className="font-medium text-gray-600 dark:text-gray-300">JL</span>
     </div>
-  );
+  ); */
 
   const { className: imgClassName, ...otherImgProps } = { ...imgProps };
   const { className: initialsClassName, ...otherInitialsProps } = {
@@ -56,8 +57,19 @@ export function Avatar({
     <>
       {children ?? <></>}
       {!children && (
-        <div className={twJoin(containerClassName)} {...otherContainerProps}>
-          {imgProps && <Image className={imgClassName} {...otherImgProps} />}
+        <div
+          className={twJoin(
+            containerClassName,
+            imgProps ? "rounded-full overflow-clip" : ""
+          )}
+          {...otherContainerProps}
+        >
+          {imgProps && (
+            <Image
+              className={twJoin("aspect-square object-cover", imgClassName)}
+              {...otherImgProps}
+            />
+          )}
           {!imgProps && initials && (
             <span
               className={twJoin(

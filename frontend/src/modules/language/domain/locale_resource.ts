@@ -12,4 +12,22 @@ export interface LocaleResource {
   directMessages: {
     recentChatsTabTitle: string;
   };
+  addGuildDialog: {
+    title: string;
+    subtitle: string;
+    uploadPictureLabel: string;
+    inputDefaultValue: string;
+    inputLabel: string;
+    inputHelperText: {
+      partOne: string;
+      linkLabel: string;
+      partTwo: string;
+    };
+    inputErrorMessages: {
+      missingGuildName: string;
+      missingGuildPicture: string;
+    };
+    dismissButtonLabel: string;
+    submitButtonLabel: string;
+  };
 };

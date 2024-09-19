@@ -14,4 +14,22 @@ export const enUS_Resource: LocaleResource = {
   directMessages: {
     recentChatsTabTitle: 'Direct messages',
   },
+  addGuildDialog: {
+    title: 'Customize your server',
+    subtitle:'[addGuildDialog.subtitle]',
+    uploadPictureLabel: 'Upload',
+    inputDefaultValue: "'s server",
+    inputLabel: 'Server name',
+    inputHelperText: {
+      partOne: '[inputHelperText.partOne]',
+      linkLabel: '[inputHelperText.linkLabel]',
+      partTwo: '[inputHelperText.partTwo]',
+    },
+    inputErrorMessages: {
+      missingGuildName: '[inputErrorMessages.missingGuildName]',
+      missingGuildPicture: '[inputErrorMessages.missingGuildPicture]',
+    },
+    dismissButtonLabel: 'Back',
+    submitButtonLabel: 'Create',
+  },
 };

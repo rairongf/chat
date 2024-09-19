@@ -14,4 +14,22 @@ export const ptBR_Resource: LocaleResource = {
   directMessages: {
     recentChatsTabTitle: 'Mensages diretas',
   },
+  addGuildDialog: {
+    title: 'Personalize o seu servidor',
+    subtitle:'Deixe seu novo servidor com a sua cara dando um nome e um ícone a ele. Se quiser, é possível mudar depois.',
+    uploadPictureLabel: 'Upload',
+    inputDefaultValue: 'Servidor de ',
+    inputLabel: 'Nome do servidor',
+    inputHelperText: {
+      partOne: 'Ao criar um servidor, você concorda com as ',
+      linkLabel: 'diretrizes da comunidade',
+      partTwo: ' do Discord',
+    },
+    inputErrorMessages: {
+      missingGuildName: 'Digite o nome do servidor',
+      missingGuildPicture: 'Adicione um ícone ao servidor',
+    },
+    dismissButtonLabel: 'Voltar',
+    submitButtonLabel: 'Criar',
+  },
 };

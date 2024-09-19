@@ -20,8 +20,8 @@ export const LanguageContext = createContext<LanguageContextData>(
 export function LanguageProvider({ children }: BaseContextProps) {
   const resourcesByLocales: Map<Intl.Locale["baseName"], LocaleResource> =
     new Map([
-      ["en-US", enUS_Resource],
       ["pt-BR", ptBR_Resource],
+      ["en-US", enUS_Resource],
     ]);
   const availableLocales: Intl.Locale[] = [...resourcesByLocales.keys()].map(
     (key) => new Intl.Locale(key)

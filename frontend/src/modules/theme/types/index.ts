@@ -1,1 +1,3 @@
-export * from './theme_colors';
+export * from './colors_scheme';
+export * from './theme';
+

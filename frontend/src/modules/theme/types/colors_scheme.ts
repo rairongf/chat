@@ -1,5 +1,5 @@
 /// Known issue: https://tailwindcss.com/docs/content-configuration#dynamic-class-names
-export interface ThemeColors {
+export interface ColorsScheme {
   background: string;
   backgroundSecondary: string;
   backgroundTertiary: string;

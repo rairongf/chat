@@ -1,6 +1,6 @@
-import { ThemeColors } from "..";
+import { ColorsScheme } from "../types";
 
-export const LightThemeColors: ThemeColors = {
+export const LightThemeColorsScheme: ColorsScheme = {
   background: 'bg-[#ffffff]',
   backgroundSecondary: 'bg-[#F2F3F5]',
   backgroundTertiary: 'bg-[#E3E5E8]',

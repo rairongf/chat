@@ -9,11 +9,12 @@ import {
   useEffect,
   useState,
 } from "react";
-import { LightThemeColors, ThemeColors } from ".";
+import { LightTheme } from "./light";
+import { Theme } from "./types";
 
 type ThemeContextData = {
-  theme: ThemeColors;
-  setTheme: Dispatch<SetStateAction<ThemeColors>>;
+  theme: Theme;
+  setTheme: Dispatch<SetStateAction<Theme>>;
 };
 
 export const ThemeContext = createContext<ThemeContextData>(
@@ -21,7 +22,7 @@ export const ThemeContext = createContext<ThemeContextData>(
 );
 
 export function ThemeProvider({ children }: BaseContextProps) {
-  const [theme, setTheme] = useState<ThemeColors>(LightThemeColors);
+  const [theme, setTheme] = useState<Theme>(LightTheme);
 
   useEffect(() => {}, []);
 

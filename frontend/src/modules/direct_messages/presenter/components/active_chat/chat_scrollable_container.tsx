@@ -29,10 +29,18 @@ export function ChatScrollableContainer() {
         return (
           <>
             {!previousDateIsInTheSameDay && (
-              <Row>
-                <Divider />
-                {formatDate(message.createdAt, { dateStyle: "short" })}
-                <Divider />
+              <Row
+                key={`divider_${index}`}
+                className="justify-center items-center gap-4 pl-6 pr-2 py-3"
+              >
+                <Divider className="w-full h-[2px]" />
+                <span className="text-xs text-nowrap">
+                  {formatDate(message.createdAt, {
+                    day: "2-digit",
+                    month: "long",
+                  })}
+                </span>
+                <Divider className="w-full h-[2px]" />
               </Row>
             )}
             <MessageItem

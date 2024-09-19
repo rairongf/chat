@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuth } from "@/modules/auth/context";
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
@@ -9,15 +11,17 @@ import { Input, UploadPictureAvatar } from "../inputs";
 import { Column, Row } from "../layout";
 import { DialogContainerProps } from "./container";
 
-export type AddGuildDialogProps = Omit<DialogContainerProps, "children">;
+export type AddGuildDialogProps = Omit<DialogContainerProps, "children"> & {
+  onSave: (data: { name: string; picture?: File }) => void;
+};
 
-export function AddGuildDialog({ onClose }: AddGuildDialogProps) {
+export function AddGuildDialog({ onClose, onSave }: AddGuildDialogProps) {
   const { user } = useAuth();
+  const { resource } = useLanguage();
   const [guildName, setGuildName] = useState<string>(
-    `Servidor de ${user?.name}`
+    `${resource.addGuildDialog.inputDefaultValue}${user?.name}`
   );
   const [guildPicture, setGuildPicture] = useState<File>();
-  const { resource } = useLanguage();
   const { theme } = useTheme();
 
   function handleSubmit(e: React.FormEvent) {
@@ -28,17 +32,18 @@ export function AddGuildDialog({ onClose }: AddGuildDialogProps) {
     ].filter((err) => err != undefined);
     if (errors.length > 0) return;
 
-    //TODO: call server API
+    onSave({ name: guildName, picture: guildPicture });
   }
 
   function guildNameValidator(value: string | undefined): string | undefined {
-    if (!value) return "Must not be empty";
+    if (!value)
+      return resource.addGuildDialog.inputErrorMessages.missingGuildName;
     return;
   }
 
   function guildPictureValidator(file?: File): string | undefined {
     if (!file) {
-      return "Must upload a picture";
+      return resource.addGuildDialog.inputErrorMessages.missingGuildPicture;
     }
 
     return;
@@ -48,8 +53,8 @@ export function AddGuildDialog({ onClose }: AddGuildDialogProps) {
     <Dialog.Container onClose={onClose}>
       <form onSubmit={handleSubmit}>
         <Column className="justify-start items-stretch gap-4 text-center">
-          <span></span>
-          <span></span>
+          <span className="">{resource.addGuildDialog.title}</span>
+          <span className="">{resource.addGuildDialog.subtitle}</span>
           <UploadPictureAvatar
             onPictureUpload={(file) => setGuildPicture(file)}
             file={guildPicture}
@@ -61,13 +66,17 @@ export function AddGuildDialog({ onClose }: AddGuildDialogProps) {
             className={twJoin(theme.foreground, "text-white p-2")}
             value={guildName}
             onChange={(e) => setGuildName(e.target.value)}
-            labelText="Nome do servidor"
+            labelText={resource.addGuildDialog.inputLabel}
             validator={(e) => guildNameValidator(e.target.value)}
-            helperText="Ao criar um servidor..."
+            helperText={`${resource.addGuildDialog.inputHelperText.partOne}${resource.addGuildDialog.inputHelperText.linkLabel}${resource.addGuildDialog.inputHelperText.partTwo}`}
           />
           <Row className="justify-between w-full items-stretch">
-            <Button className=""></Button>
-            <Button className="" type="submit"></Button>
+            <Button className="">
+              {resource.addGuildDialog.dismissButtonLabel}
+            </Button>
+            <Button className="" type="submit">
+              {resource.addGuildDialog.submitButtonLabel}
+            </Button>
           </Row>
         </Column>
       </form>

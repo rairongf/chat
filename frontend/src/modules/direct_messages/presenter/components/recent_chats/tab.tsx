@@ -15,7 +15,7 @@ export function RecentChatsTab() {
     <aside
       className={twJoin(
         "min-w-60 w-60 max-w-60 h-full p-2",
-        theme.backgroundSecondary
+        theme.colors.backgroundSecondary
       )}
     >
       <Column className="gap-1">

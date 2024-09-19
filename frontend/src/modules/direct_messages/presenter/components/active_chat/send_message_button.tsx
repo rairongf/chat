@@ -28,7 +28,10 @@ export function SendMessageButton() {
     >
       <Input
         rowProps={{
-          className: twJoin(theme.backgroundTertiary, "w-full max-w-full"),
+          className: twJoin(
+            theme.colors.backgroundTertiary,
+            "w-full max-w-full"
+          ),
         }}
         shouldUseTextbox={true}
         textboxProps={{

@@ -1,6 +1,8 @@
+import { CommonColorsScheme } from "../common";
 import { ColorsScheme } from "../types";
 
 export const LightThemeColorsScheme: ColorsScheme = {
+  common: CommonColorsScheme,
   background: 'bg-[#ffffff]',
   backgroundSecondary: 'bg-[#F2F3F5]',
   backgroundTertiary: 'bg-[#E3E5E8]',

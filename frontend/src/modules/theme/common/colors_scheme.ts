@@ -1,0 +1,27 @@
+export const CommonColorsScheme = {
+  background: {
+    blurple: 'bg-[#5865f2]',
+    highlighted: 'bg-[#216add]',
+    developerBlue: 'bg-[#3e70dd]',
+    lightBlurple: 'bg-[#949cf7]',
+    balanceAqua: 'bg-[#45ddc0]',
+    green: 'bg-[#58f287]',
+    bugHunter: 'bg-[#3ba561]',
+    bugHunterLight: 'bg-[#b4e1ce]',
+    goldenBugHunterLight: 'bg-[#ffeac0]',
+    goldenBugHunter: 'bg-[#ffd56c]',
+    yellow: 'bg-[#f7de52]',
+    hypesquadEventsOrange: 'bg-[#fbb848]',
+    canaryOrange: 'bg-[#f8a22f]',
+    idleOrange: 'bg-[#faa61a]',
+    nitroOrange: 'bg-[#ef8843]',
+    krisp: 'bg-[#f47b67]',
+    brillianceRed: 'bg-[#f07d5f]',
+    red: 'bg-[#ed4245]',
+    fuchsia: 'bg-[#eb459f]',
+    nitroPink: 'bg-[#ff6bfa]',
+    nitroPinkLight: 'bg-[#ffb0ff]',
+    braveryPurple: 'bg-[#9c84ef]',
+    streamingPurple: 'bg-[#593695]',
+  }
+};

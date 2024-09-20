@@ -1,7 +1,7 @@
 "use client";
 
-import { useAuth } from "@/modules/auth/context";
 import { useLanguage } from "@/modules/language";
+import { useSession } from "@/modules/session/context";
 import { useTheme } from "@/modules/theme";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
@@ -16,7 +16,7 @@ export type AddGuildDialogProps = Omit<DialogContainerProps, "children"> & {
 };
 
 export function AddGuildDialog({ onClose, onSave }: AddGuildDialogProps) {
-  const { user } = useAuth();
+  const { user } = useSession();
   const { resource } = useLanguage();
   const [guildName, setGuildName] = useState<string>(
     `${resource.addGuildDialog.inputDefaultValue}${user?.name}`

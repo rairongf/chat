@@ -12,12 +12,15 @@ export function DialogContainer({ children, onClose }: DialogContainerProps) {
   return (
     <Column
       className={twJoin(
-        "relative w-min p-4 h-min",
+        "relative w-[27.5rem] min-h-52 max-h-[85%] rounded",
         theme.colors.background.primary
       )}
     >
-      <Button className="absolute right-0 top-0" onClick={() => onClose()}>
-        <Icon name={"close"} />
+      <Button className="absolute right-3 top-3" onClick={() => onClose()}>
+        <Icon
+          name={"close"}
+          className={twJoin("text-2xl", theme.colors.text.base)}
+        />
       </Button>
       {children}
     </Column>

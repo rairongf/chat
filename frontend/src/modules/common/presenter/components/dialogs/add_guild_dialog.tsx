@@ -54,33 +54,59 @@ export function AddGuildDialog({ onClose, onSave }: AddGuildDialogProps) {
       <form onSubmit={handleSubmit}>
         <Column className="justify-start items-stretch gap-4 text-center">
           <span
-            className={twJoin(theme.colors.text.black, "font-bold text-xl")}
+            className={twJoin(
+              theme.colors.text.black,
+              "font-extrabold text-2xl px-6 pt-6"
+            )}
           >
             {resource.addGuildDialog.title}
           </span>
-          <span className={twJoin(theme.colors.text.base, "text-xs")}>
+          <span className={twJoin(theme.colors.text.base, "px-4 text-sm")}>
             {resource.addGuildDialog.subtitle}
           </span>
-          <UploadPictureAvatar
-            onPictureUpload={(file) => setGuildPicture(file)}
-            file={guildPicture}
-            inputProps={{
-              validator: (e) => guildPictureValidator(e.target.files?.[0]),
-            }}
-          />
-          <Input
-            className={twJoin(theme.colors.background.focus, "text-white p-2")}
-            value={guildName}
-            onChange={(e) => setGuildName(e.target.value)}
-            labelText={resource.addGuildDialog.inputLabel}
-            validator={(e) => guildNameValidator(e.target.value)}
-            helperText={`${resource.addGuildDialog.inputHelperText.partOne}${resource.addGuildDialog.inputHelperText.linkLabel}${resource.addGuildDialog.inputHelperText.partTwo}`}
-          />
-          <Row className="justify-between w-full items-stretch">
-            <Button className="">
+          <div className="flex justify-center ">
+            <UploadPictureAvatar
+              onPictureUpload={(file) => setGuildPicture(file)}
+              file={guildPicture}
+              inputProps={{
+                validator: (e) => guildPictureValidator(e.target.files?.[0]),
+              }}
+            />
+          </div>
+          <div className="px-4">
+            <Input
+              className={twJoin(
+                theme.colors.background.tertiary,
+                theme.colors.text.highlighted,
+                "p-2 font-semibold"
+              )}
+              value={guildName}
+              onChange={(e) => setGuildName(e.target.value)}
+              labelText={resource.addGuildDialog.inputLabel}
+              validator={(e) => guildNameValidator(e.target.value)}
+              helperText={`${resource.addGuildDialog.inputHelperText.partOne}${resource.addGuildDialog.inputHelperText.linkLabel}${resource.addGuildDialog.inputHelperText.partTwo}`}
+            />
+          </div>
+          <Row
+            className={twJoin(
+              "justify-between w-full items-stretch p-4",
+              theme.colors.background.secondary
+            )}
+          >
+            <Button
+              className={twJoin("text-sm", theme.colors.text.base)}
+              onClick={onClose}
+            >
               {resource.addGuildDialog.dismissButtonLabel}
             </Button>
-            <Button className="" type="submit">
+            <Button
+              className={twJoin(
+                "p-2 text-sm rounded min-w-24 font-semibold",
+                theme.colors.common.background.blurple,
+                theme.colors.text.white
+              )}
+              type="submit"
+            >
               {resource.addGuildDialog.submitButtonLabel}
             </Button>
           </Row>

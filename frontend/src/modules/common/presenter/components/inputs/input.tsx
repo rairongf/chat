@@ -7,6 +7,7 @@ import {
   Row,
   RowProps,
 } from "@/modules/common";
+import { useTheme } from "@/modules/theme";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
 
@@ -41,6 +42,8 @@ export function Input({
   validator,
   ...props
 }: InputProps) {
+  const { theme } = useTheme();
+
   const inputHasRowSiblings = !!prefix || !!suffix;
   const inputHasColumnSiblings = !!validator || !!helperText || !!labelText;
   const defaultInputClassName = "outline-none rounded";
@@ -98,9 +101,14 @@ export function Input({
         </>
       )}
       {inputHasColumnSiblings && (
-        <Column className="items-stretch gap-1">
+        <Column className="items-stretch gap-1.5">
           {!!labelText && (
-            <span className="text-start uppercase font-bold text-xs">
+            <span
+              className={twJoin(
+                "text-start uppercase font-extrabold text-xs",
+                theme.colors.text.base
+              )}
+            >
               {labelText}
             </span>
           )}
@@ -110,7 +118,12 @@ export function Input({
             <span className="text-start font-semibold text-xs">{error}</span>
           )}
           {!!helperText && (
-            <span className="text-start font-semibold text-[0.625rem] leading-none">
+            <span
+              className={twJoin(
+                "text-start font-semibold text-xs",
+                theme.colors.text.base
+              )}
+            >
               {helperText}
             </span>
           )}

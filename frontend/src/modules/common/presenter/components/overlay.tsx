@@ -6,7 +6,7 @@ export function Overlay({ children }: OverlayProps) {
   return (
     <div
       className={twJoin(
-        "absolute top-0 left-0 right-0 bottom-0 backdrop-blur-sm",
+        "absolute top-0 left-0 right-0 bottom-0 bg-black/[.54]",
         "flex justify-center items-center"
       )}
     >

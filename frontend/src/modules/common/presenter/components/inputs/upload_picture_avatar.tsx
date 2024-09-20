@@ -1,6 +1,9 @@
+import { useLanguage } from "@/modules/language";
+import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
 import { Avatar } from "../avatar";
 import { Icon } from "../icon";
+import { Column } from "../layout";
 import { Input, InputProps } from "./input";
 
 export type UploadPictureAvatarProps = {
@@ -14,29 +17,51 @@ export function UploadPictureAvatar({
   onPictureUpload,
   file,
 }: UploadPictureAvatarProps) {
+  const { theme } = useTheme();
+  const { resource } = useLanguage();
+
   return (
     <label
       className={twJoin(
-        "flex justify-center items-center size-[58px] shrink-0 relative p-1 ",
-        "rounded-lg shadow border border-gray-300",
-        "group hover:cursor-pointer hover:bg-indigo-400"
+        "flex justify-center items-center size-20 relative hover:cursor-pointer",
+        "border-2 border-dashed rounded-full"
       )}
     >
       <div
         className={twJoin(
-          "absolute z-10 top-0 right-0 left-0 bottom-0 text-center",
-          !file ? "block" : "hidden group-hover:block"
+          "absolute top-0 right-0 rounded-full p-1 flex justify-center",
+          theme.colors.common.background.blurple
         )}
       >
-        <Icon name={"file_upload"} className="text-2xl m-auto text-white" />
+        <Icon
+          name={"add"}
+          className={twJoin("text-base leading-none", theme.colors.text.white)}
+        />
       </div>
+      {!file && (
+        <Column className="items-center justify-center">
+          <Icon
+            name={"photo_camera"}
+            className={twJoin(theme.colors.text.highlighted, "text-2xl")}
+          />
+          <span
+            className={twJoin(
+              "uppercase text-xs font-extrabold",
+              theme.colors.text.highlighted
+            )}
+          >
+            {resource.addGuildDialog.uploadPictureLabel}
+          </span>
+        </Column>
+      )}
       {file && (
         <Avatar
           imgProps={{
             alt: "Guild picture preview",
-            className: "group-hover:opacity-40",
             src: URL.createObjectURL(file),
             unoptimized: true,
+            width: 80,
+            height: 80,
           }}
         />
       )}

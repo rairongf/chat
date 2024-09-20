@@ -12,7 +12,7 @@ export const ptBR_Resource: LocaleResource = {
     signUpButtonLabel: 'Registre-se',
   },
   directMessages: {
-    recentChatsTabTitle: 'Mensages diretas',
+    recentChatsTabTitle: 'Mensagens diretas',
   },
   addGuildDialog: {
     title: 'Personalize o seu servidor',

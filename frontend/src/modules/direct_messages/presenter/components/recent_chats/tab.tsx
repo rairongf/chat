@@ -19,11 +19,17 @@ export function RecentChatsTab() {
       )}
     >
       <Column className="gap-1">
-        <Row className="w-full justify-between items-center mb-2 pl-2.5 pr-2">
-          <span className="uppercase text-xs font-bold">
+        <Row
+          className={twJoin(
+            "w-full justify-between items-center mb-2 pl-2.5 pr-2",
+            theme.colors.text.highlighted
+          )}
+        >
+          <span className="uppercase text-xs leading-none font-bold">
             {resource.directMessages.recentChatsTabTitle}
           </span>
           <Button
+            className="flex justify-center items-center"
             onClick={() => {
               show(
                 <Dialog.Container onClose={removeAny}>
@@ -33,7 +39,7 @@ export function RecentChatsTab() {
               );
             }}
           >
-            <Icon className="text-base font-medium" name="add" />
+            <Icon className="text-sm font-bold" name="add" />
           </Button>
         </Row>
         {channels.map((channel, i) => {

@@ -1,6 +1,6 @@
 import { BaseRepository } from '@/modules/common/infra/models';
-import { User } from '../../domain';
-import { api } from '../services';
+import { User } from '../../../common/domain';
+import { api } from '../../../common/infra/services';
 
 export type IFindUserRepository = BaseRepository<User>;
 

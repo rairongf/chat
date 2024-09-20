@@ -1,13 +1,12 @@
 
 import { ILoginRepository } from '@/modules/auth/infra/repositories';
-import { CookiesKeys, IFindUserRepository } from '@/modules/common';
+import { CookiesKeys } from '@/modules/common';
 import { useRouter } from 'next/navigation';
 import { destroyCookie, setCookie } from 'nookies';
 import { ISignInUsecase, ISignInUsecaseArguments } from './interface';
 
 export function useSignIn(
   login: ILoginRepository,
-  findUser: IFindUserRepository,
 ) {
   const router = useRouter();
 
@@ -31,17 +30,11 @@ export function useSignIn(
         maxAge: (data.refreshTokenExpiresAt.getTime() - now.getTime()) * 1000,
         path: '/'
       });
-
-      const response = await findUser({});
-      if (!response.didSucceed) {
-        console.log('Could not find user');
-        return {didSucceed: response.didSucceed};
-      }
       
 
       router.push('/channels/@me');
       await new Promise((r) => setTimeout(r, 600));
-      return {didSucceed: true, user: response.data};
+      return {didSucceed: true};
     } catch (err) {
       console.log('Caught error:', err);
       destroyCookie(undefined, CookiesKeys.accessToken);

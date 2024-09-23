@@ -1,3 +1,5 @@
+"use client";
+
 import { BaseContextProps, Guild, User } from "@/modules/common";
 import {
   createContext,
@@ -7,12 +9,18 @@ import {
   useState,
 } from "react";
 import { useAuth } from "../auth/context";
-import { useInitializeSessionState } from "./domain/usecases";
-import { findManyGuilds, findUser } from "./infra/repositories";
+import {
+  IAddGuildUsecase,
+  IAddGuildUsecaseArguments,
+  useAddGuild,
+  useInitializeSessionState,
+} from "./domain/usecases";
+import { createGuild, findManyGuilds, findUser } from "./infra/repositories";
 
 type SessionContextData = {
   user?: User;
   guilds: Guild[];
+  addGuild: IAddGuildUsecase;
 };
 
 export const SessionContext = createContext<SessionContextData>(
@@ -27,6 +35,19 @@ export function SessionProvider({ children }: BaseContextProps) {
   const { initializeState } = useInitializeSessionState(
     findUser,
     findManyGuilds
+  );
+
+  const { addGuild } = useAddGuild(createGuild);
+
+  const _addGuild = useCallback(
+    async ({ name, picture }: IAddGuildUsecaseArguments) => {
+      const guild = await addGuild({ name, picture });
+      if (!guild) return;
+
+      setGuilds((guilds) => [...guilds, guild]);
+      return guild;
+    },
+    []
   );
 
   const init = useCallback(async () => {
@@ -48,7 +69,7 @@ export function SessionProvider({ children }: BaseContextProps) {
   }, [isAuthenticated]);
 
   return (
-    <SessionContext.Provider value={{ user, guilds }}>
+    <SessionContext.Provider value={{ user, guilds, addGuild: _addGuild }}>
       {children}
     </SessionContext.Provider>
   );

@@ -1,10 +1,11 @@
-import { IFindManyChannelsRepository, IFindManyUsersRepository } from '@/modules/common';
+import { IFindManyChannelsRepository } from '@/modules/common';
+import { IFindGuildMembersRepository } from '@/modules/guild_server/infra/repositories';
 import { useGuildServerState } from '@/modules/guild_server/state';
 import { useSession } from '@/modules/session/context';
 import { IInitializeGuildServerStateUsecase } from './interface';
 
 export function useInitializeGuildServerState(
-  findManyUsers: IFindManyUsersRepository,
+  findGuildMembers: IFindGuildMembersRepository,
   findManyChannels: IFindManyChannelsRepository,
 ) {
   const {guilds} = useSession();
@@ -20,19 +21,19 @@ export function useInitializeGuildServerState(
 
       setGuild(guilds.find((g) => g._id == guildId));
 
-      const friendsResponse = await findManyUsers({});
+      const membersResponse = await findGuildMembers({guildId});
 
-      if (!friendsResponse.didSucceed) {
-        console.log('Error:', friendsResponse.error);
+      if (!membersResponse.didSucceed) {
+        console.log('Could not fetch guild members. Error:', membersResponse.error);
         return;
       }
 
-      setMembers([...friendsResponse.data.elements]);
+      setMembers([...membersResponse.data]);
 
-      const channelsResponse = await findManyChannels({ page: 1, limit: 20, guildId: guildId, });
+      const channelsResponse = await findManyChannels({ page: 1, limit: 50, guildId: guildId, });
 
       if (!channelsResponse.didSucceed) {
-        console.log('Error:', channelsResponse.error);
+        console.log('Could not fetch guild channels. Error:', channelsResponse.error);
         return;
       }
 

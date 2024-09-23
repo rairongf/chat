@@ -4,4 +4,11 @@ export type IInitializeGuildServerStateUsecaseArguments = {
   guildId: string;
 };
 
-export type IInitializeGuildServerStateUsecase = BaseUsecase<void, IInitializeGuildServerStateUsecaseArguments>;
+export type IInitializeGuildServerStateUsecaseResponse = {
+  didSucceed: boolean;
+  defaultChannelId?: string;
+};
+
+export type IInitializeGuildServerStateUsecase = BaseUsecase<
+  IInitializeGuildServerStateUsecaseResponse,
+  IInitializeGuildServerStateUsecaseArguments>;

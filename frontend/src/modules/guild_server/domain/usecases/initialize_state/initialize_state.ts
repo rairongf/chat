@@ -16,7 +16,7 @@ export function useInitializeGuildServerState(
       const guild = guilds.find((g) => g._id == guildId);
       if(!guild) {
         console.log('Could not find guild data');
-        return;
+        return {didSucceed: false};
       }
 
       setGuild(guilds.find((g) => g._id == guildId));
@@ -25,7 +25,7 @@ export function useInitializeGuildServerState(
 
       if (!membersResponse.didSucceed) {
         console.log('Could not fetch guild members. Error:', membersResponse.error);
-        return;
+        return {didSucceed: false};
       }
 
       setMembers([...membersResponse.data]);
@@ -34,14 +34,15 @@ export function useInitializeGuildServerState(
 
       if (!channelsResponse.didSucceed) {
         console.log('Could not fetch guild channels. Error:', channelsResponse.error);
-        return;
+        return {didSucceed: false};
       }
 
       setChannels([...channelsResponse.data.elements]);
 
-      return;
+      return {didSucceed: true, defaultChannelId: channelsResponse.data.elements.at(0)?._id};
     } catch (err) {
       console.log('Caught error:', err);
+      return {didSucceed: false};
     }
   };
 

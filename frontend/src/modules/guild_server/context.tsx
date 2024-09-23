@@ -2,12 +2,13 @@ import {
   BaseContextProps,
   Channel,
   findManyChannels,
-  findManyUsers,
   Guild,
   User,
 } from "@/modules/common";
+import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect } from "react";
 import { useInitializeGuildServerState } from "./domain/usecases";
+import { findGuildMembers } from "./infra/repositories";
 import { useGuildServerState } from "./state";
 
 type GuildServerContextData = {
@@ -33,14 +34,22 @@ export function GuildServerProvider({
     membersState: [members],
     channelsState: [channels],
   } = useGuildServerState();
+  const router = useRouter();
 
   const { initializeGuildServerState } = useInitializeGuildServerState(
-    findManyUsers,
+    findGuildMembers,
     findManyChannels
   );
 
+  async function init() {
+    const response = await initializeGuildServerState({ guildId });
+    if (!response.didSucceed || !response.defaultChannelId) return;
+
+    router.push(`/channels/${guildId}/${response.defaultChannelId!}`);
+  }
+
   useEffect(() => {
-    initializeGuildServerState({ guildId });
+    init();
   }, []);
 
   return (

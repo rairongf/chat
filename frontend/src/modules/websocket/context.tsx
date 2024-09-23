@@ -1,14 +1,24 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useAuth } from "../auth/context";
-import { BaseContextProps } from "../common";
-import { EventPayload } from "./domain";
-import { socket } from "./infra/socket_client";
+import { createContext, useContext, useEffect } from "react";
+import { BaseContextProps, Message } from "../common";
+import {
+  EventPayload,
+  IConnectToChannelUsecase,
+  ISendMessageUsecase,
+  useConnectToChannel,
+  useOnEventReceived,
+  useSendMessage,
+} from "./domain";
+import { findManyMessages, socket } from "./infra";
+import { useWebsocketState } from "./state";
 
 type WebsocketContextData = {
-  connectTo: (channelId: string) => string | undefined;
-  emit: (content: string) => void;
+  // States
   activeChannelId: string | undefined;
-  receivedEvents: EventPayload[];
+  messages: Message[];
+  lastReceivedEvent: EventPayload | undefined;
+  // Actions
+  connectToChannel: IConnectToChannelUsecase;
+  sendMessage: ISendMessageUsecase;
 };
 
 export const WebsocketContext = createContext<WebsocketContextData>(
@@ -16,42 +26,21 @@ export const WebsocketContext = createContext<WebsocketContextData>(
 );
 
 export function WebsocketProvider({ children }: BaseContextProps) {
-  const { user } = useAuth();
-  const [activeChannelId, setActiveChannelId] = useState<string>();
-  const [receivedEvents, setReceivedEvents] = useState<EventPayload[]>([]);
+  const {
+    activeChannelIdState: [activeChannelId],
+    messagesState: [messages],
+    lastReceivedEventState: [lastReceivedEvent],
+  } = useWebsocketState();
 
-  function emit(content: string) {
-    console.log(`Emitting ${content} to ${activeChannelId}...`);
-    socket.emit("events", {
-      channelId: activeChannelId,
-      senderId: user?._id,
-      content: content,
-    });
-  }
+  const { sendMessage } = useSendMessage(socket);
 
-  function connectTo(channelId: string): string | undefined {
-    if (channelId == activeChannelId) {
-      console.log(`User is already connected to channel ${channelId}`);
-      return channelId;
-    }
+  const { onEventReceived } = useOnEventReceived();
 
-    if (activeChannelId) {
-      console.log(
-        `Socket disconnecting from previous active channel ${channelId}...`
-      );
-      socket.off(activeChannelId, onEvents);
-      setActiveChannelId(undefined);
-    }
-
-    console.log(`Socket connecting to channel ${channelId}...`);
-    if (!socket.connected) {
-      socket.connect();
-    }
-
-    setActiveChannelId(channelId);
-    socket.on(channelId, onEvents);
-    return channelId;
-  }
+  const { connectToChannel } = useConnectToChannel(
+    socket,
+    findManyMessages,
+    onEventReceived
+  );
 
   function onConnect() {
     console.log("Socket connected!");
@@ -61,14 +50,6 @@ export function WebsocketProvider({ children }: BaseContextProps) {
     console.log("Socket disconnected.");
   }
 
-  function onEvents(data: EventPayload) {
-    console.log(
-      `[WebsocketProvider] Channel ${activeChannelId} received event:`,
-      data
-    );
-    setReceivedEvents([...receivedEvents, data]);
-  }
-
   useEffect(() => {
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
@@ -76,14 +57,20 @@ export function WebsocketProvider({ children }: BaseContextProps) {
     return () => {
       socket.off("connect", onConnect);
       socket.off("disconnect", onDisconnect);
-      if (activeChannelId) socket.off(activeChannelId, onEvents);
+      if (activeChannelId) socket.off(activeChannelId, onEventReceived);
     };
   }, []);
 
-  const value = { connectTo, emit, activeChannelId, receivedEvents };
-
   return (
-    <WebsocketContext.Provider value={value}>
+    <WebsocketContext.Provider
+      value={{
+        messages,
+        activeChannelId,
+        lastReceivedEvent,
+        connectToChannel,
+        sendMessage,
+      }}
+    >
       {children}
     </WebsocketContext.Provider>
   );

@@ -46,7 +46,9 @@ export function ChatScrollableContainer() {
             <MessageItem
               key={index}
               senderPicture={
-                isFirstMessage || isFromOtherSender
+                isFirstMessage ||
+                isFromOtherSender ||
+                !previousDateIsInTheSameDay
                   ? "https://avatars.githubusercontent.com/u/43035850?v=4"
                   : undefined
               }

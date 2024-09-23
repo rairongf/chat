@@ -2,29 +2,16 @@ import {
   BaseContextProps,
   Channel,
   findManyChannels,
-  findManyMessages,
   findManyUsers,
-  Message,
   User,
 } from "@/modules/common";
-import { useWebsocket } from "@/modules/websocket";
 import { createContext, useContext, useEffect } from "react";
-import {
-  IConnectToChannelUsecase,
-  ISendDirectMessageUsecase,
-  useConnectToChannel,
-  useInitializeDirectMessagesState,
-  useOnEventReceived,
-  useSendDirectMessage,
-} from "../domain/usecases";
+import { useInitializeDirectMessagesState } from "../domain/usecases";
 import { useDirectMessagesState } from "./state";
 
 type DirectMessagesContextData = {
   channels: Channel[];
   friends: User[];
-  messages: Message[];
-  connectToChannel: IConnectToChannelUsecase;
-  sendMessage: ISendDirectMessageUsecase;
 };
 
 export const DirectMessagesContext = createContext<DirectMessagesContextData>(
@@ -35,20 +22,12 @@ export function DirectMessagesProvider({ children }: BaseContextProps) {
   const {
     channelsState: [channels],
     friendsState: [friends],
-    messagesState: [messages],
   } = useDirectMessagesState();
-  const { receivedEvents } = useWebsocket();
-
-  const onEventReceived = useOnEventReceived();
 
   const { initializeDirectMessagesState } = useInitializeDirectMessagesState(
     findManyUsers,
     findManyChannels
   );
-
-  const { connectToChannel } = useConnectToChannel(findManyMessages);
-
-  const { sendMessage } = useSendDirectMessage();
 
   async function init() {
     await initializeDirectMessagesState({});
@@ -58,17 +37,8 @@ export function DirectMessagesProvider({ children }: BaseContextProps) {
     init();
   }, []);
 
-  useEffect(() => {
-    const lastEvent = receivedEvents.at(receivedEvents.length - 1);
-    if (!lastEvent) return;
-
-    onEventReceived(lastEvent);
-  }, [receivedEvents]);
-
   return (
-    <DirectMessagesContext.Provider
-      value={{ channels, friends, messages, connectToChannel, sendMessage }}
-    >
+    <DirectMessagesContext.Provider value={{ channels, friends }}>
       {children}
     </DirectMessagesContext.Provider>
   );

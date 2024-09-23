@@ -1,10 +1,10 @@
 import { Column, Divider, Row } from "@/modules/common";
 import { useLanguage } from "@/modules/language";
-import { useDirectMessages } from "../../context";
+import { useWebsocket } from "@/modules/websocket";
 import { MessageItem } from "./message_item";
 
 export function ChatScrollableContainer() {
-  const { messages } = useDirectMessages();
+  const { messages } = useWebsocket();
   const { formatDate } = useLanguage();
 
   return (

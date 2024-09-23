@@ -1,12 +1,20 @@
 import { Column, Row } from "@/modules/common";
+import { useWebsocket } from "@/modules/websocket";
+import { useEffect } from "react";
 import { ChatScrollableContainer } from "./chat_scrollable_container";
 import { SendMessageButton } from "./send_message_button";
 
-export function ActiveChatView() {
-  /* const pathname = usePathname();
-  const pathSegments = pathname.substring(1).split("/");
-  const guildIdOrMask = pathSegments[1];
-  const channelId = pathSegments[2]; */
+export type ActiveChatViewProps = {
+  guildIdOrMask: string;
+  channelId: string;
+};
+
+export function ActiveChatView({ channelId }: ActiveChatViewProps) {
+  const { connectToChannel } = useWebsocket();
+
+  useEffect(() => {
+    connectToChannel({ channelId });
+  }, []);
 
   return (
     <Column className={`w-full`}>

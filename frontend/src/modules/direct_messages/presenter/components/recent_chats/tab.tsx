@@ -9,16 +9,19 @@ import {
 } from "@/modules/common";
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
+import { usePathname, useRouter } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 import { useDirectMessages } from "../../context";
 import { RecentChatsTabItem } from "./item";
 import { RecentChatsTabNavigationOption } from "./navigation_option";
 
 export function RecentChatsTab() {
+  const router = useRouter();
+  const pathname = usePathname();
   const { theme } = useTheme();
   const { show, removeAny } = useDialog();
   const { resource } = useLanguage();
-  const { channels, connectToChannel } = useDirectMessages();
+  const { channels } = useDirectMessages();
 
   return (
     <aside
@@ -79,7 +82,12 @@ export function RecentChatsTab() {
               key={i}
               name={channel.name}
               date={channel.createdAt}
-              onClick={() => connectToChannel({ channelId: channel._id })}
+              onClick={() => {
+                const channelRoutePath = `/channels/${channel._id}`;
+                if (pathname.includes(channelRoutePath)) return;
+
+                router.push(channelRoutePath);
+              }}
             />
           );
         })}

@@ -1,7 +1,6 @@
 import {
   BaseContextProps,
   Channel,
-  Message,
   ReactUseState,
   User,
 } from "@/modules/common";
@@ -10,7 +9,6 @@ import { createContext, useContext, useState } from "react";
 type DirectMessagesStateContextData = {
   channelsState: ReactUseState<Channel[]>;
   friendsState: ReactUseState<User[]>;
-  messagesState: ReactUseState<Message[]>;
 };
 
 export const DirectMessagesStateContext =
@@ -21,16 +19,14 @@ export const DirectMessagesStateContext =
 export function DirectMessagesStateProvider({ children }: BaseContextProps) {
   const channelsState = useState<Channel[]>([]);
   const friendsState = useState<User[]>([]);
-  const messagesState = useState<Message[]>([]);
-
-  const value: DirectMessagesStateContextData = {
-    channelsState,
-    friendsState,
-    messagesState,
-  };
 
   return (
-    <DirectMessagesStateContext.Provider value={value}>
+    <DirectMessagesStateContext.Provider
+      value={{
+        channelsState,
+        friendsState,
+      }}
+    >
       {children}
     </DirectMessagesStateContext.Provider>
   );

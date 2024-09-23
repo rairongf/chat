@@ -6,7 +6,7 @@ import {
   DirectMessagesStateProvider,
   UserGuildRoutePathMask,
 } from "@/modules/direct_messages";
-import { WebsocketProvider } from "@/modules/websocket";
+import { WebsocketProvider, WebsocketStateProvider } from "@/modules/websocket";
 import { usePathname } from "next/navigation";
 
 export default function GuildLayout({
@@ -24,15 +24,19 @@ export default function GuildLayout({
 
   return (
     <>
-      <WebsocketProvider>
-        {showDirectMessagesPage && (
-          <DirectMessagesStateProvider>
-            <DirectMessagesProvider>
-              <DirectMessagesPageContent>{children}</DirectMessagesPageContent>
-            </DirectMessagesProvider>
-          </DirectMessagesStateProvider>
-        )}
-      </WebsocketProvider>
+      <WebsocketStateProvider>
+        <WebsocketProvider>
+          {showDirectMessagesPage && (
+            <DirectMessagesStateProvider>
+              <DirectMessagesProvider>
+                <DirectMessagesPageContent>
+                  {children}
+                </DirectMessagesPageContent>
+              </DirectMessagesProvider>
+            </DirectMessagesStateProvider>
+          )}
+        </WebsocketProvider>
+      </WebsocketStateProvider>
     </>
   );
 }

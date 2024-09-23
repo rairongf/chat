@@ -1,11 +1,11 @@
 import { Button, Icon, Input } from "@/modules/common";
 import { useTheme } from "@/modules/theme";
+import { useWebsocket } from "@/modules/websocket";
 import { twJoin } from "tailwind-merge";
-import { useDirectMessages } from "../../context";
 
 export function SendMessageButton() {
   const { theme } = useTheme();
-  const { sendMessage } = useDirectMessages();
+  const { sendMessage } = useWebsocket();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

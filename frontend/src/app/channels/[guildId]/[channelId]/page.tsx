@@ -1,7 +1,7 @@
 "use client";
 
+import { ActiveChatView } from "@/modules/common";
 import { UserGuildRoutePathMask } from "@/modules/direct_messages";
-import { ActiveChatView } from "@/modules/direct_messages/presenter/components";
 import { usePathname } from "next/navigation";
 
 export default function ServerChannelPage() {
@@ -11,5 +11,14 @@ export default function ServerChannelPage() {
 
   const showDirectMessagesPage = guildIdOrAlias == UserGuildRoutePathMask;
 
-  return <>{showDirectMessagesPage && <ActiveChatView />}</>;
+  return (
+    <>
+      {showDirectMessagesPage && (
+        <ActiveChatView
+          guildIdOrMask={guildIdOrAlias}
+          channelId={pathSegments[2]}
+        />
+      )}
+    </>
+  );
 }

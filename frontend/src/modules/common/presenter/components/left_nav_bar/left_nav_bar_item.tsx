@@ -5,12 +5,16 @@ import { Button, ButtonProps } from "../buttons";
 
 export type LeftNavigationBarItemProps = React.PropsWithChildren<
   Pick<ButtonProps, "onClick"> &
-    Pick<AvatarProps, "imgProps"> & { selected?: boolean }
+    Pick<AvatarProps, "imgProps" | "initials" | "initialsProps"> & {
+      selected?: boolean;
+    }
 >;
 
 export function LeftNavigationBarItem({
   children,
   onClick,
+  initials,
+  initialsProps,
   imgProps,
   selected = false,
 }: LeftNavigationBarItemProps) {
@@ -21,7 +25,7 @@ export function LeftNavigationBarItem({
       className={twJoin(
         selected
           ? theme.colors.common.background.blurple
-          : theme.colors.background.primary,
+          : theme.colors.background.focus,
         "w-full aspect-square",
         selected ? "rounded-2xl" : "rounded-full hover:rounded-2xl",
         selected ? "" : theme.colors.background.hoverBlurple,
@@ -36,8 +40,10 @@ export function LeftNavigationBarItem({
     >
       <Avatar
         containerProps={{
-          className: "flex justify-center items-center w-full aspect-square",
+          className: "flex justify-center items-center w-full",
         }}
+        initials={initials}
+        initialsProps={initialsProps}
         imgProps={imgProps}
       >
         {children}

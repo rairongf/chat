@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "@/modules/session/context";
 import { useTheme } from "@/modules/theme";
 import { usePathname, useRouter } from "next/navigation";
 import { twJoin } from "tailwind-merge";
@@ -7,7 +8,7 @@ import { AddGuildDialog, Divider, Icon, useDialog } from "..";
 import { LeftNavigationBarItem } from "./left_nav_bar_item";
 
 export function LeftNavigationBar() {
-  const guilds: { _id: string }[] = [{ _id: "1" }];
+  const { guilds, addGuild } = useSession();
   const { theme } = useTheme();
   const pathname = usePathname();
   const router = useRouter();
@@ -39,15 +40,40 @@ export function LeftNavigationBar() {
 
         {/* Guild Servers */}
         {guilds.map((guild, index) => {
+          const onClick = () => navigateToRoute(`/channels/${guild._id}`);
+          const selected = pathname.includes(`/channels/${guild._id}`);
+
+          if (guild.picture) {
+            return (
+              <LeftNavigationBarItem
+                key={index}
+                onClick={onClick}
+                imgProps={{
+                  src: guild.picture,
+                  alt: `Guild ${guild.name} picture`,
+                  width: 128,
+                  height: 128,
+                }}
+                selected={selected}
+              />
+            );
+          }
+
+          const nameSegments = guild.name.split(" ");
+          const initials =
+            nameSegments.length > 1
+              ? `${nameSegments[0][0]}${nameSegments[1][0]}`
+              : guild.name.substring(0, 2);
+
           return (
             <LeftNavigationBarItem
               key={index}
-              onClick={() => navigateToRoute(`/channels/${guild._id}`)}
-              imgProps={{
-                src: "",
-                alt: "",
+              onClick={onClick}
+              initials={initials}
+              initialsProps={{
+                className: twJoin("font-bold text-lg"),
               }}
-              selected={pathname.includes(`/channels/${guild._id}`)}
+              selected={selected}
             />
           );
         })}
@@ -59,8 +85,9 @@ export function LeftNavigationBar() {
             show(
               <AddGuildDialog
                 onClose={removeAny}
-                onSave={(data) => {
-                  console.log("Add guild:", data);
+                onSave={async (data) => {
+                  const result = await addGuild({ ...data });
+                  if (result) removeAny();
                 }}
               />,
               {

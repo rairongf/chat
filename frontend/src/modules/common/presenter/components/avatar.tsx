@@ -71,13 +71,7 @@ export function Avatar({
             />
           )}
           {!imgProps && initials && (
-            <span
-              className={twJoin(
-                "font-medium text-gray-600 dark:text-gray-300",
-                initialsClassName
-              )}
-              {...otherInitialsProps}
-            >
+            <span className={twJoin(initialsClassName)} {...otherInitialsProps}>
               {initials}
             </span>
           )}

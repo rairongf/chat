@@ -3,6 +3,7 @@ import {
   Channel,
   findManyChannels,
   findManyMessages,
+  findManyUsers,
   Message,
   User,
 } from "@/modules/common";
@@ -20,7 +21,7 @@ import { useDirectMessagesState } from "./state";
 
 type DirectMessagesContextData = {
   channels: Channel[];
-  users: User[];
+  friends: User[];
   messages: Message[];
   connectToChannel: IConnectToChannelUsecase;
   sendMessage: ISendDirectMessageUsecase;
@@ -33,15 +34,17 @@ export const DirectMessagesContext = createContext<DirectMessagesContextData>(
 export function DirectMessagesProvider({ children }: BaseContextProps) {
   const {
     channelsState: [channels],
-    usersState: [users],
+    friendsState: [friends],
     messagesState: [messages],
   } = useDirectMessagesState();
   const { receivedEvents } = useWebsocket();
 
   const onEventReceived = useOnEventReceived();
 
-  const { initializeDirectMessagesState } =
-    useInitializeDirectMessagesState(findManyChannels);
+  const { initializeDirectMessagesState } = useInitializeDirectMessagesState(
+    findManyUsers,
+    findManyChannels
+  );
 
   const { connectToChannel } = useConnectToChannel(findManyMessages);
 
@@ -64,7 +67,7 @@ export function DirectMessagesProvider({ children }: BaseContextProps) {
 
   return (
     <DirectMessagesContext.Provider
-      value={{ channels, users, messages, connectToChannel, sendMessage }}
+      value={{ channels, friends, messages, connectToChannel, sendMessage }}
     >
       {children}
     </DirectMessagesContext.Provider>

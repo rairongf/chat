@@ -1,27 +1,32 @@
-import { IFindManyChannelsRepository } from '@/modules/common';
+import { IFindManyChannelsRepository, IFindManyUsersRepository } from '@/modules/common';
 import { useDirectMessagesState } from '@/modules/direct_messages/presenter';
 import { IInitializeDirectMessagesStateUsecase } from './interface';
 
 export function useInitializeDirectMessagesState(
+  findManyUsers: IFindManyUsersRepository,
   findManyChannels: IFindManyChannelsRepository,
 ) {
-  const { channelsState: [, setChannels] } = useDirectMessagesState();
+  const { channelsState: [, setChannels], friendsState: [, setFriends] } = useDirectMessagesState();
 
   const initializeDirectMessagesState: IInitializeDirectMessagesStateUsecase = async () => {
     try {
-      const { data, didSucceed, error } = await findManyChannels({ page: 1, limit: 20 });
+      const friendsResponse = await findManyUsers({});
 
-      if (!didSucceed) {
-        console.log('Error:', error);
+      if (!friendsResponse.didSucceed) {
+        console.log('Error:', friendsResponse.error);
         return;
       }
 
-      if (data.elements.length == 0) {
-        console.log('No channels available.');
+      setFriends([...friendsResponse.data.elements]);
+
+      const channelsResponse = await findManyChannels({ page: 1, limit: 20 });
+
+      if (!channelsResponse.didSucceed) {
+        console.log('Error:', channelsResponse.error);
         return;
       }
 
-      setChannels(data.elements);
+      setChannels([...channelsResponse.data.elements]);
 
       return;
     } catch (err) {

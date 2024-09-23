@@ -1,12 +1,6 @@
 import { Module } from '@nestjs/common';
 import { GuildsController } from './controller';
-import {
-  CreateGuildService,
-  DeleteGuildService,
-  FindManyGuildsService,
-  FindOneGuildService,
-  UpdateGuildService,
-} from './services';
+import { CreateGuildService, DeleteGuildService, FindManyGuildsService, FindOneGuildService, UpdateGuildService } from './services';
 
 @Module({
   controllers: [GuildsController],
@@ -18,4 +12,4 @@ import {
     UpdateGuildService,
   ],
 })
-export class GuildsModule {}
+export class GuildsModule { }

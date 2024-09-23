@@ -8,7 +8,7 @@ import { Guild, GuildRepository } from 'src/modules/data';
 
 @Injectable()
 export class FindOneGuildService {
-  constructor(private readonly repository: GuildRepository) {}
+  constructor(private readonly repository: GuildRepository) { }
 
   async handle(
     userId: Types.ObjectId,
@@ -26,6 +26,7 @@ export class FindOneGuildService {
             name: 1,
             members: 1,
             createdAt: 1,
+            picture: 1,
           },
         )
         .lean({ getters: true })

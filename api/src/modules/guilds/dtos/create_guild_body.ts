@@ -3,8 +3,7 @@ import { Guild } from 'src/modules/data';
 
 export class CreateGuildBodyDTO
   implements
-    Omit<Guild, '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'members'>
-{
+  Omit<Guild, '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'members' | 'picture'> {
   @IsString()
   @IsNotEmpty()
   name: string;

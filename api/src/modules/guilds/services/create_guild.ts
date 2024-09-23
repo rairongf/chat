@@ -9,7 +9,7 @@ import { CreateGuildBodyDTO } from '../dtos';
 
 @Injectable()
 export class CreateGuildService {
-  constructor(private readonly repository: GuildRepository) {}
+  constructor(private readonly repository: GuildRepository) { }
 
   async handle(
     userId: Types.ObjectId,
@@ -27,7 +27,11 @@ export class CreateGuildService {
       }
 
       return {
-        ...guild,
+        _id: guild._id,
+        name: guild.name,
+        picture: guild.picture,
+        members: guild.members,
+        createdAt: guild.createdAt,
       };
     } catch (err) {
       console.error(`[${typeof this}] Error:`, err);

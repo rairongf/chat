@@ -15,6 +15,11 @@ export class Guild extends AbstractDocument {
   })
   name: string;
 
+  @Prop({
+    required: true,
+  })
+  picture: string;
+
   @Prop([
     {
       type: mongoose.Schema.Types.ObjectId,

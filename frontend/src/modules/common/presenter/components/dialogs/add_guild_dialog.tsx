@@ -42,9 +42,9 @@ export function AddGuildDialog({ onClose, onSave }: AddGuildDialogProps) {
   }
 
   function guildPictureValidator(file?: File): string | undefined {
-    if (!file) {
+    /* if (!file) {
       return resource.addGuildDialog.inputErrorMessages.missingGuildPicture;
-    }
+    } */
 
     return;
   }

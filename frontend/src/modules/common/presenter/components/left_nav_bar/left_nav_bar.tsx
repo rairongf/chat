@@ -40,7 +40,8 @@ export function LeftNavigationBar() {
 
         {/* Guild Servers */}
         {guilds.map((guild, index) => {
-          const onClick = () => navigateToRoute(`/channels/${guild._id}`);
+          const onClick = () =>
+            navigateToRoute(`/channels/${guild._id}/${guild.channels[0]._id}`);
           const selected = pathname.includes(`/channels/${guild._id}`);
 
           if (guild.picture) {

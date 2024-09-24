@@ -1,20 +1,18 @@
-import {
-  BaseContextProps,
-  Channel,
-  findManyChannels,
-  Guild,
-  User,
-} from "@/modules/common";
-import { useRouter } from "next/navigation";
+import { BaseContextProps } from "@/modules/common";
 import { createContext, useContext, useEffect } from "react";
 import { useInitializeGuildServerState } from "./domain/usecases";
-import { findGuildMembers } from "./infra/repositories";
-import { useGuildServerState } from "./state";
+import { findGuild } from "./infra/repositories";
+import {
+  GuildChannelsState,
+  GuildMembersState,
+  GuildState,
+  useGuildServerState,
+} from "./state";
 
 type GuildServerContextData = {
-  guild: Guild | undefined;
-  members: User[];
-  channels: Channel[];
+  guild: GuildState;
+  members: GuildMembersState;
+  channels: GuildChannelsState;
 };
 
 export const GuildServerContext = createContext<GuildServerContextData>(
@@ -34,18 +32,13 @@ export function GuildServerProvider({
     membersState: [members],
     channelsState: [channels],
   } = useGuildServerState();
-  const router = useRouter();
 
-  const { initializeGuildServerState } = useInitializeGuildServerState(
-    findGuildMembers,
-    findManyChannels
-  );
+  const { initializeGuildServerState } =
+    useInitializeGuildServerState(findGuild);
 
   async function init() {
     const response = await initializeGuildServerState({ guildId });
-    if (!response.didSucceed || !response.defaultChannelId) return;
-
-    router.push(`/channels/${guildId}/${response.defaultChannelId!}`);
+    if (!response.didSucceed) return;
   }
 
   useEffect(() => {

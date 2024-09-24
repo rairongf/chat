@@ -6,7 +6,6 @@ export type IInitializeGuildServerStateUsecaseArguments = {
 
 export type IInitializeGuildServerStateUsecaseResponse = {
   didSucceed: boolean;
-  defaultChannelId?: string;
 };
 
 export type IInitializeGuildServerStateUsecase = BaseUsecase<

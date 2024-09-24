@@ -6,6 +6,12 @@ import { User } from './user';
 export type GuildDocument = HydratedDocument<Guild>;
 
 @Schema({
+  toJSON: {
+    virtuals: true
+  },
+  toObject: {
+    virtuals: true
+  },
   timestamps: true,
   versionKey: false,
 })
@@ -16,9 +22,9 @@ export class Guild extends AbstractDocument {
   name: string;
 
   @Prop({
-    required: true,
+    required: false,
   })
-  picture: string;
+  picture?: string;
 
   @Prop([
     {
@@ -30,4 +36,13 @@ export class Guild extends AbstractDocument {
   members: User[];
 }
 
-export const GuildSchema = SchemaFactory.createForClass(Guild);
+const GuildSchema = SchemaFactory.createForClass(Guild);
+GuildSchema.virtual('channels', {
+  ref: 'Channel',
+  localField: '_id',
+  foreignField: 'guildId',
+  match: { deletedAt: null }
+});
+
+export { GuildSchema };
+

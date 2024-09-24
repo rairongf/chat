@@ -40,8 +40,12 @@ export function LeftNavigationBar() {
 
         {/* Guild Servers */}
         {guilds.map((guild, index) => {
-          const onClick = () =>
-            navigateToRoute(`/channels/${guild._id}/${guild.channels[0]._id}`);
+          const defaultChannelId = guild.channels.at(0)?._id;
+          let routePath = `/channels/${guild._id}`;
+          if (defaultChannelId) {
+            routePath = `${routePath}/${defaultChannelId}`;
+          }
+          const onClick = () => navigateToRoute(routePath);
           const selected = pathname.includes(`/channels/${guild._id}`);
 
           if (guild.picture) {

@@ -21,7 +21,7 @@ export function RecentChatsTab() {
   const { theme } = useTheme();
   const { show, removeAny } = useDialog();
   const { resource } = useLanguage();
-  const { channels } = useDirectMessages();
+  const { channels, friends } = useDirectMessages();
 
   return (
     <aside
@@ -80,7 +80,11 @@ export function RecentChatsTab() {
           return (
             <RecentChatsTabItem
               key={i}
-              name={channel.name}
+              picture={
+                friends.find((user) => channel.members.includes(user._id))
+                  ?.picture
+              }
+              label={channel.name}
               date={channel.createdAt}
               onClick={() => {
                 const channelRoutePath = `/channels/@me/${channel._id}`;

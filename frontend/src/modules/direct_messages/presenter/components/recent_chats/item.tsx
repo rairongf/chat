@@ -4,16 +4,27 @@ import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
 
 export function RecentChatsTabItem({
-  name,
+  label,
+  picture,
   date,
   onClick,
 }: {
-  name: string;
+  label: string;
+  picture?: string;
   date: Date;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const { theme } = useTheme();
   const { formatDate } = useLanguage();
+
+  let initials: string | undefined;
+  if (!picture) {
+    const segments = label.split(" ");
+    initials =
+      segments.length > 2
+        ? `${segments.at(0)}${segments.at(1)}`
+        : label.substring(0, 2);
+  }
 
   return (
     <Button
@@ -29,17 +40,22 @@ export function RecentChatsTabItem({
           containerProps={{
             className: "",
           }}
-          imgProps={{
-            src: "https://avatars.githubusercontent.com/u/43035850?v=4",
-            width: 80,
-            height: 80,
-            className:
-              "h-full max-w-min aspect-square object-contain rounded-full",
-            alt: "Sender Profile Picture",
-          }}
+          imgProps={
+            picture
+              ? {
+                  src: picture,
+                  width: 80,
+                  height: 80,
+                  className:
+                    "h-full max-w-min aspect-square object-contain rounded-full",
+                  alt: "Friend Profile Picture",
+                }
+              : undefined
+          }
+          initials={initials}
         />
         <Column className="justify-center items-start gap-0.5 text-start">
-          <span className="font-semibold leading-none">{name}</span>
+          <span className="font-semibold leading-none">{label}</span>
           <span className="text-xs leading-none">
             <span className="font-semibold">
               {formatDate(date, {

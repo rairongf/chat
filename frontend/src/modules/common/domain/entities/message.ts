@@ -1,9 +1,10 @@
 import { Channel } from "./channel";
-import { User } from "./user";
 
 export interface Message {
   _id: string;
-  senderId: User['_id'];
+  senderId: string;
+  senderUsername?: string;
+  senderPicture?: string;
   channelId: Channel['_id'];
   content: string;
   createdAt: Date;

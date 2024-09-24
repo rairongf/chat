@@ -49,10 +49,10 @@ export function ChatScrollableContainer() {
                 isFirstMessage ||
                 isFromOtherSender ||
                 !previousDateIsInTheSameDay
-                  ? "https://avatars.githubusercontent.com/u/43035850?v=4"
+                  ? message.senderPicture
                   : undefined
               }
-              senderName={`User ${message.senderId}`}
+              senderName={message.senderUsername ?? "User ???"}
               content={message.content}
               date={message.createdAt}
             />

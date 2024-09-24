@@ -16,19 +16,19 @@ export class FindOneGuildService {
   ): Promise<Guild> {
     try {
       const guild = await this.repository.model
-        .findOne(
-          {
-            _id: guildId,
-            members: userId,
-          },
-          {
-            _id: 1,
-            name: 1,
-            members: 1,
-            createdAt: 1,
-            picture: 1,
-          },
-        )
+        .findOne({
+          _id: guildId,
+          members: userId,
+        })
+        .select({
+          _id: 1,
+          name: 1,
+          members: 1,
+          createdAt: 1,
+          picture: 1,
+        })
+        .populate('channels', '_id guildId name type')
+        .populate('members', '_id name username picture')
         .lean({ getters: true })
         .exec();
 

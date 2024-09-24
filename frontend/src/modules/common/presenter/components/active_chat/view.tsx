@@ -1,3 +1,5 @@
+"use client";
+
 import { Column, Row } from "@/modules/common";
 import { useWebsocket } from "@/modules/websocket";
 import { useEffect } from "react";

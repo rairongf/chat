@@ -6,35 +6,32 @@ import { FindManyMessagesQueryParamsDTO } from '../dtos';
 
 @Injectable()
 export class FindManyMessagesService {
-  constructor(private readonly repository: MessageRepository) {}
+  constructor(private readonly repository: MessageRepository) { }
 
   async handle(
     userId: Types.ObjectId,
     query: FindManyMessagesQueryParamsDTO,
   ): Promise<ChatPaginatedResponse<MessageDocument>> {
     const filter: FilterQuery<MessageDocument> = {
-      channelId: query.channelId,
+      channel: query.channelId,
       deletedAt: null,
     };
 
     const count = await this.repository.model.countDocuments(filter);
 
     const messages = await this.repository.model
-      .find(
-        filter,
-        {
-          _id: 1,
-          senderId: 1,
-          channelId: 1,
-          content: 1,
-          createdAt: 1,
-          updatedAt: 1,
-        },
-        {
-          skip: query.limit * (query.page - 1),
-          limit: query.limit,
-        },
-      )
+      .find(filter)
+      .select({
+        _id: 1,
+        sender: 1,
+        channel: 1,
+        content: 1,
+        createdAt: 1,
+        updatedAt: 1,
+      })
+      .populate('sender', '_id name username picture')
+      .skip(query.limit * (query.page - 1))
+      .limit(query.limit)
       .lean({ getters: true })
       .exec();
 

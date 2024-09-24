@@ -5,7 +5,7 @@ import { CreateMessageBodyDTO } from '../dtos';
 
 @Injectable()
 export class CreateMessageService {
-  constructor(private readonly repository: MessageRepository) {}
+  constructor(private readonly repository: MessageRepository) { }
 
   async handle(
     userId: Types.ObjectId,
@@ -14,8 +14,8 @@ export class CreateMessageService {
     const message = await this.repository.model.create({
       _id: new Types.ObjectId(),
       content: data.content,
-      senderId: userId,
-      channelId: data.channelId,
+      sender: userId,
+      channel: data.channelId,
     });
 
     return message;

@@ -5,7 +5,7 @@ import { CreateChannelBodyDTO } from '../dtos';
 
 @Injectable()
 export class CreateChannelService {
-  constructor(private readonly repository: ChannelRepository) {}
+  constructor(private readonly repository: ChannelRepository) { }
 
   async handle(
     userId: Types.ObjectId,
@@ -15,12 +15,17 @@ export class CreateChannelService {
       const channel = await this.repository.model.create({
         _id: new Types.ObjectId(),
         type: ChannelType.PRIVATE,
-        name: `private_with_${data.memberId}`,
+        name: `direct_message`,
         members: [new Types.ObjectId(data.memberId), userId],
         guildId: null,
       });
 
-      return { ...channel };
+      return {
+        _id: channel._id,
+        name: channel.name,
+        type: channel.type,
+        members: channel.members,
+      };
     }
 
     if (!data.guildId) {
@@ -33,10 +38,15 @@ export class CreateChannelService {
       _id: new Types.ObjectId(),
       type: ChannelType.GUILD_TEXT_CHANNEL,
       name: data.name ?? '',
-      members: [],
+      members: [userId],
       guildId: new Types.ObjectId(data.guildId),
     });
 
-    return { ...channel };
+    return {
+      _id: channel._id,
+      name: channel.name,
+      type: channel.type,
+      members: channel.members,
+    };
   }
 }

@@ -1,3 +1,10 @@
-import { BaseUsecase, Guild, User } from '@/modules/common';
+import { BaseUsecase, User } from '@/modules/common';
+import { GuildSummary } from '../../models';
 
-export type IInitializeSessionStateUsecase = BaseUsecase<{didSucceed: boolean; user?: User; guilds?: Guild[]}>;
+type IInitializeSessionStateUsecaseResponse = {
+  didSucceed: boolean;
+  user?: User;
+  guilds?: GuildSummary[];
+};
+
+export type IInitializeSessionStateUsecase = BaseUsecase<IInitializeSessionStateUsecaseResponse>;

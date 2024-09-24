@@ -1,6 +1,6 @@
 "use client";
 
-import { BaseContextProps, Guild, User } from "@/modules/common";
+import { BaseContextProps, User } from "@/modules/common";
 import {
   createContext,
   useCallback,
@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { useAuth } from "../auth/context";
+import { GuildSummary } from "./domain/models";
 import {
   IAddGuildUsecase,
   IAddGuildUsecaseArguments,
@@ -19,7 +20,7 @@ import { createGuild, findManyGuilds, findUser } from "./infra/repositories";
 
 type SessionContextData = {
   user?: User;
-  guilds: Guild[];
+  guilds: GuildSummary[];
   addGuild: IAddGuildUsecase;
 };
 
@@ -30,7 +31,7 @@ export const SessionContext = createContext<SessionContextData>(
 export function SessionProvider({ children }: BaseContextProps) {
   const { isAuthenticated } = useAuth();
   const [user, setUser] = useState<User>();
-  const [guilds, setGuilds] = useState<Guild[]>([]);
+  const [guilds, setGuilds] = useState<GuildSummary[]>([]);
 
   const { initializeState } = useInitializeSessionState(
     findUser,

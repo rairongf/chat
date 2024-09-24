@@ -83,7 +83,7 @@ export function RecentChatsTab() {
               name={channel.name}
               date={channel.createdAt}
               onClick={() => {
-                const channelRoutePath = `/channels/${channel._id}`;
+                const channelRoutePath = `/channels/@me/${channel._id}`;
                 if (pathname.includes(channelRoutePath)) return;
 
                 router.push(channelRoutePath);

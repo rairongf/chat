@@ -4,7 +4,14 @@ import { useSession } from "@/modules/session/context";
 import { useTheme } from "@/modules/theme";
 import { usePathname, useRouter } from "next/navigation";
 import { twJoin } from "tailwind-merge";
-import { AddGuildDialog, Divider, Icon, useDialog } from "..";
+import {
+  AddGuildDialog,
+  Divider,
+  Icon,
+  InitialsAvatar,
+  PictureAvatar,
+  useDialog,
+} from "..";
 import { LeftNavigationBarItem } from "./left_nav_bar_item";
 
 export function LeftNavigationBar() {
@@ -36,7 +43,8 @@ export function LeftNavigationBar() {
         >
           <Icon name={"home"} className="text-xl" />
         </LeftNavigationBarItem>
-        <Divider className="w-3/5 h-[2px]" />
+
+        {guilds.length > 0 && <Divider className="w-3/5 h-[2px]" />}
 
         {/* Guild Servers */}
         {guilds.map((guild, index) => {
@@ -53,33 +61,35 @@ export function LeftNavigationBar() {
               <LeftNavigationBarItem
                 key={index}
                 onClick={onClick}
-                imgProps={{
-                  src: guild.picture,
-                  alt: `Guild ${guild.name} picture`,
-                  width: 128,
-                  height: 128,
-                }}
                 selected={selected}
-              />
+              >
+                <PictureAvatar
+                  src={guild.picture}
+                  alt={`Guild ${guild.name} picture`}
+                  width={128}
+                  height={128}
+                  /* containerProps={{
+                    className: "flex justify-center items-center w-full",
+                  }} */
+                />
+              </LeftNavigationBarItem>
             );
           }
-
-          const nameSegments = guild.name.split(" ");
-          const initials =
-            nameSegments.length > 1
-              ? `${nameSegments[0][0]}${nameSegments[1][0]}`
-              : guild.name.substring(0, 2);
 
           return (
             <LeftNavigationBarItem
               key={index}
               onClick={onClick}
-              initials={initials}
-              initialsProps={{
-                className: twJoin("font-bold text-lg"),
-              }}
               selected={selected}
-            />
+            >
+              <InitialsAvatar
+                name={guild.name}
+                className="font-bold text-lg"
+                /* containerProps={{
+                  className: "flex justify-center items-center w-full",
+                }} */
+              />
+            </LeftNavigationBarItem>
           );
         })}
 

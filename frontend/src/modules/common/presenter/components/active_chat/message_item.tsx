@@ -1,12 +1,14 @@
-import { Avatar, Column, Row } from "@/modules/common";
+import { Column, InitialsAvatar, PictureAvatar, Row } from "@/modules/common";
 import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
 
 export type MessageItemProps = {
   senderPicture?: string;
   senderName: string;
+  senderUsername: string;
   date: Date;
   content: string;
+  shouldShowAvatar: boolean;
 };
 
 export function MessageItem({
@@ -14,48 +16,53 @@ export function MessageItem({
   content,
   senderPicture,
   senderName,
+  senderUsername,
+  shouldShowAvatar,
 }: MessageItemProps) {
   const { theme } = useTheme();
 
   return (
-    <div
+    <Row
       className={twJoin(
-        "relative group pl-[4.5rem] mr-1.5",
+        "group mr-1.5 justify-start items-center w-full whitespace-nowrap",
         theme.colors.background.primaryHover,
         senderPicture ? "py-1" : "py-0.5",
-        senderPicture ? "mt-4" : ""
+        shouldShowAvatar ? "mt-4" : ""
       )}
     >
-      <span className="absolute left-0 w-[4.5rem] text-right">
-        {senderPicture && (
-          <Avatar
-            containerProps={{
-              className: "flex justify-end mr-2",
+      <Row className="w-[4.5rem] justify-end items-center mr-2 h-full">
+        {shouldShowAvatar && senderPicture && (
+          <PictureAvatar
+            avatar={{
+              className: "h-[3rem]",
             }}
-            imgProps={{
-              src: senderPicture,
-              width: 80,
-              height: 80,
-              className: "w-[3rem] aspect-square rounded-full",
-              alt: "Sender Profile Picture",
-            }}
+            src={senderPicture}
+            alt={senderName}
           />
         )}
-        {!senderPicture && (
-          <time
-            className="hidden group-hover:inline-block text-xs mr-2"
-            dateTime={date.toISOString()}
-          >
-            {date.toLocaleString("pt-BR", {
-              timeStyle: "short",
-            })}
-          </time>
+        {shouldShowAvatar && !senderPicture && (
+          <InitialsAvatar
+            avatar={{
+              className: twJoin("h-[3rem]", theme.colors.background.tertiary),
+            }}
+            name={senderName}
+          />
         )}
-      </span>
+
+        {!shouldShowAvatar && (
+          <div className="invisible group-hover:visible text-xs h-full">
+            <time dateTime={date.toISOString()}>
+              {date.toLocaleString("pt-BR", {
+                timeStyle: "short",
+              })}
+            </time>
+          </div>
+        )}
+      </Row>
       <Column className="justify-start items-start grow shrink basis-auto">
-        {senderPicture && (
+        {shouldShowAvatar && (
           <Row className="justify-start items-center gap-2">
-            <span className="font-bold text-start">{senderName}</span>
+            <span className="font-bold text-start">{senderUsername}</span>
             <time className="text-start text-xs" dateTime={date.toISOString()}>
               {date.toLocaleString("pt-BR", {
                 dateStyle: "short",
@@ -68,6 +75,6 @@ export function MessageItem({
           {content}
         </span>
       </Column>
-    </div>
+    </Row>
   );
 }

@@ -1,21 +1,16 @@
 import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
-import { Avatar, AvatarProps } from "../avatar";
 import { Button, ButtonProps } from "../buttons";
 
 export type LeftNavigationBarItemProps = React.PropsWithChildren<
-  Pick<ButtonProps, "onClick"> &
-    Pick<AvatarProps, "imgProps" | "initials" | "initialsProps"> & {
-      selected?: boolean;
-    }
+  Pick<ButtonProps, "onClick"> & {
+    selected?: boolean;
+  }
 >;
 
 export function LeftNavigationBarItem({
   children,
   onClick,
-  initials,
-  initialsProps,
-  imgProps,
   selected = false,
 }: LeftNavigationBarItemProps) {
   const { theme } = useTheme();
@@ -38,16 +33,7 @@ export function LeftNavigationBarItem({
       }}
       onClick={onClick}
     >
-      <Avatar
-        containerProps={{
-          className: "flex justify-center items-center w-full",
-        }}
-        initials={initials}
-        initialsProps={initialsProps}
-        imgProps={imgProps}
-      >
-        {children}
-      </Avatar>
+      {children}
     </Button>
   );
 }

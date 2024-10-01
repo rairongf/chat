@@ -77,13 +77,15 @@ export function RecentChatsTab() {
           </Tooltip>
         </Row>
         {channels.map((channel, i) => {
+          const friend = friends.find((user) =>
+            channel.members.includes(user._id)
+          )!;
+
           return (
             <RecentChatsTabItem
               key={i}
-              picture={
-                friends.find((user) => channel.members.includes(user._id))
-                  ?.picture
-              }
+              picture={friend.picture}
+              friendName={friend.name}
               label={channel.name}
               date={channel.createdAt}
               onClick={() => {

@@ -17,7 +17,8 @@ export function ChatScrollableContainer() {
       {messages.map((message, index, list) => {
         const isFirstMessage = index == 0;
         const previousMessage = list.at(index - 1);
-        const isFromOtherSender = previousMessage?.senderId != message.senderId;
+        const isFromOtherSender =
+          previousMessage?.sender._id != message.sender._id;
 
         const oneDayInMilliseconds = 24 * 60 * 60 * 1000;
 
@@ -27,12 +28,9 @@ export function ChatScrollableContainer() {
             oneDayInMilliseconds;
 
         return (
-          <>
+          <div key={index}>
             {!previousDateIsInTheSameDay && (
-              <Row
-                key={`divider_${index}`}
-                className="justify-center items-center gap-4 pl-6 pr-2 py-3"
-              >
+              <Row className="justify-center items-center gap-4 pl-6 pr-2 pt-3">
                 <Divider className="w-full h-[2px]" />
                 <span className="text-xs text-nowrap">
                   {formatDate(message.createdAt, {
@@ -44,19 +42,18 @@ export function ChatScrollableContainer() {
               </Row>
             )}
             <MessageItem
-              key={index}
-              senderPicture={
+              shouldShowAvatar={
                 isFirstMessage ||
                 isFromOtherSender ||
                 !previousDateIsInTheSameDay
-                  ? message.senderPicture
-                  : undefined
               }
-              senderName={message.senderUsername ?? "User ???"}
+              senderPicture={message.sender.picture}
+              senderName={message.sender.name}
+              senderUsername={message.sender.username}
               content={message.content}
               date={message.createdAt}
             />
-          </>
+          </div>
         );
       })}
     </Column>

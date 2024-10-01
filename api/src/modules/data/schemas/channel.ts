@@ -5,8 +5,8 @@ import { Guild } from './guild';
 import { User } from './user';
 
 export enum ChannelType {
-  PRIVATE = 'private',
-  GUILD_TEXT_CHANNEL = 'guild_text_channel',
+  PRIVATE = 'PRIVATE',
+  GUILD_TEXT_CHANNEL = 'GUILD_TEXT_CHANNEL',
 }
 
 export type ChannelDocument = HydratedDocument<Channel>;

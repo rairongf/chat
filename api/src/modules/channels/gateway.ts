@@ -1,16 +1,16 @@
 import {
-  ConnectedSocket,
   MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
+  WebSocketServer
 } from '@nestjs/websockets';
 import { Types } from 'mongoose';
 import { Server, Socket } from 'socket.io';
-import { Message } from '../data';
+import { MessagePayload } from '../common';
 import { CreateMessageService } from '../messages/services';
+import { EventMessageBodyDTO } from './dtos';
 
 /**
  * `namespace` defaults to `'/'`
@@ -23,9 +23,8 @@ import { CreateMessageService } from '../messages/services';
   //path: '/socket.io',
 })
 export class ChannelsGateway
-  implements OnGatewayConnection, OnGatewayDisconnect
-{
-  constructor(private readonly createMessageService: CreateMessageService) {}
+  implements OnGatewayConnection, OnGatewayDisconnect {
+  constructor(private readonly createMessageService: CreateMessageService) { }
 
   @WebSocketServer()
   server: Server;
@@ -41,28 +40,25 @@ export class ChannelsGateway
   @SubscribeMessage('events')
   async handleEvent(
     @MessageBody()
-    payload: {
-      channelId: string;
-      content: string;
-      senderId: string;
-    },
+    payload: EventMessageBodyDTO,
     //@ConnectedSocket() client: Socket,
   ) {
     console.log(`[events] ${payload.senderId}:`, payload);
     if (!payload.channelId) return;
+    if (!payload.senderId) return;
 
     const message = await this.createMessageService.handle(
-      new Types.ObjectId(payload.senderId),
       {
+        senderId: new Types.ObjectId(payload.senderId),
         channelId: new Types.ObjectId(payload.channelId),
         content: payload.content,
       },
     );
 
-    this.serverEmitTo<Message>(payload.channelId, message);
+    this.serverEmitTo<MessagePayload>(payload.channelId, message);
   }
 
-  @SubscribeMessage('join_channel')
+  /* @SubscribeMessage('join_guild')
   async handleJoinChannel(
     @MessageBody()
     payload: {
@@ -74,55 +70,13 @@ export class ChannelsGateway
     console.log(`[join_channel] ${payload.senderId}:`, payload);
     if (!payload.channelId) return;
 
-    /* const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
+    const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
       channelId: new Types.ObjectId(payload.channelId),
-      content: `${payload.senderId} joined the channel`,
-    }); */
-    const message = {
-      _id: new Types.ObjectId(),
-      channelId: payload.channelId,
-      content: `${payload.senderId} joined the channel`,
-      senderId: payload.senderId,
-      createdAt: new Date(),
-    };
-
-    this.emitWithClientTo(payload.channelId, client, {
-      ...message,
-      content: 'You joined the channel',
-    });
-    this.emitWithClientTo(payload.channelId, client, message, true);
-  }
-
-  @SubscribeMessage('leave_channel')
-  async handleLeaveChannel(
-    @MessageBody()
-    payload: {
-      channelId: string;
-      senderId: string;
-    },
-    @ConnectedSocket() client: Socket,
-  ) {
-    console.log(`[leave_channel] ${payload.senderId}:`, payload);
-    if (!payload.channelId) return;
-
-    /* const message = await this.createMessageService.handle(new Types.ObjectId(payload.senderId), {
-      channelId: new Types.ObjectId(payload.channelId),
-      content: `${payload.senderId} left the channel`,
-    }); */
-    const message = {
-      _id: new Types.ObjectId(),
-      channelId: payload.channelId,
-      content: `${payload.senderId} left the channel`,
-      senderId: payload.senderId,
-      createdAt: new Date(),
-    };
-
-    this.emitWithClientTo(payload.channelId, client, {
-      ...message,
-      content: 'You left the channel',
-    });
-    this.emitWithClientTo(payload.channelId, client, message, true);
-  }
+      content: `${payload.senderId} joined the server`,
+    }); 
+    
+    this.serverEmitTo<MessagePayload>(payload.channelId, message);
+  }*/
 
   private serverEmitTo<T extends object>(event: string, data: T) {
     this.server.emit(event, data);

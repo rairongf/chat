@@ -1,9 +1,10 @@
 import { createContext, useContext, useEffect } from "react";
-import { BaseContextProps, Message } from "../common";
+import { BaseContextProps } from "../common";
 import {
   EventPayload,
   IConnectToChannelUsecase,
   ISendMessageUsecase,
+  MessageDetails,
   useConnectToChannel,
   useOnEventReceived,
   useSendMessage,
@@ -14,7 +15,7 @@ import { useWebsocketState } from "./state";
 type WebsocketContextData = {
   // States
   activeChannelId: string | undefined;
-  messages: Message[];
+  messages: MessageDetails[];
   lastReceivedEvent: EventPayload | undefined;
   // Actions
   connectToChannel: IConnectToChannelUsecase;

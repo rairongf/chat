@@ -11,6 +11,11 @@ export function useSendMessage(socketClient: IStocketClient) {
 
   const sendMessage: ISendMessageUsecase = async ({content}) => {
     try {
+      if(!user){
+        console.error(`Cannot emit message. Missing sender information.`);
+        return;
+      }
+
       console.log(`Emitting ${content} to ${activeChannelId}...`);
       socketClient.emit("events", {
         channelId: activeChannelId,

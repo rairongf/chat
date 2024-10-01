@@ -11,23 +11,28 @@ export function useOnEventReceived() {
   const onEventReceived: IOnEventReceivedUsecase = async (data) => {
     try {
       console.log(
-        `[WebsocketProvider] Channel ${activeChannelId} received event:`,
+        `[IOnEventReceivedUsecase] Channel ${activeChannelId} received event:`,
         data
       );
       setLastReceivedEvent(data);
   
-      if (data.channelId != activeChannelId) return;
+      //if (data.channel != activeChannelId) return;
   
-      setMessages((messages) => [
-        ...messages,
-        {
-          _id: data._id,
-          channelId: data.channelId,
-          content: data.content,
-          createdAt: new Date(data.createdAt),
-          senderId: data.senderId,
-        },
-      ]);
+      setMessages((messages) => {
+        const message = messages.find((m) => m._id == data._id);
+        if(message) return [...messages];
+
+        return [
+          ...messages,
+          {
+            _id: data._id,
+            channel: data.channel,
+            content: data.content,
+            createdAt: new Date(data.createdAt),
+            sender: data.sender,
+          },
+        ];
+      });
     } catch (err) {
     }
   };

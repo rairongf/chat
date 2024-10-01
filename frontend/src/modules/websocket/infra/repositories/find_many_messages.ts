@@ -1,6 +1,7 @@
-import { api, Channel, Message, PaginatedRepository } from '@/modules/common';
+import { api, Channel, PaginatedRepository } from '@/modules/common';
+import { MessageDetails } from '../../domain/models';
 
-export type IFindManyMessagesRepository = PaginatedRepository<Message, {
+export type IFindManyMessagesRepository = PaginatedRepository<MessageDetails, {
   channelId: Channel['_id']; 
 }>;
 

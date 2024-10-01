@@ -1,10 +1,11 @@
-import { BaseContextProps, Message, ReactUseState } from "@/modules/common";
+import { BaseContextProps, ReactUseState } from "@/modules/common";
 import { createContext, useContext, useState } from "react";
 import { EventPayload } from "./domain";
+import { MessageDetails } from "./domain/models";
 
 type WebsocketStateContextData = {
   activeChannelIdState: ReactUseState<string | undefined>;
-  messagesState: ReactUseState<Message[]>;
+  messagesState: ReactUseState<MessageDetails[]>;
   lastReceivedEventState: ReactUseState<EventPayload | undefined>;
 };
 
@@ -14,7 +15,7 @@ const WebsocketStateContext = createContext<WebsocketStateContextData>(
 
 export function WebsocketStateProvider({ children }: BaseContextProps) {
   const activeChannelIdState = useState<string>();
-  const messagesState = useState<Message[]>([]);
+  const messagesState = useState<MessageDetails[]>([]);
   const lastReceivedEventState = useState<EventPayload>();
 
   return (

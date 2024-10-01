@@ -23,7 +23,7 @@ export class FindManyGuildsService {
           path: 'channels',
           select: '_id guildId name',
           match: { type: ChannelType.GUILD_TEXT_CHANNEL },
-          options: { sort: { createdAt: -1 } },
+          options: { sort: { createdAt: 1 } },
           perDocumentLimit: 1,
         })
         .lean({ getters: true })

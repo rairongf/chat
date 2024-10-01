@@ -1,7 +1,7 @@
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { twJoin } from "tailwind-merge";
-import { Avatar } from "../avatar";
+import { PictureAvatar } from "../avatars";
 import { Icon } from "../icon";
 import { Column } from "../layout";
 import { Input, InputProps } from "./input";
@@ -55,19 +55,15 @@ export function UploadPictureAvatar({
         </Column>
       )}
       {file && (
-        <Avatar
-          imgProps={{
-            alt: "Guild picture preview",
-            src: URL.createObjectURL(file),
-            unoptimized: true,
-            width: 80,
-            height: 80,
-          }}
+        <PictureAvatar
+          alt="Guild picture preview"
+          src={URL.createObjectURL(file)}
+          unoptimized={true}
         />
       )}
       <Input
         type={"file"}
-        className={twJoin("hidden")}
+        className={"hidden"}
         onChange={(e) => {
           if (!e.target.files) return;
           if (e.target.files.length == 0) return;

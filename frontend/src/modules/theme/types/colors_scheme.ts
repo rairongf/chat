@@ -5,6 +5,8 @@ export interface ColorsScheme {
   common: typeof CommonColorsScheme;
   background: {
     primary: string;
+    black: string;
+    highlightedBlack: string;
     secondary: string;
     tertiary: string;
     focus: string;
@@ -15,6 +17,8 @@ export interface ColorsScheme {
   };
   text: {
     base: string;
+    gray: string;
+    link: string;
     black: string;
     white: string;
     highlighted: string;

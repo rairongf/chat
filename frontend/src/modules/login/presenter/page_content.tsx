@@ -26,51 +26,78 @@ export function LoginPageContent() {
   }
 
   return (
-    <div className="flex justify-center items-center w-full h-full bg-blue-950">
+    <div
+      className={twJoin(
+        "flex justify-center items-center w-full h-full",
+        "bg-indigo-900"
+      )}
+    >
       <div
         className={twJoin(
           "md:w-3/5 h-min p-8 rounded-md",
-          theme.colors.background.focus
+          theme.colors.background.black
         )}
       >
         <form onSubmit={handleSubmit}>
           <Column className="justify-start items-stretch w-full gap-5">
             <Column className="items-stretch gap-1">
-              <span className="text-center font-bold text-2xl">
+              <span
+                className={twJoin(
+                  "text-center font-bold text-2xl",
+                  theme.colors.text.white
+                )}
+              >
                 {resource.login.title}
               </span>
-              <span className="text-center font-semibold">
+              <span className={twJoin("text-center", theme.colors.text.gray)}>
                 {resource.login.subtitle}
               </span>
             </Column>
             <Column className="items-stretch gap-1">
-              <span className="text-start uppercase font-bold text-xs">
+              <span
+                className={twJoin(
+                  "text-start uppercase font-extrabold text-xs",
+                  theme.colors.text.gray
+                )}
+              >
                 {resource.login.emailInputLabel}
+                <span className={"text-red-700 font-medium"}> *</span>
               </span>
               <Input
                 className={twJoin(
-                  theme.colors.background.focus,
-                  "text-white p-2"
+                  theme.colors.background.highlightedBlack,
+                  theme.colors.text.white,
+                  "p-2"
                 )}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Column>
             <Column className="items-stretch gap-0.5">
-              <span className="text-start uppercase font-bold text-xs">
+              <span
+                className={twJoin(
+                  "text-start uppercase font-extrabold text-xs",
+                  theme.colors.text.gray
+                )}
+              >
                 {resource.login.passwordInputLabel}
+                <span className={"text-red-700 font-medium"}> *</span>
               </span>
               <Input
                 className={twJoin(
-                  theme.colors.background.focus,
-                  "text-white p-2 mt-0.5"
+                  theme.colors.background.highlightedBlack,
+                  theme.colors.text.white,
+                  "p-2 mt-0.5"
                 )}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button
-                className="text-start text-blue-600 hover:underline"
+                className={twJoin(
+                  "text-start hover:underline",
+                  theme.colors.text.link
+                )}
                 type="button"
               >
-                <span className="text-sm font-semibold">
+                <span className="text-sm font-medium">
                   {resource.login.forgotPasswordButtonLabel}
                 </span>
               </Button>
@@ -80,19 +107,27 @@ export function LoginPageContent() {
             <Column className="items-stretch gap-0.5">
               <Button
                 type="submit"
-                className={twJoin("text-center p-2.5 rounded", "bg-blue-800")}
+                className={twJoin(
+                  "text-center p-2.5 rounded",
+                  theme.colors.common.background.blurple
+                )}
               >
-                <span className="font-bold text-white">
+                <span className="font-semibold text-white">
                   {resource.login.logInButtonLabel}
                 </span>
               </Button>
-              <span className="text-sm mt-1.5">
+              <span
+                className={twJoin("text-sm mt-1.5", theme.colors.text.gray)}
+              >
                 {resource.login.dontHaveAnAccount}
                 <Button
-                  className="ml-2 text-blue-600 hover:underline"
+                  className={twJoin(
+                    "ml-2 hover:underline",
+                    theme.colors.text.link
+                  )}
                   type="button"
                 >
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-medium">
                     {resource.login.signUpButtonLabel}
                   </span>
                 </Button>

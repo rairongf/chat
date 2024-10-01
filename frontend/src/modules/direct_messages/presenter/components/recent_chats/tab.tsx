@@ -1,17 +1,17 @@
 import {
-  Button,
   Column,
-  Dialog,
   Icon,
+  PopupContainer,
+  PopupTrigger,
   Row,
   Tooltip,
-  useDialog,
 } from "@/modules/common";
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { usePathname, useRouter } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 import { useDirectMessages } from "../../context";
+import { NewDMPopup } from "../new_dm_popup";
 import { RecentChatsTabItem } from "./item";
 import { RecentChatsTabNavigationOption } from "./navigation_option";
 
@@ -19,7 +19,6 @@ export function RecentChatsTab() {
   const router = useRouter();
   const pathname = usePathname();
   const { theme } = useTheme();
-  const { show, removeAny } = useDialog();
   const { resource } = useLanguage();
   const { channels, friends } = useDirectMessages();
 
@@ -61,19 +60,18 @@ export function RecentChatsTab() {
             {resource.directMessages.recentChatsTabTitle}
           </span>
           <Tooltip message="Criar DM">
-            <Button
-              className="flex justify-center items-center"
-              onClick={() => {
-                show(
-                  <Dialog.Container onClose={removeAny}>
-                    Test Dialog
-                  </Dialog.Container>,
-                  { key: "add_direct_message" }
-                );
-              }}
-            >
-              <Icon className="text-sm font-bold" name="add" />
-            </Button>
+            <PopupTrigger popupId="add_direct_message" className="block">
+              <PopupContainer id={"add_direct_message"}>
+                <NewDMPopup
+                  onSubmit={(friends) => {
+                    console.log("Selected friends", friends);
+                  }}
+                />
+              </PopupContainer>
+              <Row className="justify-center items-center">
+                <Icon className="text-sm font-bold" name="add" />
+              </Row>
+            </PopupTrigger>
           </Tooltip>
         </Row>
         {channels.map((channel, i) => {

@@ -39,12 +39,10 @@ export function DialogProvider({ children }: BaseContextProps) {
   return (
     <DialogContext.Provider value={value}>
       {children}
-      {dialogElement != undefined ? (
+      {dialogElement != undefined && (
         <Overlay className="flex justify-center items-center bg-black/[.54]">
           {dialogElement}
         </Overlay>
-      ) : (
-        <></>
       )}
     </DialogContext.Provider>
   );

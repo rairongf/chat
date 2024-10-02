@@ -10,7 +10,11 @@
         "pattern": "- Local:.+(https?://.+)",
         "uriFormat": "%s",
         "action": "debugWithChrome"
-      }
+      },
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/",
+        "!/node_modules/**"
+      ],
     },
     {
       "name": "Next.js: debug server-side",

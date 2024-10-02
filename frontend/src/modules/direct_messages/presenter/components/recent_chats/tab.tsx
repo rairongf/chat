@@ -1,11 +1,4 @@
-import {
-  Column,
-  Icon,
-  PopupContainer,
-  PopupTrigger,
-  Row,
-  Tooltip,
-} from "@/modules/common";
+import { Column, Icon, PopupTrigger, Row, Tooltip } from "@/modules/common";
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { usePathname, useRouter } from "next/navigation";
@@ -60,14 +53,17 @@ export function RecentChatsTab() {
             {resource.directMessages.recentChatsTabTitle}
           </span>
           <Tooltip message="Criar DM">
-            <PopupTrigger popupId="add_direct_message" className="block">
-              <PopupContainer id={"add_direct_message"}>
+            <PopupTrigger
+              popupRenderer={(remove) => (
                 <NewDMPopup
+                  friends={friends}
                   onSubmit={(friends) => {
                     console.log("Selected friends", friends);
+                    remove();
                   }}
                 />
-              </PopupContainer>
+              )}
+            >
               <Row className="justify-center items-center">
                 <Icon className="text-sm font-bold" name="add" />
               </Row>

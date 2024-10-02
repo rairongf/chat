@@ -1,5 +1,5 @@
 import { AuthProvider } from "@/modules/auth/context";
-import { DialogProvider } from "@/modules/common";
+import { DialogProvider, PopupProvider } from "@/modules/common";
 import { LanguageProvider } from "@/modules/language";
 import { SessionProvider } from "@/modules/session/context";
 import { ThemeProvider } from "@/modules/theme";
@@ -34,7 +34,9 @@ export default function RootLayout({
           <ThemeProvider>
             <AuthProvider>
               <SessionProvider>
-                <DialogProvider>{children}</DialogProvider>
+                <DialogProvider>
+                  <PopupProvider>{children}</PopupProvider>
+                </DialogProvider>
               </SessionProvider>
             </AuthProvider>
           </ThemeProvider>

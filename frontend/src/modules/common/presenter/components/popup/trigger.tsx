@@ -1,35 +1,30 @@
 import { twJoin } from "tailwind-merge";
 import { Button, ButtonProps } from "../buttons";
+import { PopupContainer } from "./container";
+import { RemoveLastPopupCallback, usePopup } from "./context";
 
 export type PopupTriggerProps = React.PropsWithChildren<
-  ButtonProps & {
-    popupId: string;
+  Omit<ButtonProps, "onClick"> & {
+    popupRenderer: (removeCallback: RemoveLastPopupCallback) => React.ReactNode;
   }
 >;
 
 export function PopupTrigger({
   children,
-  popupId,
+  popupRenderer,
   className,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onClick,
   ...props
 }: PopupTriggerProps) {
+  const { addPopup, removeLastPopup } = usePopup();
+
   return (
     <Button
-      className={twJoin(className)}
+      className={twJoin("block", className)}
       onClick={(e) => {
-        console.log("Triggered popup", popupId);
+        e.stopPropagation();
 
-        const popup = document.getElementById(popupId);
+        const popup = popupRenderer(removeLastPopup);
         if (!popup) return;
-
-        if (popup.style.display != "none") {
-          popup.style.display = "none";
-          return;
-        }
-
-        //const popupRect = popup.getBoundingClientRect();
 
         const rect = e.currentTarget.getBoundingClientRect();
 
@@ -38,9 +33,17 @@ export function PopupTrigger({
           left: rect.left,
         };
 
-        popup.setAttribute(
-          "style",
-          `display: block; top: ${position.top}px; left: ${position.left}px`
+        addPopup(
+          <PopupContainer
+            id="popup"
+            style={{
+              display: "block",
+              top: `${position.top}px`,
+              left: `${position.left}px`,
+            }}
+          >
+            {popup}
+          </PopupContainer>
         );
       }}
       {...props}

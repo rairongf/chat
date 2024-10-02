@@ -5,19 +5,20 @@ import {
   Input,
   PictureAvatar,
   Row,
+  User,
 } from "@/modules/common";
 import { useTheme } from "@/modules/theme";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
-import { useDirectMessages } from "../context";
 
 export function NewDMPopup({
   onSubmit,
+  friends,
 }: {
   onSubmit: (friendsIds: string[]) => void;
+  friends: User[];
 }) {
   const { theme } = useTheme();
-  const { friends } = useDirectMessages();
   const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
   const [search, setSearch] = useState<string>("");
   const filteredFriends = friends.filter((friend) => {

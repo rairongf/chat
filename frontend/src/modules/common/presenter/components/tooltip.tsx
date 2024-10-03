@@ -7,14 +7,21 @@ import { twJoin } from "tailwind-merge";
 export type TooltipProps = React.PropsWithChildren<{
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
   message: string;
+  id?: string;
 }>;
-export function Tooltip({ children, containerProps, message }: TooltipProps) {
+export function Tooltip({
+  children,
+  containerProps,
+  message,
+  id,
+}: TooltipProps) {
   const { theme } = useTheme();
   const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const { className, ...props } = { ...containerProps };
 
-  const tooltipId = message.toLowerCase().split(" ").join("_");
+  const tooltipId =
+    id?.toLowerCase() ?? message.toLowerCase().split(" ").join("_");
 
   return (
     <div
@@ -28,7 +35,7 @@ export function Tooltip({ children, containerProps, message }: TooltipProps) {
         const rect = e.currentTarget.getBoundingClientRect();
 
         const newPosition = {
-          top: rect.top - 1.75 * rect.height,
+          top: rect.top - tooltipRect.height - 8,
           left: rect.left + rect.width / 2 - tooltipRect.width / 2,
         };
 

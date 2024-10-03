@@ -5,11 +5,10 @@ import { Message } from 'src/modules/data';
 
 export class CreateMessageBodyDTO
   implements
-    Omit<
-      Message,
-      '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'senderId' | 'channelId'
-    >
-{
+  Omit<
+    Message,
+    '_id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'sender' | 'channel'
+  > {
   @IsString()
   @IsNotEmpty()
   content: string;
@@ -17,4 +16,8 @@ export class CreateMessageBodyDTO
   @Type(() => Types.ObjectId)
   @IsMongoId()
   channelId: Types.ObjectId;
+
+  @Type(() => Types.ObjectId)
+  @IsMongoId()
+  senderId: Types.ObjectId;
 }

@@ -7,6 +7,7 @@ import {
 } from "@/modules/common";
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
+import { usePathname, useRouter } from "next/navigation";
 import { twJoin } from "tailwind-merge";
 
 export function RecentChatsTabItem({
@@ -14,25 +15,36 @@ export function RecentChatsTabItem({
   picture,
   friendName,
   date,
-  onClick,
-}: {
+  channelId,
+}: //onClick,
+{
   label: string;
   picture?: string;
   friendName: string;
   date: Date;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  channelId: string;
+  //onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const { theme } = useTheme();
   const { formatDate } = useLanguage();
+  const channelRoutePath = `/channels/@me/${channelId}`;
+
+  const isSelected = pathname.includes(channelRoutePath);
 
   return (
     <Button
       className={twJoin(
         "w-full h-12 py-1.5 px-2.5 rounded-md",
-        theme.colors.background.primaryHoverHighlighted
+        theme.colors.background.primaryHoverHighlighted,
+        isSelected ? theme.colors.background.tertiary : ""
       )}
       type="button"
-      onClick={onClick}
+      onClick={() => {
+        if (isSelected) return;
+        router.push(channelRoutePath);
+      }}
     >
       <Row className="h-full gap-2 justify-start items-stretch">
         {picture && (

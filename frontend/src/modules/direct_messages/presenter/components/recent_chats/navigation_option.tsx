@@ -22,7 +22,7 @@ export function RecentChatsTabNavigationOption({
   const pathname = usePathname();
   const { theme } = useTheme();
 
-  const isSelected = pathname.includes(routePath);
+  const isSelected = pathname.endsWith(routePath);
 
   return (
     <Button

@@ -9,7 +9,7 @@ import {
 } from "@/modules/common";
 import { useTheme } from "@/modules/theme";
 import { useState } from "react";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 
 export type InputProps = Omit<
   React.DetailedHTMLProps<
@@ -137,7 +137,7 @@ export function Input({
 
     return (
       <Row
-        className={twJoin(
+        className={twMerge(
           "justify-start items-start py-2 px-3 rounded gap-2 max-w-full",
           rowClassName
         )}

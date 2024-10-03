@@ -1,6 +1,6 @@
 import { Row } from "@/modules/common";
 import { usePathname } from "next/navigation";
-import { RecentChatsTab } from "./components";
+import { FriendsSection, RecentChatsTab } from "./components";
 
 export function DirectMessagesPageContent({
   children,
@@ -17,7 +17,7 @@ export function DirectMessagesPageContent({
       {/* Recent chats tabs */}
       <RecentChatsTab />
 
-      {!containsChannelId && <></>}
+      {!containsChannelId && <FriendsSection />}
 
       {children}
     </Row>

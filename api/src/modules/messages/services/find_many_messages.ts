@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FilterQuery, Types } from 'mongoose';
-import { ChatPaginatedResponse } from 'src/modules/common';
+import { ChatPaginatedResponse, MessagePayload } from 'src/modules/common';
 import { MessageDocument, MessageRepository } from 'src/modules/data';
 import { FindManyMessagesQueryParamsDTO } from '../dtos';
 
@@ -11,7 +11,7 @@ export class FindManyMessagesService {
   async handle(
     userId: Types.ObjectId,
     query: FindManyMessagesQueryParamsDTO,
-  ): Promise<ChatPaginatedResponse<MessageDocument>> {
+  ): Promise<ChatPaginatedResponse<MessagePayload>> {
     const filter: FilterQuery<MessageDocument> = {
       channel: query.channelId,
       deletedAt: null,

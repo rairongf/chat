@@ -9,7 +9,7 @@ export function ChatScrollableContainer() {
 
   return (
     <Column
-      className="overflow-y-scroll overflow-x-hidden h-full mr-1"
+      className="overflow-y-auto overflow-x-hidden h-full mr-1"
       style={{
         overflowAnchor: "none",
       }}

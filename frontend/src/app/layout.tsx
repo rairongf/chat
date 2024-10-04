@@ -1,9 +1,7 @@
-import { AuthProvider } from "@/modules/auth/context";
-import { AuthStateProvider } from "@/modules/auth/state";
+import { AuthProvider, AuthStateProvider } from "@/modules/auth";
 import { DialogProvider, PopupProvider } from "@/modules/common";
 import { LanguageProvider } from "@/modules/language";
-import { SessionProvider } from "@/modules/session/context";
-import { SessionStateProvider } from "@/modules/session/state";
+import { SessionProvider, SessionStateProvider } from "@/modules/session";
 import { ThemeProvider } from "@/modules/theme";
 import { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";

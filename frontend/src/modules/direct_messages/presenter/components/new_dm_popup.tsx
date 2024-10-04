@@ -7,6 +7,7 @@ import {
   Row,
   User,
 } from "@/modules/common";
+import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { useState } from "react";
 import { twJoin } from "tailwind-merge";
@@ -18,6 +19,7 @@ export function NewDMPopup({
   onSubmit: (friendsIds: string[]) => void;
   friends: User[];
 }) {
+  const { resource } = useLanguage();
   const { theme } = useTheme();
   const [selectedFriendIds, setSelectedFriendIds] = useState<string[]>([]);
   const [search, setSearch] = useState<string>("");
@@ -53,10 +55,12 @@ export function NewDMPopup({
     >
       <Column className="p-3 justify-start items-start">
         <h3 className={twJoin(theme.colors.text.black, "font-bold text-lg")}>
-          Selecionar amigos
+          {resource.newDMPopup.title}
         </h3>
         <p className={twJoin(theme.colors.text.highlighted, "text-xs mt-0.5")}>
-          Você pode adicionar mais {stillSelectableCount} amigos
+          {resource.newDMPopup.youCanAddMoreXFriends.partOne}
+          {stillSelectableCount}
+          {resource.newDMPopup.youCanAddMoreXFriends.partTwo}
         </p>
         <Input
           className={twJoin(
@@ -66,7 +70,7 @@ export function NewDMPopup({
           )}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Digite o nome de usuário de um amigo"
+          placeholder={resource.newDMPopup.inputPlaceholder}
         />
         <Column className="overflow-y-auto mt-3 w-full items-stretch">
           {filteredFriends.map((friend, index) => {
@@ -135,7 +139,7 @@ export function NewDMPopup({
           )}
           onClick={() => onSubmit(selectedFriendIds)}
         >
-          Criar DM
+          {resource.newDMPopup.confirmButtonLabel}
         </Button>
       </div>
     </Column>

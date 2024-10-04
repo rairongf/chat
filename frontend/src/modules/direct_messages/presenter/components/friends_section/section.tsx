@@ -11,6 +11,7 @@ import {
   TopBar,
   User,
 } from "@/modules/common";
+import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -18,6 +19,7 @@ import { twJoin } from "tailwind-merge";
 import { useDirectMessages } from "../../context";
 
 export function FriendsSection() {
+  const { resource } = useLanguage();
   const { theme } = useTheme();
   const router = useRouter();
   const { friends, channels, addNewDm } = useDirectMessages();
@@ -60,7 +62,7 @@ export function FriendsSection() {
               className={twJoin(theme.colors.text.base, "text-2xl")}
             />
             <span className={twJoin("font-bold", theme.colors.text.black)}>
-              Amigos
+              {resource.friendsSection.topBar.friends}
             </span>
           </Row>
           <Divider className="py-3 w-[1px]" />
@@ -75,7 +77,7 @@ export function FriendsSection() {
               true ? theme.colors.background.tertiary : ""
             )}
           >
-            Todos
+            {resource.friendsSection.topBar.filters.all}
           </Button>
         </Row>
 
@@ -94,7 +96,7 @@ export function FriendsSection() {
                 "px-2 py-0.5 items-center h-8"
               ),
             }}
-            placeholder="Buscar"
+            placeholder={resource.friendsSection.searchInputPlaceholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             suffix={
@@ -120,7 +122,8 @@ export function FriendsSection() {
             theme.colors.text.base
           )}
         >
-          Todos os amigos — {friendsCount}
+          {resource.friendsSection.friendsCount.all}
+          {friendsCount}
         </p>
         <div className="overflow-y-auto h-full">
           <Column className="px-5 h-full">
@@ -169,7 +172,10 @@ export function FriendsSection() {
                     </Column>
                   </Row>
                   <Row className="justify-end items-center gap-2">
-                    <Tooltip message={"Mensagem"} id={`Mensagem_${friend._id}`}>
+                    <Tooltip
+                      message={resource.tooltips.message}
+                      id={`${resource.tooltips.message}_${friend._id}`}
+                    >
                       <Button
                         onClick={() => handleFriendClick(friend)}
                         className={twJoin(
@@ -186,7 +192,10 @@ export function FriendsSection() {
                         />
                       </Button>
                     </Tooltip>
-                    <Tooltip message={"Mais"} id={`Mais_${friend._id}`}>
+                    <Tooltip
+                      message={resource.tooltips.more}
+                      id={`${resource.tooltips.more}_${friend._id}`}
+                    >
                       <Button
                         onClick={(e) => {
                           e.stopPropagation();

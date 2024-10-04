@@ -30,4 +30,36 @@ export interface LocaleResource {
     dismissButtonLabel: string;
     submitButtonLabel: string;
   };
+  newDMPopup: {
+    title: string;
+    youCanAddMoreXFriends: {
+      partOne: string;
+      partTwo: string;
+    };
+    inputPlaceholder: string;
+    confirmButtonLabel: string;
+  };
+  friendsSection: {
+    topBar: {
+      friends: string;
+      filters: {
+        online: string;
+        all: string;
+        pending: string;
+        blocked: string;
+      };
+      addFriendButtonLabel: string;
+    };
+    searchInputPlaceholder: string;
+    friendsCount: {
+      online: string;
+      all: string;
+      pending: string;
+      blocked: string;
+    };
+  };
+  tooltips: {
+    message: string;
+    more: string;
+  };
 };

@@ -32,4 +32,36 @@ export const ptBR_Resource: LocaleResource = {
     dismissButtonLabel: 'Voltar',
     submitButtonLabel: 'Criar',
   },
+  newDMPopup: {
+    title: 'Selecionar amigos',
+    youCanAddMoreXFriends: {
+      partOne: 'Você pode adicionar mais ',
+      partTwo: ' amigos',
+    },
+    inputPlaceholder: 'Digite o nome de usuário de um amigo',
+    confirmButtonLabel: 'Criar DM',
+  },
+  friendsSection: {
+    topBar: {
+      friends: 'Amigos',
+      filters: {
+        online: 'Disponível',
+        all: 'Todos',
+        pending: 'Pendente',
+        blocked: 'Bloqueado',
+      },
+      addFriendButtonLabel: 'Adicionar amigo',
+    },
+    searchInputPlaceholder: 'Buscar',
+    friendsCount: {
+      online: 'Online — ',
+      all: 'Todos os amigos — ',
+      pending: 'Pendente — ',
+      blocked: 'Bloqueado — ',
+    },
+  },
+  tooltips: {
+    message: 'Mensagem',
+    more: 'Mais',
+  },
 };

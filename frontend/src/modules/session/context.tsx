@@ -1,22 +1,17 @@
 "use client";
 
 import { BaseContextProps, User } from "@/modules/common";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { createContext, useContext, useEffect } from "react";
 import { useAuth } from "../auth/context";
 import { GuildSummary } from "./domain/models";
 import {
   IAddGuildUsecase,
-  IAddGuildUsecaseArguments,
   useAddGuild,
   useInitializeSessionState,
 } from "./domain/usecases";
 import { createGuild, findManyGuilds, findUser } from "./infra/repositories";
+import { useSessionState } from "./state";
 
 type SessionContextData = {
   user?: User;
@@ -30,8 +25,12 @@ export const SessionContext = createContext<SessionContextData>(
 
 export function SessionProvider({ children }: BaseContextProps) {
   const { isAuthenticated } = useAuth();
-  const [user, setUser] = useState<User>();
-  const [guilds, setGuilds] = useState<GuildSummary[]>([]);
+  const {
+    userState: [user, setUser],
+    guildsState: [guilds],
+  } = useSessionState();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { initializeState } = useInitializeSessionState(
     findUser,
@@ -40,37 +39,25 @@ export function SessionProvider({ children }: BaseContextProps) {
 
   const { addGuild } = useAddGuild(createGuild);
 
-  const _addGuild = useCallback(
-    async ({ name, picture }: IAddGuildUsecaseArguments) => {
-      const guild = await addGuild({ name, picture });
-      if (!guild) return;
-
-      setGuilds((guilds) => [...guilds, guild]);
-      return guild;
-    },
-    []
-  );
-
-  const init = useCallback(async () => {
-    const result = await initializeState({});
-    if (!result.didSucceed) return;
-
-    setUser(result.user!);
-    setGuilds(result.guilds!);
-  }, []);
-
   useEffect(() => {
-    init();
+    initializeState({});
   }, []);
 
   useEffect(() => {
     if (!isAuthenticated) {
       setUser(undefined);
+      router.replace("/login");
+      return;
+    }
+
+    if (pathname === "/" || pathname === "/login") {
+      router.replace("/channels/@me");
+      return;
     }
   }, [isAuthenticated]);
 
   return (
-    <SessionContext.Provider value={{ user, guilds, addGuild: _addGuild }}>
+    <SessionContext.Provider value={{ user, guilds, addGuild }}>
       {children}
     </SessionContext.Provider>
   );

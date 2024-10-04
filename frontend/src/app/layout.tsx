@@ -1,7 +1,9 @@
 import { AuthProvider } from "@/modules/auth/context";
+import { AuthStateProvider } from "@/modules/auth/state";
 import { DialogProvider, PopupProvider } from "@/modules/common";
 import { LanguageProvider } from "@/modules/language";
 import { SessionProvider } from "@/modules/session/context";
+import { SessionStateProvider } from "@/modules/session/state";
 import { ThemeProvider } from "@/modules/theme";
 import { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
@@ -32,13 +34,17 @@ export default function RootLayout({
       >
         <LanguageProvider>
           <ThemeProvider>
-            <AuthProvider>
-              <SessionProvider>
-                <DialogProvider>
-                  <PopupProvider>{children}</PopupProvider>
-                </DialogProvider>
-              </SessionProvider>
-            </AuthProvider>
+            <AuthStateProvider>
+              <AuthProvider>
+                <SessionStateProvider>
+                  <SessionProvider>
+                    <DialogProvider>
+                      <PopupProvider>{children}</PopupProvider>
+                    </DialogProvider>
+                  </SessionProvider>
+                </SessionStateProvider>
+              </AuthProvider>
+            </AuthStateProvider>
           </ThemeProvider>
         </LanguageProvider>
       </body>

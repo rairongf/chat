@@ -1,25 +1,16 @@
+import { useAuthState } from '@/modules/auth/state';
 import { CookiesKeys } from '@/modules/common';
-import { useRouter } from 'next/navigation';
 import { destroyCookie } from 'nookies';
 import { ISignOutUsecase } from './interface';
 
 export function useSignOut() {
-  const router = useRouter();
+  const {isAuthenticatedState: [, setIsAuthenticated]} = useAuthState();
 
   const signOut: ISignOutUsecase = async () => {
-    try {
-      destroyCookie(undefined, CookiesKeys.accessToken);
-      destroyCookie(undefined, CookiesKeys.refreshToken);
+    destroyCookie(undefined, CookiesKeys.accessToken);
+    destroyCookie(undefined, CookiesKeys.refreshToken);
 
-      router.push('/login');
-      return true;
-    } catch (err) {
-      destroyCookie(undefined, CookiesKeys.accessToken);
-      destroyCookie(undefined, CookiesKeys.refreshToken);
-
-      router.push('/login');
-      return true;
-    }
+    setIsAuthenticated(false);
   };
 
   return { signOut };

@@ -1,18 +1,11 @@
 import { refreshToken } from '@/modules/auth/infra/repositories';
+import { useAuthState } from '@/modules/auth/state';
 import { CookiesKeys } from '@/modules/common';
-import { usePathname, useRouter } from 'next/navigation';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import { IKeepSignInUsecase } from './interface';
 
 export function useKeepSignIn() {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const navigateWhenAuthenticated = () => {
-    if (pathname === '/' || pathname === '/login') {
-      router.push('/channels/@me');
-    }
-  };
+  const {isAuthenticatedState: [, setIsAuthenticated]} = useAuthState();
 
   const keepSignIn: IKeepSignInUsecase = async () => {
     try {
@@ -25,16 +18,16 @@ export function useKeepSignIn() {
 
       /// If access token and refresh token are found
       if (accessToken && refreshTokenData) {
-        await new Promise((r) => setTimeout(r, 600));
-        navigateWhenAuthenticated();
-        return true;
+        setIsAuthenticated(true);
+        return;
       }
 
       // If only refresh token is found
       if (!accessToken && refreshTokenData) {
         const { data, didSucceed } = await refreshToken({ refreshToken: refreshTokenData });
         if (!didSucceed) {
-          return false;
+          setIsAuthenticated(false);
+          return;
         }
 
         const now = new Date();
@@ -49,24 +42,19 @@ export function useKeepSignIn() {
           path: '/'
         });
 
-        await new Promise((r) => setTimeout(r, 600));
-        navigateWhenAuthenticated();
-        return true;
+        setIsAuthenticated(true);
+        return;
       }
 
-      await new Promise((r) => setTimeout(r, 600));
-
       /// If neither access token nor refresh token is found
-
-      router.push('/login');
-      return false;
+      setIsAuthenticated(false);
+      return;
     } catch (err) {
       destroyCookie(undefined, CookiesKeys.accessToken);
       destroyCookie(undefined, CookiesKeys.refreshToken);
+      setIsAuthenticated(false);
 
-      router.push('/login');
-
-      return false;
+      return;
     }
   };
 

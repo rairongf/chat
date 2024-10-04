@@ -5,6 +5,4 @@ export interface ISignInUsecaseArguments {
   password: string;
 }
 
-export type ISignInUsecase = BaseUsecase<{
-  didSucceed: boolean;
-}, ISignInUsecaseArguments>;
+export type ISignInUsecase = BaseUsecase<void, ISignInUsecaseArguments>;

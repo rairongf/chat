@@ -1,14 +1,14 @@
 
 import { ILoginRepository } from '@/modules/auth/infra/repositories';
+import { useAuthState } from '@/modules/auth/state';
 import { CookiesKeys } from '@/modules/common';
-import { useRouter } from 'next/navigation';
 import { destroyCookie, setCookie } from 'nookies';
 import { ISignInUsecase, ISignInUsecaseArguments } from './interface';
 
 export function useSignIn(
   login: ILoginRepository,
 ) {
-  const router = useRouter();
+  const {isAuthenticatedState: [, setIsAuthenticated]} = useAuthState();
 
   const signIn: ISignInUsecase = async ({ email, password }: ISignInUsecaseArguments) => {
     try {
@@ -16,7 +16,8 @@ export function useSignIn(
 
       if (!didSucceed) {
         console.log('Could not authenticate');
-        return {didSucceed};
+        setIsAuthenticated(false);
+        return;
       }
 
       const now = new Date();
@@ -32,17 +33,15 @@ export function useSignIn(
       });
       
 
-      router.push('/channels/@me');
-      await new Promise((r) => setTimeout(r, 600));
-      return {didSucceed: true};
+      setIsAuthenticated(true);
+      return;
     } catch (err) {
       console.log('Caught error:', err);
       destroyCookie(undefined, CookiesKeys.accessToken);
       destroyCookie(undefined, CookiesKeys.refreshToken);
 
-      router.push('/login');
-
-      return {didSucceed: false};
+      setIsAuthenticated(false);
+      return;
     }
   };
 

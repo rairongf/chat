@@ -1,3 +1,5 @@
+"use client";
+
 import { BaseContextProps, ReactUseState } from "@/modules/common";
 import { createContext, useContext, useState } from "react";
 

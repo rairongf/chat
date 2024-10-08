@@ -1,3 +1,5 @@
+"use client";
+
 import { BaseContextProps, ReactUseState, User } from "@/modules/common";
 import { createContext, useContext, useState } from "react";
 import { GuildSummary } from "./domain/models";

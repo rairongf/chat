@@ -9,6 +9,43 @@ export interface LocaleResource {
     dontHaveAnAccount: string;
     signUpButtonLabel: string;
   };
+  register: {
+    title: string,
+    emailInput: {
+      label: string,
+      missingEmail: string,
+      invalidEmail: string,
+    },
+    nameInput: {
+      label: string,
+      invalidName: string,
+    },
+    usernameInput: {
+      label: string,
+      missingUsername: string,
+      invalidUsername: string,
+    },
+    passwordInput: {
+      label: string,
+      missingPassword: string,
+      invalidPassword: string,
+    },
+    birthdayInput: {
+      label: string,
+      missingBirthday: string,
+      invalidBirthday: string,
+    },
+    newsletterOptionLabel: string,
+    submitButtonLabel: string,
+    useTermsAndPrivacyPolicy: {
+      partOne: string,
+      useTermsInlineButtonLabel: string,
+      partTwo: string,
+      privacyPolicyInlineButtonLabel: string,
+      partThree: string,
+    },
+    alreadyHasAnAccountButtonLabel: string,
+  },
   directMessages: {
     recentChatsTabTitle: string;
   };

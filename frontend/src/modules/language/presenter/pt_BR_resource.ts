@@ -11,6 +11,45 @@ export const ptBR_Resource: LocaleResource = {
     dontHaveAnAccount: 'Precisando de uma conta?',
     signUpButtonLabel: 'Registre-se',
   },
+  register: {
+    title: 'Criar uma conta',
+    emailInput: {
+      label: 'E-mail',
+      missingEmail: 'Digite um e-mail',
+      invalidEmail: 'Digite um e-mail válido',
+    },
+    nameInput: {
+      label: 'Nome exibido',
+      invalidName: 'Digite um nome válido',
+    },
+    usernameInput: {
+      label: 'Nome de usuário',
+      missingUsername: 'Digite um nome de usuário',
+      invalidUsername: 'Digite um nome de usuário válido',
+    },
+    passwordInput: {
+      label: 'Senha',
+      missingPassword: 'Digite uma senha',
+      invalidPassword: 'Digite uma senha válida',
+    },
+    birthdayInput: {
+      label: 'Data de nascimento',
+      missingBirthday: 'Preencha com a data de nascimento',
+      invalidBirthday: 'Preencha com uma data válida',
+    },
+    newsletterOptionLabel: "(Opcional) Tudo bem me mandar e-mails com atualizações do " +
+                  "Discord, dicas e ofertas especiais. Você pode mudar isso a " +
+                  "qualquer momento.",
+    submitButtonLabel: 'Continuar',
+    useTermsAndPrivacyPolicy: {
+      partOne: 'Ao se registrar, você concorda com os ',
+      useTermsInlineButtonLabel: 'termos de serviço',
+      partTwo: ' e a ',
+      privacyPolicyInlineButtonLabel: 'política de privacidade',
+      partThree: ' do Discord.',
+    },
+    alreadyHasAnAccountButtonLabel: 'Já tem uma conta?',
+  },
   directMessages: {
     recentChatsTabTitle: 'Mensagens diretas',
   },

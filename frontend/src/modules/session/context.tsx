@@ -50,7 +50,7 @@ export function SessionProvider({ children }: BaseContextProps) {
       return;
     }
 
-    if (pathname === "/" || pathname === "/login") {
+    if (pathname === "/" || pathname === "/login" || pathname === "/register") {
       router.replace("/channels/@me");
       return;
     }

@@ -62,11 +62,10 @@ export function LoginPageContent() {
                 <span className={"text-red-700 font-medium"}> *</span>
               </span>
               <Input
-                className={twJoin(
-                  theme.colors.background.highlightedBlack,
-                  theme.colors.text.white,
-                  "p-2"
-                )}
+                className={twJoin(theme.colors.text.white)}
+                rowProps={{
+                  className: twJoin(theme.colors.background.highlightedBlack),
+                }}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </Column>
@@ -81,11 +80,12 @@ export function LoginPageContent() {
                 <span className={"text-red-700 font-medium"}> *</span>
               </span>
               <Input
-                className={twJoin(
-                  theme.colors.background.highlightedBlack,
-                  theme.colors.text.white,
-                  "p-2 mt-0.5"
-                )}
+                className={twJoin(theme.colors.text.white)}
+                obscureText
+                type="password"
+                rowProps={{
+                  className: twJoin(theme.colors.background.highlightedBlack),
+                }}
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Button

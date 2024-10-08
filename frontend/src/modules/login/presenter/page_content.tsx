@@ -2,6 +2,7 @@ import { useAuth } from "@/modules/auth/context";
 import { Button, Column, Input } from "@/modules/common";
 import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { twJoin } from "tailwind-merge";
 
@@ -9,20 +10,17 @@ export function LoginPageContent() {
   const { signIn } = useAuth();
   const { resource } = useLanguage();
   const { theme } = useTheme();
+  const router = useRouter();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const didSucceed = await signIn({
+    await signIn({
       email: email,
       password: password,
     });
-
-    didSucceed
-      ? console.log("Conta acessada!")
-      : console.log("Erro ao acessar conta.");
   }
 
   return (
@@ -126,6 +124,7 @@ export function LoginPageContent() {
                     theme.colors.text.link
                   )}
                   type="button"
+                  onClick={() => router.push("/register")}
                 >
                   <span className="text-sm font-medium">
                     {resource.login.signUpButtonLabel}

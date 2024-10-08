@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsDate,
   IsEmail,
@@ -9,17 +10,16 @@ import { User } from 'src/modules/data';
 
 export class CreateUserBodyDTO
   implements
-    Omit<
-      User,
-      | '_id'
-      | 'about'
-      | 'createdAt'
-      | 'updatedAt'
-      | 'deletedAt'
-      | 'guilds'
-      | 'picture'
-    >
-{
+  Omit<
+    User,
+    | '_id'
+    | 'about'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'deletedAt'
+    | 'guilds'
+    | 'picture'
+  > {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -37,6 +37,7 @@ export class CreateUserBodyDTO
   password: string;
 
   @IsDate()
+  @Type(() => Date)
   birthday: Date;
 
   @IsString()

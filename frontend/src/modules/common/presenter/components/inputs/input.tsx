@@ -128,6 +128,7 @@ export function Input({
               theme.colors.background.hoverBlurple
             )}
             onClick={() => setIsObscure(!isObscure)}
+            type="button"
           >
             <Icon
               name={isObscure ? "visibility_off" : "visibility"}

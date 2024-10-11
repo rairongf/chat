@@ -44,6 +44,7 @@ export function SessionProvider({ children }: BaseContextProps) {
   }, []);
 
   useEffect(() => {
+    console.log("isAuthenticated:", isAuthenticated);
     if (!isAuthenticated) {
       setUser(undefined);
       router.replace("/login");

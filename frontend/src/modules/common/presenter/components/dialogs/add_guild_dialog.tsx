@@ -75,11 +75,10 @@ export function AddGuildDialog({ onClose, onSave }: AddGuildDialogProps) {
           </div>
           <div className="px-4">
             <Input
-              className={twJoin(
-                theme.colors.background.tertiary,
-                theme.colors.text.highlighted,
-                "p-2 font-semibold"
-              )}
+              className={twJoin(theme.colors.text.highlighted, "font-semibold")}
+              rowProps={{
+                className: twJoin(theme.colors.background.tertiary),
+              }}
               value={guildName}
               onChange={(e) => setGuildName(e.target.value)}
               labelText={resource.addGuildDialog.inputLabel}

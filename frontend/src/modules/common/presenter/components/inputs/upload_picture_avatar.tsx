@@ -4,10 +4,10 @@ import { twJoin } from "tailwind-merge";
 import { PictureAvatar } from "../avatars";
 import { Icon } from "../icon";
 import { Column } from "../layout";
-import { Input, InputProps } from "./input";
+import { InputProps } from "./input";
 
 export type UploadPictureAvatarProps = {
-  inputProps?: Omit<InputProps, "onChange" | "type" | "className">;
+  inputProps?: Omit<InputProps, "onChange" | "type" | "className" | "prefix">;
   onPictureUpload?: (file: File) => void;
   file?: File;
 };
@@ -61,7 +61,7 @@ export function UploadPictureAvatar({
           unoptimized={true}
         />
       )}
-      <Input
+      <input
         type={"file"}
         className={"hidden"}
         onChange={(e) => {

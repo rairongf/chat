@@ -55,7 +55,7 @@ export function Input({
     "outline-none rounded bg-transparent grow shrink basis-auto my-2 ml-3";
 
   const defaultTextboxClassName =
-    "bg-transparent max-h-[40vh] overflow-y-auto max-w-full grow shrink basis-auto pr-2";
+    "bg-transparent max-h-[40vh] overflow-y-auto max-w-full grow shrink basis-auto my-2 ml-3";
   const {
     className: textboxClassName,
     style: textboxStyle,
@@ -99,7 +99,7 @@ export function Input({
   const { className: rowClassName, ...otherRowProps } = { ...rowProps };
 
   return (
-    <Column className="items-stretch gap-1.5">
+    <Column className="items-stretch gap-1.5 w-full">
       {!!labelText && (
         <span
           className={twJoin(

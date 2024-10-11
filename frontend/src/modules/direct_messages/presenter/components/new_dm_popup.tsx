@@ -1,5 +1,6 @@
 import {
   Button,
+  CheckboxInput,
   Column,
   InitialsAvatar,
   Input,
@@ -53,7 +54,7 @@ export function NewDMPopup({
         theme.colors.background.primary
       )}
     >
-      <Column className="p-3 justify-start items-start">
+      <Column className="p-3 justify-start items-start w-full">
         <h3 className={twJoin(theme.colors.text.black, "font-bold text-lg")}>
           {resource.newDMPopup.title}
         </h3>
@@ -63,16 +64,15 @@ export function NewDMPopup({
           {resource.newDMPopup.youCanAddMoreXFriends.partTwo}
         </p>
         <Input
-          className={twJoin(
-            theme.colors.background.tertiary,
-            theme.colors.text.highlighted,
-            "mt-5 w-full text-sm px-3 py-1.5"
-          )}
+          className={twJoin(theme.colors.text.highlighted, "text-sm")}
+          rowProps={{
+            className: twJoin(theme.colors.background.tertiary, "mt-5"),
+          }}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={resource.newDMPopup.inputPlaceholder}
         />
-        <Column className="overflow-y-auto mt-3 w-full items-stretch">
+        <Column className="overflow-y-auto mt-3 w-full items-stretch max-h-20">
           {filteredFriends.map((friend, index) => {
             return (
               <Button
@@ -119,9 +119,8 @@ export function NewDMPopup({
                   </Row>
 
                   {/* Checkbox */}
-                  <Input
-                    type="checkbox"
-                    className={twJoin("cursor-pointer h-5 aspect-square")}
+                  <CheckboxInput
+                    sizeStyle="h-5"
                     checked={isSelected(friend._id)}
                   />
                 </Row>

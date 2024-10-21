@@ -1,30 +1,29 @@
 import { twJoin } from "tailwind-merge";
 import { Button, ButtonProps } from "../buttons";
 import { PopupContainer } from "./container";
-import { RemoveLastPopupCallback, usePopup } from "./context";
+import { usePopup } from "./context";
 
 export type PopupTriggerProps = React.PropsWithChildren<
   Omit<ButtonProps, "onClick"> & {
-    popupRenderer: (removeCallback: RemoveLastPopupCallback) => React.ReactNode;
+    popup: React.ReactNode;
+    popupKey: string;
   }
 >;
 
 export function PopupTrigger({
   children,
-  popupRenderer,
+  popup,
+  popupKey,
   className,
   ...props
 }: PopupTriggerProps) {
-  const { addPopup, removeLastPopup } = usePopup();
+  const { addPopup } = usePopup();
 
   return (
     <Button
       className={twJoin("block", className)}
       onClick={(e) => {
         e.stopPropagation();
-
-        const popup = popupRenderer(removeLastPopup);
-        if (!popup) return;
 
         const rect = e.currentTarget.getBoundingClientRect();
 
@@ -43,7 +42,8 @@ export function PopupTrigger({
             }}
           >
             {popup}
-          </PopupContainer>
+          </PopupContainer>,
+          popupKey
         );
       }}
       {...props}

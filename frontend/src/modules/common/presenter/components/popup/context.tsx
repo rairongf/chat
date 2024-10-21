@@ -5,8 +5,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 export type RemoveLastPopupCallback = () => void;
 
+type PopupEntry = {
+  element: React.ReactNode;
+  key: string;
+};
+
 type PopupContextData = {
-  addPopup: (popup: React.ReactNode) => void;
+  popupEntries: PopupEntry[];
+  addPopup: (popup: React.ReactNode, key: string) => void;
   removeLastPopup: RemoveLastPopupCallback;
 };
 
@@ -15,17 +21,22 @@ export const PopupContext = createContext<PopupContextData>(
 );
 
 export function PopupProvider({ children }: BaseContextProps) {
-  const [popupElements, setPopupElements] = useState<React.ReactNode[]>([]);
+  const [popupEntries, setPopupEntries] = useState<PopupEntry[]>([]);
+  const keys = popupEntries.map((entry) => entry.key);
 
   function removeLastPopup() {
-    setPopupElements((popups) => {
+    setPopupEntries((popups) => {
       popups.pop();
       return [...popups];
     });
   }
 
-  function addPopup(popup: React.ReactNode) {
-    setPopupElements((popups) => [...popups, popup]);
+  function addPopup(popup: React.ReactNode, key: string) {
+    if (keys.includes(key)) {
+      return;
+    }
+
+    setPopupEntries((popups) => [...popups, { element: popup, key }]);
   }
 
   useEffect(() => {
@@ -49,11 +60,11 @@ export function PopupProvider({ children }: BaseContextProps) {
   }, []);
 
   return (
-    <PopupContext.Provider value={{ addPopup, removeLastPopup }}>
+    <PopupContext.Provider value={{ popupEntries, addPopup, removeLastPopup }}>
       {children}
       <div id={"popups_overlay"} className="absolute top-0 left-0">
-        {popupElements.map((element, index) => {
-          return <div key={index}>{element}</div>;
+        {popupEntries.map((entry, index) => {
+          return <div key={`${entry.key}_${index}`}>{entry.element}</div>;
         })}
       </div>
     </PopupContext.Provider>

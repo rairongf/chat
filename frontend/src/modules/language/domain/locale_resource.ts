@@ -95,6 +95,40 @@ export interface LocaleResource {
       blocked: string;
     };
   };
+  guildOptionsPopup: {
+    addCategory: string,
+    addChannel: string,
+    inviteMember: string,
+  },
+  addGuildChannelDialog: {
+    title: string,
+    channelTypeSelect: {
+      label: string,
+      options: {
+        text: {
+          type: string,
+          description: string,
+        },
+        voice: {
+          type: string,
+          description: string,
+        },
+      },
+    },
+    channelNameInput: {
+      label: string,
+      placeholder: string,
+    },
+    channelPrivacyCheckboxLabel: {
+      label: string,
+      description: string,
+    },
+    cancelButtonLabel: string,
+    confirmButtonLabels: {
+      create: string,
+      next: string,
+    },
+  },
   tooltips: {
     message: string;
     more: string;

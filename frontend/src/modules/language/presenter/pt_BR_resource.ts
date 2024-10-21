@@ -99,6 +99,40 @@ export const ptBR_Resource: LocaleResource = {
       blocked: 'Bloqueado — ',
     },
   },
+  guildOptionsPopup: {
+    addCategory: 'Criar categoria',
+    addChannel: 'Criar canal',
+    inviteMember: 'Convidar pessoas',
+  },
+  addGuildChannelDialog: {
+    title: 'Criar canal',
+    channelTypeSelect: {
+      label: 'Tipo de canal',
+      options: {
+        text: {
+          type: 'Texto',
+          description: 'Envie mensagens, imagens, GIF, emojis, opiniões e piadas',
+        },
+        voice: {
+          type: 'Voz',
+          description: 'Passe tempo com a turma com voz, vídeo e compartilhamento de tela',
+        },
+      },
+    },
+    channelNameInput: {
+      label: 'Nome do canal',
+      placeholder: 'novo-canal',
+    },
+    channelPrivacyCheckboxLabel: {
+      label: 'Canal privado',
+      description: 'Somente membros e cargos selecionados poderão visualizar esse canal.',
+    },
+    cancelButtonLabel: 'Cancelar',
+    confirmButtonLabels: {
+      create: 'Criar canal',
+      next: 'Próximo',
+    },
+  },
   tooltips: {
     message: 'Mensagem',
     more: 'Mais',

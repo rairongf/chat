@@ -9,7 +9,7 @@ export function ChannelsListTab({ children }: ChannelsListTabProps) {
   return (
     <aside
       className={twJoin(
-        "min-w-60 w-60 max-w-60 h-full p-2 overflow-y-auto overflow-x-clip",
+        "h-full p-2 overflow-y-auto overflow-x-clip",
         theme.colors.background.secondary
       )}
     >

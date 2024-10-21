@@ -7,7 +7,10 @@ export type OverlayProps = React.PropsWithChildren<
 export function Overlay({ children, className, ...props }: OverlayProps) {
   return (
     <div
-      className={twJoin("absolute top-0 left-0 right-0 bottom-0", className)}
+      className={twJoin(
+        "absolute top-0 left-0 right-0 bottom-0 z-50",
+        className
+      )}
       {...props}
     >
       {children}

@@ -5,7 +5,6 @@ import {
   PictureAvatar,
   Row,
 } from "@/modules/common";
-import { useLanguage } from "@/modules/language";
 import { useTheme } from "@/modules/theme";
 import { usePathname, useRouter } from "next/navigation";
 import { twJoin } from "tailwind-merge";
@@ -14,21 +13,20 @@ export function RecentChatsTabItem({
   label,
   picture,
   friendName,
-  date,
+  status,
   channelId,
 }: //onClick,
 {
   label: string;
   picture?: string;
   friendName: string;
-  date: Date;
+  status?: string;
   channelId: string;
   //onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const router = useRouter();
   const pathname = usePathname();
   const { theme } = useTheme();
-  const { formatDate } = useLanguage();
   const channelRoutePath = `/channels/@me/${channelId}`;
 
   const isSelected = pathname.includes(channelRoutePath);
@@ -67,12 +65,7 @@ export function RecentChatsTabItem({
         <Column className="justify-center items-start gap-0.5 text-start">
           <span className="font-semibold leading-none">{label}</span>
           <span className="text-xs leading-none">
-            <span className="font-semibold">
-              {formatDate(date, {
-                dateStyle: "short",
-                timeStyle: "short",
-              })}
-            </span>
+            <span className="font-semibold">{status}</span>
           </span>
         </Column>
       </Row>

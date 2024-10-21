@@ -78,7 +78,6 @@ export function RecentChatsTab() {
               picture={friend.picture}
               friendName={friend.name}
               label={channel.name}
-              date={channel.createdAt}
               channelId={channel._id}
             />
           );
